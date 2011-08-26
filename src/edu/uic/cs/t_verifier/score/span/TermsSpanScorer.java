@@ -1,0 +1,218 @@
+package edu.uic.cs.t_verifier.score.span;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.TermPositionVector;
+import org.apache.lucene.search.Explanation;
+import org.apache.lucene.search.Similarity;
+import org.apache.lucene.search.Weight;
+import org.apache.lucene.search.spans.SpanScorer;
+import org.apache.lucene.search.spans.Spans;
+
+public class TermsSpanScorer extends SpanScorer
+{
+	private IndexReader reader = null;
+	private Set<String> termsInQuery = null;
+	private String fieldName = null;
+	// private int totalTermsNumInQuery = 0;
+	private List<String> stemmedNonStopWordsInAlternativeUnit = null;
+
+	//	private List<Entry<Integer, TreeSet<String>>> eachTimeMatchedTermsByNum = new ArrayList<Entry<Integer, TreeSet<String>>>();
+	private Map<String, Integer> termsMatchedTimesByTermsInString = new TreeMap<String, Integer>();
+
+	private Map<Integer, TreeMap<Integer, TreeSet<String>>> termPositionsCache = new HashMap<Integer, TreeMap<Integer, TreeSet<String>>>();
+
+	protected TermsSpanScorer(Spans spans, Weight weight,
+			Similarity similarity, byte[] norms, String fieldName,
+			Set<String> termsInQuery,
+			List<String> stemmedNonStopWordsInAlternativeUnit,
+			IndexReader reader) throws IOException
+	{
+		super(spans, weight, similarity, norms);
+
+		this.fieldName = fieldName;
+		this.termsInQuery = termsInQuery;
+		// this.totalTermsNumInQuery = termsInQuery.size();
+		this.stemmedNonStopWordsInAlternativeUnit = stemmedNonStopWordsInAlternativeUnit;
+		this.reader = reader;
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	protected boolean setFreqCurrentDoc() throws IOException
+	{
+		if (!more)
+		{
+			return false;
+		}
+		doc = spans.doc();
+
+		TreeMap<Integer, TreeSet<String>> positions = getTermPositions(doc);
+
+		freq = 0.0f;
+		termsMatchedTimesByTermsInString.clear();
+
+		do
+		{
+			//			int[] min_max = getMinAndMaxIndexInDoc(doc);
+			//			Assert.isTrue(min_max[0] <= spans.start());
+			//			Assert.isTrue(min_max[1] >= spans.end() - 1);
+
+			int matchLength = spans.end() - spans.start();
+			TreeSet<String> matchedTerms = computeMatchedTerms(spans.start(),
+					spans.end() - 1, positions);
+			int matchedTermsNumber = matchedTerms.size();
+			if (matchedTerms.isEmpty())
+			{
+				matchedTerms.add("AU" + stemmedNonStopWordsInAlternativeUnit);
+			}
+
+			String matchedTermsInString = matchedTerms.toString();
+			Integer matchedTimes = termsMatchedTimesByTermsInString
+					.get(matchedTermsInString);
+			if (matchedTimes == null)
+			{
+				termsMatchedTimesByTermsInString.put(matchedTermsInString,
+						Integer.valueOf(1));
+			}
+			else
+			{
+				termsMatchedTimesByTermsInString.put(matchedTermsInString,
+						Integer.valueOf(matchedTimes.intValue() + 1));
+			}
+
+			// not use this matchedRato since it is too mall, would cause the final score hard to differentiate
+			//			float matchedRato = ((matchedTermsNumber + 1) / (totalTermsNumInQuery + 1));
+			//			Assert.isTrue(matchedRato <= 1.0F);
+			float matchLengthFactor = (float) (matchedTermsNumber + 0.1); // in case zero
+
+			// matchedRato^2 since the final score is computed by tf(){ Math.sqrt(freq); }
+			freq += (getSimilarity().sloppyFreq(matchLength)
+					* matchLengthFactor * matchLengthFactor);
+			more = spans.next();
+		}
+		while (more && (doc == spans.doc()));
+
+		return true;
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	protected Explanation explain(int doc) throws IOException
+	{
+		Explanation tfExplanation = new Explanation();
+
+		int expDoc = advance(doc);
+
+		float phraseFreq = (expDoc == doc) ? freq : 0.0f;
+		tfExplanation.setValue(getSimilarity().tf(phraseFreq));
+
+		int matchedTime = 0;
+		List<String> termsStringWithTimes = new ArrayList<String>();
+		for (Entry<String, Integer> entry : termsMatchedTimesByTermsInString
+				.entrySet())
+		{
+			matchedTime += entry.getValue();
+			termsStringWithTimes.add(entry.getKey() + "*" + entry.getValue());
+		}
+
+		tfExplanation.setDescription("tf(phraseFreq=" + phraseFreq
+				+ "); matched [" + matchedTime + "] spans, with times "
+				+ termsStringWithTimes);
+
+		return tfExplanation;
+	}
+
+	//	private int[] getMinAndMaxIndexInDoc(int doc) throws IOException
+	//	{
+	//		TermPositionVector termFreqVector = (TermPositionVector) reader
+	//				.getTermFreqVector(doc, fieldName);
+	//		String[] allTerms = termFreqVector.getTerms();
+	//
+	//		int min = Integer.MAX_VALUE;
+	//		int max = -1;
+	//		for (String term : allTerms)
+	//		{
+	//			int[] positions = termFreqVector.getTermPositions(termFreqVector
+	//					.indexOf(term));
+	//			for (int p : positions)
+	//			{
+	//				if (p > max)
+	//				{
+	//					max = p;
+	//				}
+	//
+	//				if (p < min)
+	//				{
+	//					min = p;
+	//				}
+	//			}
+	//		}
+	//
+	//		return new int[] { min, max };
+	//	}
+
+	private TreeSet<String> computeMatchedTerms(int start, int end,
+			TreeMap<Integer, TreeSet<String>> positions)
+	{
+		TreeSet<String> matchedTerms = new TreeSet<String>();
+
+		// System.out.println(start + "~" + end);
+		for (int index = start; index < end; index++)
+		{
+			TreeSet<String> termsInPosition = positions.get(Integer
+					.valueOf(index));
+			if (termsInPosition != null)
+			{
+				matchedTerms.addAll(termsInPosition);
+			}
+		}
+
+		// return matchedTerms.size();
+		return matchedTerms;
+	}
+
+	private TreeMap<Integer, TreeSet<String>> getTermPositions(int doc)
+			throws IOException
+	{
+		TreeMap<Integer, TreeSet<String>> termPositions = termPositionsCache
+				.get(Integer.valueOf(doc));
+		if (termPositions == null)
+		{
+			termPositions = new TreeMap<Integer, TreeSet<String>>();
+			TermPositionVector termFreqVector = (TermPositionVector) reader
+					.getTermFreqVector(doc, fieldName);
+
+			for (String term : termsInQuery)
+			{
+				int[] positions = termFreqVector
+						.getTermPositions(termFreqVector.indexOf(term));
+				for (int pos : positions)
+				{
+					TreeSet<String> termsInOnePosition = termPositions
+							.get(Integer.valueOf(pos));
+					if (termsInOnePosition == null)
+					{
+						termsInOnePosition = new TreeSet<String>();
+						termPositions.put(pos, termsInOnePosition);
+					}
+					// due to synonym, may add one position multiple times
+					termsInOnePosition.add(term);
+				}
+			}
+
+			termPositionsCache.put(Integer.valueOf(doc), termPositions);
+		}
+
+		return termPositions;
+	}
+}
