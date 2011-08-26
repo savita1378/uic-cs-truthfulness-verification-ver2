@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration>
+	<appender name="projectLogger_console" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="conversionPattern" value="%d | %p | %C | [MSG]: %m%n" />
+		</layout>
+	</appender>
+	<appender name="projectLogger_file" class="org.apache.log4j.RollingFileAppender">
+		<param name="file" value="output/debug.log" />
+		<param name="immediateFlush" value="true" />
+		<param name="append" value="false" />
+		<param name="maxFileSize" value="50MB" />
+		<param name="maxBackupIndex" value="2" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="conversionPattern" value="%d | %p | %C{1} | [MSG]: %m%n" />
+		</layout>
+	</appender>
+	<appender name="score_detail_file" class="org.apache.log4j.RollingFileAppender">
+		<param name="file" value="output/score_detail.log" />
+		<param name="immediateFlush" value="true" />
+		<param name="append" value="false" />
+		<param name="maxFileSize" value="50MB" />
+		<param name="maxBackupIndex" value="2" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="conversionPattern" value="%m%n" />
+		</layout>
+	</appender>
+	<logger name="edu.uic.cs.t_verifier" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="projectLogger_file" />
+	</logger>
+	<logger name="SCORE_DETAIL" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="score_detail_file" />
+	</logger>
+	<root>
+		<priority value="debug" />
+		<appender-ref ref="projectLogger_file" />
+	</root>
+</log4j:configuration>
