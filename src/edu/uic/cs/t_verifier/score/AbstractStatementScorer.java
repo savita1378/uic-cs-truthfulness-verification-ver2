@@ -240,7 +240,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 
 		boolean isFrontPositionBetter = metadata.isFrontPositionBetter();
 
-		float finalScore = 0;
+		float maxScore = 0f;
 		for (String subTopicUnit : subTopicUnits)
 		{
 			logScoreDetail("AU: ["
@@ -251,21 +251,24 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 			float score = scoreAlternativeUnitForOneSubTopicUnit(
 					alternativeUnit, subTopicUnit,
 					allStemmedNonstopWordsInTopicUnit, isFrontPositionBetter);
-
-			finalScore += score;
-
 			logScoreDetail("SCORE: ["
 					+ score
 					+ "] =======================================================================\n");
+
+			if (score > maxScore)
+			{
+				maxScore = score;
+			}
+
 		}
 
-		logScoreDetail("TOTAL SCORE for AU["
+		logScoreDetail("MAXIMUM SCORE for AU["
 				+ alternativeUnit
 				+ "]: "
-				+ finalScore
+				+ maxScore
 				+ " =======================================================\n\n\n");
 
-		return finalScore;
+		return maxScore;
 	}
 
 	private float scoreAlternativeUnitForOneSubTopicUnit(
@@ -360,7 +363,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 				+ Arrays.toString(metadata.getMatchedSubTopicUnits()));
 
 		List<String> mostMatchedAlternativeUnits = new ArrayList<String>();
-		float maxScore = 0F;
+		float maxScore = 0f;
 
 		String[] alternativeUnits = metadata.getAlternativeUnits();
 		System.out.print("SCOREs:\t\t");
@@ -375,7 +378,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 				mostMatchedAlternativeUnits.clear();
 				mostMatchedAlternativeUnits.add(alternativeUnit);
 			}
-			else if (score == maxScore && score != 0F)
+			else if (score == maxScore && score != 0f)
 			{
 				mostMatchedAlternativeUnits.add(alternativeUnit);
 			}
