@@ -186,7 +186,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 	private float scoreAlternativeUnit(String alternativeUnit,
 			StatementMetadata metadata)
 	{
-		if (metadata.isUseAuToScore())
+		if (metadata.scoreByAlternativeUnitOnly())
 		{
 			return scoreByAlternativeUnit(alternativeUnit, metadata);
 			// FIXME if AU cann't match anything, we need use TU instead 

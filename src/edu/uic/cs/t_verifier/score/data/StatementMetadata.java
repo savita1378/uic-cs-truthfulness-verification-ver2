@@ -41,7 +41,7 @@ public class StatementMetadata
 		return matchedSubTopicUnits;
 	}
 
-	public boolean isUseAuToScore()
+	public boolean scoreByAlternativeUnitOnly()
 	{
 		return statementType == StatementType.YEAR;
 	}

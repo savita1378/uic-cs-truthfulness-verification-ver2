@@ -27,7 +27,7 @@ public class TestStatementAnalyzer2 extends EnhancedTestCase
 			}
 
 			Map<String, List<String>> urlsByAlternativeUnit = analyzer
-					.getUrlsByAlternativeUnit(statement);
+					.getUrlsByAlternativeUnit(statement, false);
 
 			assertEquals(statement.getAlternativeUnits().size(),
 					urlsByAlternativeUnit.size());

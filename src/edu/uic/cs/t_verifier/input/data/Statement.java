@@ -25,6 +25,7 @@ public class Statement extends AbstractWordOperations
 
 	private List<String> allAlternativeStatements = null;
 	private TreeSet<String> allWordsInTopicUnits = null;
+	private TreeSet<String> allNonstopWordsInTopicUnits = null;
 
 	public Statement(Integer id, String topicUnitLeft, String topicUnitRight)
 	{
@@ -101,6 +102,23 @@ public class Statement extends AbstractWordOperations
 		}
 
 		return allWordsInTopicUnits;
+	}
+
+	public TreeSet<String> getAllNonstopWordsInTopicUnits()
+	{
+		if (allNonstopWordsInTopicUnits != null)
+		{
+			return allNonstopWordsInTopicUnits;
+		}
+
+		allNonstopWordsInTopicUnits = new TreeSet<String>();
+		for (String topicUnit : getTopicUnits())
+		{
+			List<String> words = standardAnalyzeUsingDefaultStopWords(topicUnit); // DO remove stop words
+			allNonstopWordsInTopicUnits.addAll(words);
+		}
+
+		return allNonstopWordsInTopicUnits;
 	}
 
 	public List<AlternativeUnit> getAlternativeUnits()
