@@ -1,21 +1,21 @@
 package edu.uic.cs.t_verifier.score;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.apache.lucene.index.Term;
-import org.apache.lucene.search.BooleanClause.Occur;
-import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.spans.SpanNearQuery;
 import org.apache.lucene.search.spans.SpanOrQuery;
 import org.apache.lucene.search.spans.SpanQuery;
 import org.apache.lucene.search.spans.SpanTermQuery;
 
+import edu.uic.cs.t_verifier.misc.Assert;
 import edu.uic.cs.t_verifier.score.span.TermsSpanNearQuery;
 
 public class WindowScorer extends AbstractStatementScorer
@@ -57,8 +57,7 @@ public class WindowScorer extends AbstractStatementScorer
 			return alternativeUnitQuery;
 		}
 
-		SpanOrQuery topicUnitQuery = getTopicUnitQuery(powerset,
-				alternativeUnitQuery);
+		SpanOrQuery topicUnitQuery = getTopicUnitQuery(powerset);
 
 		// AU near {powerset of TU (OR)}
 		SpanQuery[] auQueryAndAllCombinationsOfTuQuery = new SpanQuery[] {
@@ -81,8 +80,7 @@ public class WindowScorer extends AbstractStatementScorer
 		return result;
 	}
 
-	private SpanOrQuery getTopicUnitQuery(List<List<String>> powerset,
-			SpanNearQuery alternativeUnitQuery)
+	private SpanOrQuery getTopicUnitQuery(List<List<String>> powerset)
 	{
 		SpanOrQuery orQuery = new SpanOrQuery();
 		for (List<String> eachCombination : powerset)
@@ -177,15 +175,23 @@ public class WindowScorer extends AbstractStatementScorer
 	protected Query prepareTopicUnitQuery(
 			String[] allStemmedNonstopWordsInTopicUnit)
 	{
-		// TODO right now we use BooleanQuery just the same as BooleanScorer.java
-		BooleanQuery query = new BooleanQuery();
-		for (String word : allStemmedNonstopWordsInTopicUnit)
-		{
-			query.add(new TermQuery(new Term(getIndexingFieldName(), word)),
-					Occur.SHOULD);
-		}
+		List<String> allStemmedNonstopWordsInTopicUnitList = Arrays
+				.asList(allStemmedNonstopWordsInTopicUnit);
+		List<List<String>> powerset = powerset(
+				allStemmedNonstopWordsInTopicUnitList, false);
+		Assert.isTrue(!powerset.isEmpty());
 
-		return query;
+		SpanOrQuery topicUnitQuery = getTopicUnitQuery(powerset);
+		SpanQuery[] allCombinationsOfTuQuery = new SpanQuery[] { topicUnitQuery };
+		Set<String> termsInQuery = new HashSet<String>(
+				allStemmedNonstopWordsInTopicUnitList);
+
+		@SuppressWarnings("unchecked")
+		TermsSpanNearQuery result = new TermsSpanNearQuery(
+				allCombinationsOfTuQuery, slop, false, getIndexingFieldName(),
+				termsInQuery, Collections.EMPTY_LIST); // not in order
+
+		return result;
 	}
 
 }

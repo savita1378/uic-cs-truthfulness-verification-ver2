@@ -186,14 +186,28 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 	private float scoreAlternativeUnit(String alternativeUnit,
 			StatementMetadata metadata)
 	{
-		if (metadata.isUseAuToScore())
+		if (metadata.scoreByAlternativeUnitOnly())
 		{
-			return scoreByAlternativeUnit(alternativeUnit, metadata);
-			// FIXME if AU cann't match anything, we need use TU instead 
+			float scoreOfAlternativeUnit = scoreByAlternativeUnit(
+					alternativeUnit, metadata);
+			if (scoreOfAlternativeUnit > 0f)
+			{
+				return scoreOfAlternativeUnit;
+			}
+			else
+			{
+				// if AU can't match anything, we need use TU instead 
+				return scoreByTopicUnit(alternativeUnit, metadata);
+			}
 		}
 		else
 		{
-			return scoreByTopicUnit(alternativeUnit, metadata);
+			float scoreOfAlternativeUnit = scoreByAlternativeUnit(
+					alternativeUnit, metadata);
+			float scoreOfTopicUnit = scoreByTopicUnit(alternativeUnit, metadata);
+
+			return (scoreOfAlternativeUnit > scoreOfTopicUnit) ? scoreOfAlternativeUnit
+					: scoreOfTopicUnit;
 		}
 	}
 
@@ -316,7 +330,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 			throw new GeneralException(e);
 		}
 
-		return 0;
+		return 0f;
 	}
 
 	private Query prepareAlternativeUnitAndNonSubTopicUnitQuery(

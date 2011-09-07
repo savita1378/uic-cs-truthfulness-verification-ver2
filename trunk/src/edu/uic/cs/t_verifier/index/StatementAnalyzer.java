@@ -336,7 +336,7 @@ class StatementAnalyzer extends AbstractWordOperations
 	}
 
 	public Map<String, List<String>> getUrlsByAlternativeUnit(
-			Statement statement)
+			Statement statement, boolean doFilter)
 	{
 		List<AlternativeUnit> alternaitveUnits = statement
 				.getAlternativeUnits();
@@ -345,15 +345,20 @@ class StatementAnalyzer extends AbstractWordOperations
 		for (AlternativeUnit alternativeUnit : alternaitveUnits)
 		{
 			String auString = alternativeUnit.getString();
-			List<String> matchedUrls = matchUrlsForAlternativeUnit(auString);
+			List<String> matchedUrls = matchUrlsForAlternativeUnit(auString,
+					statement, doFilter);
 
-			result.put(auString, matchedUrls);
+			if (matchedUrls != null)
+			{
+				result.put(auString, matchedUrls);
+			}
 		}
 
 		return result;
 	}
 
-	private List<String> matchUrlsForAlternativeUnit(String auString)
+	private List<String> matchUrlsForAlternativeUnit(String auString,
+			Statement statement, boolean doFilter)
 	{
 		MatchedQueryKey matchedQueryKey = wikipediaContentExtractor
 				.matchQueryKey(auString);
@@ -375,20 +380,31 @@ class StatementAnalyzer extends AbstractWordOperations
 		}
 		else
 		{
-			// TODO right now, we don't filter these disambiguations, all URLs are recorded. 
 			List<DisambiguationEntry> disambiguationEntryList = matchedQueryKey
 					.getDisambiguationEntries();
 
-			List<String> disambiguationUrls = new ArrayList<String>(
-					disambiguationEntryList.size());
-			for (DisambiguationEntry disambiguationEntry : disambiguationEntryList)
+			if (doFilter)
 			{
-				String keyWord = disambiguationEntry.getKeyWord();
-				String url = MatchedQueryKey.constructPageAddress(keyWord);
-				disambiguationUrls.add(url);
-			}
+				Set<String> allNonstopWords = statement
+						.getAllNonstopWordsInTopicUnits();
 
-			return disambiguationUrls;
+				List<AlternativeUnit> emptyList = Collections.emptyList();
+				return findTheMostMatchedDisambiguationEntries(
+						disambiguationEntryList, allNonstopWords, emptyList);
+			}
+			else
+			{
+				List<String> disambiguationUrls = new ArrayList<String>(
+						disambiguationEntryList.size());
+				for (DisambiguationEntry disambiguationEntry : disambiguationEntryList)
+				{
+					String keyWord = disambiguationEntry.getKeyWord();
+					String url = MatchedQueryKey.constructPageAddress(keyWord);
+					disambiguationUrls.add(url);
+				}
+
+				return disambiguationUrls;
+			}
 		}
 
 	}

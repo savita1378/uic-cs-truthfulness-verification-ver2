@@ -77,11 +77,13 @@ public class IndexBuilder
 			case NORMAL_STRING:
 			case SUPERLATIVE_STRING:
 			case NUMBER:
-				return null;
+				return STATEMENT_ANALYZER.getUrlsByAlternativeUnit(statement,
+						true);
 
 				// case SUPERLATIVE_STRING: // no good to use AU for such type
 			case YEAR:
-				return STATEMENT_ANALYZER.getUrlsByAlternativeUnit(statement);
+				return STATEMENT_ANALYZER.getUrlsByAlternativeUnit(statement,
+						false);
 
 			default:
 				Assert.isTrue(false);
