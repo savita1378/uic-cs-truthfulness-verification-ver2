@@ -126,9 +126,9 @@ public class TermsSpanScorer extends SpanScorer
 
 					// matchedRato^2 since the final score is computed by tf(){ Math.sqrt(freq); }
 
-					float score = (getSimilarity().sloppyFreq(matchLength)
-							* matchedRatio * matchedRatio * matchedRatio * matchedRatio) // matchedRatio is more important!
-							* alternativeUnitWeight;
+					float score = alternativeUnitWeight
+							* getSimilarity().sloppyFreq(matchLength)
+							* (matchedRatio * matchedRatio * matchedRatio * matchedRatio);// matchedRatio is more important!
 
 					// use the sum of scores
 					freq += score;
