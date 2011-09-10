@@ -186,18 +186,19 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 	private float scoreAlternativeUnit(String alternativeUnit,
 			StatementMetadata metadata)
 	{
+		float finalScore = 0f;
 		if (metadata.scoreByAlternativeUnitOnly())
 		{
 			float scoreOfAlternativeUnit = scoreByAlternativeUnit(
 					alternativeUnit, metadata);
 			if (scoreOfAlternativeUnit > 0f)
 			{
-				return scoreOfAlternativeUnit;
+				finalScore = scoreOfAlternativeUnit;
 			}
 			else
 			{
 				// if AU can't match anything, we need use TU instead 
-				return scoreByTopicUnit(alternativeUnit, metadata);
+				finalScore = scoreByTopicUnit(alternativeUnit, metadata);
 			}
 		}
 		else
@@ -206,9 +207,17 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 					alternativeUnit, metadata);
 			float scoreOfTopicUnit = scoreByTopicUnit(alternativeUnit, metadata);
 
-			return (scoreOfAlternativeUnit > scoreOfTopicUnit) ? scoreOfAlternativeUnit
+			finalScore = (scoreOfAlternativeUnit > scoreOfTopicUnit) ? scoreOfAlternativeUnit
 					: scoreOfTopicUnit;
 		}
+
+		logScoreDetail("FINAL SCORE for AU["
+				+ alternativeUnit
+				+ "]: "
+				+ finalScore
+				+ " ==========================================================================================================\n\n\n\n");
+
+		return finalScore;
 	}
 
 	private float scoreByAlternativeUnit(String alternativeUnit,
@@ -233,11 +242,11 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		////////////////////////////////////////////////////////////////////////
 		float score = doQueryAndScore(alternativeUnit, query);
 
-		logScoreDetail("SCORE for AU["
+		logScoreDetail("AU SCORE for AU["
 				+ alternativeUnit
 				+ "]: "
 				+ score
-				+ " =======================================================\n\n\n");
+				+ " =======================================================\n\n");
 
 		return score;
 	}
@@ -276,11 +285,11 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 
 		}
 
-		logScoreDetail("MAXIMUM SCORE for AU["
+		logScoreDetail("TU SCORE for AU["
 				+ alternativeUnit
 				+ "]: "
 				+ maxScore
-				+ " =======================================================\n\n\n");
+				+ " =======================================================\n\n");
 
 		return maxScore;
 	}
@@ -322,7 +331,9 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 						topDocs.scoreDocs[0].doc);
 				logScoreDetail(explanation.toString());
 
-				return topDocs.scoreDocs[0].score;
+				float score = topDocs.scoreDocs[0].score;
+				Assert.isTrue(score >= 2.0f || score == 0f);
+				return score >= 2.0f ? score - 2.0f : score;
 			}
 		}
 		catch (IOException e)
@@ -367,25 +378,25 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 	public List<String> findTheMostMatchedAlternativeUnits(
 			StatementMetadata metadata)
 	{
-		System.out.println("\n");
-		System.out.println("ID:\t\t" + metadata.getStatementId());
-		System.out.println("TU_0:\t\t"
-				+ Arrays.toString(metadata.getStemmedNonstopTUWords()));
-		System.out.println("AUs:\t\t"
-				+ Arrays.toString(metadata.getAlternativeUnits()));
-		System.out.println("SUB_TUs:\t"
-				+ Arrays.toString(metadata.getMatchedSubTopicUnits()));
+		//		System.out.println("\n");
+		//		System.out.println("ID:\t\t" + metadata.getStatementId());
+		//		System.out.println("TU_0:\t\t"
+		//				+ Arrays.toString(metadata.getStemmedNonstopTUWords()));
+		//		System.out.println("AUs:\t\t"
+		//				+ Arrays.toString(metadata.getAlternativeUnits()));
+		//		System.out.println("SUB_TUs:\t"
+		//				+ Arrays.toString(metadata.getMatchedSubTopicUnits()));
 
 		List<String> mostMatchedAlternativeUnits = new ArrayList<String>();
 		float maxScore = 0f;
 
 		String[] alternativeUnits = metadata.getAlternativeUnits();
-		System.out.print("SCOREs:\t\t");
+		//		System.out.print("SCOREs:\t\t");
 		for (String alternativeUnit : alternativeUnits)
 		{
 			float score = scoreAlternativeUnit(alternativeUnit, metadata);
-			System.out.print("[" + alternativeUnit + "]:" + score + " | ");
-			//			System.out.println(score);
+			//			System.out.print("[" + alternativeUnit + "]:" + score + " | ");
+			System.out.println(score);
 			if (score > maxScore)
 			{
 				maxScore = score;
@@ -397,19 +408,19 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 				mostMatchedAlternativeUnits.add(alternativeUnit);
 			}
 		}
-		System.out.println();
-
-		if (!mostMatchedAlternativeUnits.isEmpty())
-		{
-			System.out.println("MATCHED_AU:\t" + mostMatchedAlternativeUnits
-					+ ":" + maxScore);
-		}
-		else
-		{
-			System.out.println("NO AU MATCHED... ");
-		}
-
-		System.out.print("============================");
+		//		System.out.println();
+		//
+		//		if (!mostMatchedAlternativeUnits.isEmpty())
+		//		{
+		//			System.out.println("MATCHED_AU:\t" + mostMatchedAlternativeUnits
+		//					+ ":" + maxScore);
+		//		}
+		//		else
+		//		{
+		//			System.out.println("NO AU MATCHED... ");
+		//		}
+		//
+		//		System.out.print("============================");
 
 		return mostMatchedAlternativeUnits;
 	}
