@@ -27,6 +27,8 @@ public class TermsSpanScorer extends SpanScorer
 	private int totalTermsNumInQuery;
 	private List<String> stemmedNonStopWordsInAlternativeUnit = null;
 
+	private int alternativeUnitWeight;
+
 	//	private List<Entry<Integer, TreeSet<String>>> eachTimeMatchedTermsByNum = new ArrayList<Entry<Integer, TreeSet<String>>>();
 	private Map<String, Integer> termsMatchedTimesByTermsInString = new TreeMap<String, Integer>();
 	private Map<String, List<Integer>> termsMatchedWindowSizeByTermsInString = new TreeMap<String, List<Integer>>();
@@ -39,7 +41,7 @@ public class TermsSpanScorer extends SpanScorer
 			Similarity similarity, byte[] norms, String fieldName,
 			Set<String> termsInQuery,
 			List<String> stemmedNonStopWordsInAlternativeUnit,
-			IndexReader reader) throws IOException
+			IndexReader reader, int alternativeUnitWeight) throws IOException
 	{
 		super(spans, weight, similarity, norms);
 
@@ -48,6 +50,7 @@ public class TermsSpanScorer extends SpanScorer
 		this.totalTermsNumInQuery = termsInQuery.size();
 		this.stemmedNonStopWordsInAlternativeUnit = stemmedNonStopWordsInAlternativeUnit;
 		this.reader = reader;
+		this.alternativeUnitWeight = alternativeUnitWeight;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -124,7 +127,8 @@ public class TermsSpanScorer extends SpanScorer
 					// matchedRato^2 since the final score is computed by tf(){ Math.sqrt(freq); }
 
 					float score = (getSimilarity().sloppyFreq(matchLength)
-							* matchedRatio * matchedRatio * matchedRatio * matchedRatio); // matchedRatio is more important!
+							* matchedRatio * matchedRatio * matchedRatio * matchedRatio) // matchedRatio is more important!
+							* alternativeUnitWeight;
 
 					// use the sum of scores
 					freq += score;

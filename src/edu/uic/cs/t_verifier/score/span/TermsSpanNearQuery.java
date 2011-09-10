@@ -18,22 +18,26 @@ public class TermsSpanNearQuery extends SpanNearQuery
 	private String fieldName = null;
 	private List<String> stemmedNonStopWordsInAlternativeUnit = null;
 
+	private int alternativeUnitWeight;
+
 	public TermsSpanNearQuery(SpanQuery[] clauses, int slop, boolean inOrder,
 			String fieldName, Set<String> termsInQuery,
-			List<String> stemmedNonStopWordsInAlternativeUnit)
+			List<String> stemmedNonStopWordsInAlternativeUnit,
+			int alternativeUnitWeight)
 	{
 		super(clauses, slop, inOrder);
 
 		this.fieldName = fieldName;
 		this.termsInQuery = termsInQuery;
 		this.stemmedNonStopWordsInAlternativeUnit = stemmedNonStopWordsInAlternativeUnit;
+		this.alternativeUnitWeight = alternativeUnitWeight;
 	}
 
 	@Override
 	public Weight createWeight(Searcher searcher) throws IOException
 	{
 		return new TermsSpanWeight(this, searcher, fieldName, termsInQuery,
-				stemmedNonStopWordsInAlternativeUnit);
+				stemmedNonStopWordsInAlternativeUnit, alternativeUnitWeight);
 	}
 
 }

@@ -19,7 +19,6 @@ import edu.uic.cs.t_verifier.common.AbstractWordOperations;
 import edu.uic.cs.t_verifier.html.WikipediaContentExtractor;
 import edu.uic.cs.t_verifier.html.data.MatchedQueryKey;
 import edu.uic.cs.t_verifier.html.data.MatchedQueryKey.DisambiguationEntry;
-import edu.uic.cs.t_verifier.input.data.AlternativeUnit;
 import edu.uic.cs.t_verifier.input.data.Statement;
 import edu.uic.cs.t_verifier.misc.ClassFactory;
 import edu.uic.cs.t_verifier.misc.Config;
@@ -86,7 +85,7 @@ class StatementAnalyzer extends AbstractWordOperations
 	public Map<String, List<String>> getUrlsByTopicUnit(Statement statement)
 	{
 		Collection<String> topicUnits = statement.getTopicUnits();
-		List<AlternativeUnit> aus = statement.getAlternativeUnits();
+		List<String> aus = statement.getAlternativeUnits();
 		Set<String> allWordsInTopicUnits = statement.getAllWordsInTopicUnits();
 
 		return processAllTopicUnitsInStatement(topicUnits, aus,
@@ -94,7 +93,7 @@ class StatementAnalyzer extends AbstractWordOperations
 	}
 
 	private Map<String, List<String>> processAllTopicUnitsInStatement(
-			Collection<String> topicUnits, List<AlternativeUnit> aus,
+			Collection<String> topicUnits, List<String> aus,
 			Set<String> allWordsInTopicUnits)
 	{
 		// topic units waiting for mathcing
@@ -197,8 +196,7 @@ class StatementAnalyzer extends AbstractWordOperations
 	// TODO may need be changed to using Lucene
 	private List<String> findTheMostMatchedDisambiguationEntries(
 			List<DisambiguationEntry> disambiguationEntries,
-			Set<String> nonstopWordsNotCausingAmbiguities,
-			List<AlternativeUnit> aus)
+			Set<String> nonstopWordsNotCausingAmbiguities, List<String> aus)
 	{
 		Set<String> stemmedNonstopWordsNotCausingAmbiguities = getStemmedNonstopWordsNotCausingAmbiguities(
 				nonstopWordsNotCausingAmbiguities, aus);
@@ -247,8 +245,7 @@ class StatementAnalyzer extends AbstractWordOperations
 	}
 
 	private Set<String> getStemmedNonstopWordsNotCausingAmbiguities(
-			Set<String> nonstopWordsNotCausingAmbiguities,
-			List<AlternativeUnit> aus)
+			Set<String> nonstopWordsNotCausingAmbiguities, List<String> aus)
 	{
 		// if there's no other words in TU can be used to disambiguate the entries,
 		// use nonstop words in AU do the job
@@ -256,11 +253,10 @@ class StatementAnalyzer extends AbstractWordOperations
 		{
 			// TODO based on current logic, the one contains most many AU words, 
 			// is the one matched.  
-			for (AlternativeUnit au : aus)
+			for (String au : aus)
 			{
 				nonstopWordsNotCausingAmbiguities
-						.addAll(standardAnalyzeUsingDefaultStopWords(au
-								.getString()));
+						.addAll(standardAnalyzeUsingDefaultStopWords(au));
 			}
 		}
 
@@ -338,13 +334,11 @@ class StatementAnalyzer extends AbstractWordOperations
 	public Map<String, List<String>> getUrlsByAlternativeUnit(
 			Statement statement, boolean doFilter)
 	{
-		List<AlternativeUnit> alternaitveUnits = statement
-				.getAlternativeUnits();
+		List<String> alternaitveUnits = statement.getAlternativeUnits();
 		Map<String, List<String>> result = new HashMap<String, List<String>>();
 
-		for (AlternativeUnit alternativeUnit : alternaitveUnits)
+		for (String auString : alternaitveUnits)
 		{
-			String auString = alternativeUnit.getString();
 			List<String> matchedUrls = matchUrlsForAlternativeUnit(auString,
 					statement, doFilter);
 
@@ -388,7 +382,7 @@ class StatementAnalyzer extends AbstractWordOperations
 				Set<String> allNonstopWords = statement
 						.getAllNonstopWordsInTopicUnits();
 
-				List<AlternativeUnit> emptyList = Collections.emptyList();
+				List<String> emptyList = Collections.emptyList();
 				return findTheMostMatchedDisambiguationEntries(
 						disambiguationEntryList, allNonstopWords, emptyList);
 			}

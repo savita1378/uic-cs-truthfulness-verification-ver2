@@ -19,16 +19,19 @@ public class TermsSpanWeight extends SpanWeight
 	private String fieldName = null;
 	private List<String> stemmedNonStopWordsInAlternativeUnit = null;
 
+	private int alternativeUnitWeight;
+
 	public TermsSpanWeight(SpanQuery query, Searcher searcher,
 			String fieldName, Set<String> termsInQuery,
-			List<String> stemmedNonStopWordsInAlternativeUnit)
-			throws IOException
+			List<String> stemmedNonStopWordsInAlternativeUnit,
+			int alternativeUnitWeight) throws IOException
 	{
 		super(query, searcher);
 
 		this.fieldName = fieldName;
 		this.termsInQuery = termsInQuery;
 		this.stemmedNonStopWordsInAlternativeUnit = stemmedNonStopWordsInAlternativeUnit;
+		this.alternativeUnitWeight = alternativeUnitWeight;
 	}
 
 	@Override
@@ -38,6 +41,7 @@ public class TermsSpanWeight extends SpanWeight
 		// System.out.println(query);
 		return new TermsSpanScorer(query.getSpans(reader), this, similarity,
 				reader.norms(query.getField()), fieldName, termsInQuery,
-				stemmedNonStopWordsInAlternativeUnit, reader);
+				stemmedNonStopWordsInAlternativeUnit, reader,
+				alternativeUnitWeight);
 	}
 }
