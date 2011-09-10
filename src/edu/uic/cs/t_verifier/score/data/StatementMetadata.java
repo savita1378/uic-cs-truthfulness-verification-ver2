@@ -46,12 +46,67 @@ public class StatementMetadata
 			result.add(new AlternativeUnit(auString));
 		}
 
-		assignWeightToAUs(result);
+		if (statementType == StatementType.YEAR)
+		{
+			assignWeightToYearTypeAUs(result);
+		}
+		else
+		{
+			assignWeightToNonYearTypeAUs(result);
+		}
 
 		return result;
 	}
 
-	private void assignWeightToAUs(List<AlternativeUnit> aus)
+	private void assignWeightToYearTypeAUs(List<AlternativeUnit> aus)
+	{
+		List<Integer> indexesOfCentury = new ArrayList<Integer>(2);
+		List<Integer> indexesOfDecade = new ArrayList<Integer>(2);
+		List<Integer> indexesOfYear = new ArrayList<Integer>(5);
+
+		for (int index = 0; index < aus.size(); index++)
+		{
+			AlternativeUnit au = aus.get(index);
+
+			if (au.getString().endsWith("00s"))
+			{
+				indexesOfCentury.add(index);
+			}
+			else if (au.getString().endsWith("0s"))
+			{
+				indexesOfDecade.add(index);
+			}
+			else
+			{
+				indexesOfYear.add(index);
+			}
+
+			au.setWeight(1);
+		}
+
+		if (!indexesOfCentury.isEmpty() && !indexesOfDecade.isEmpty())
+		{
+			for (Integer index : indexesOfYear)
+			{
+				aus.get(index).setWeight(3);
+			}
+
+			for (Integer index : indexesOfDecade)
+			{
+				aus.get(index).setWeight(2);
+			}
+		}
+		else if (!indexesOfCentury.isEmpty() || !indexesOfDecade.isEmpty())
+		{
+			for (Integer index : indexesOfYear)
+			{
+				aus.get(index).setWeight(2);
+			}
+		}
+
+	}
+
+	private void assignWeightToNonYearTypeAUs(List<AlternativeUnit> aus)
 	{
 		Collections.sort(aus, new Comparator<AlternativeUnit>()
 		{

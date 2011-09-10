@@ -25,7 +25,7 @@ public class AlternativeUnit
 		return words;
 	}
 
-	public void setWeight(int weight)
+	void setWeight(int weight)
 	{
 		this.weight = weight;
 	}
