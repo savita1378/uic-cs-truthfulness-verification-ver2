@@ -24,7 +24,7 @@ public class TermsSpanScorer extends SpanScorer
 	private IndexReader reader = null;
 	private Set<String> termsInQuery = null;
 	private String fieldName = null;
-	// private int totalTermsNumInQuery = 0;
+	private int totalTermsNumInQuery;
 	private List<String> stemmedNonStopWordsInAlternativeUnit = null;
 
 	//	private List<Entry<Integer, TreeSet<String>>> eachTimeMatchedTermsByNum = new ArrayList<Entry<Integer, TreeSet<String>>>();
@@ -45,7 +45,7 @@ public class TermsSpanScorer extends SpanScorer
 
 		this.fieldName = fieldName;
 		this.termsInQuery = termsInQuery;
-		// this.totalTermsNumInQuery = termsInQuery.size();
+		this.totalTermsNumInQuery = termsInQuery.size();
 		this.stemmedNonStopWordsInAlternativeUnit = stemmedNonStopWordsInAlternativeUnit;
 		this.reader = reader;
 	}
@@ -77,7 +77,7 @@ public class TermsSpanScorer extends SpanScorer
 			int matchLength = spans.end() - spans.start();
 
 			String processingSpanID = doc + "|" + spans.start() + "|"
-					+ spans.end(); 
+					+ spans.end();
 			// TODO I am not sure why the same span may be processed may times...
 			// seems related to synonyms
 			if (!alreadyProcessedSpans.contains(processingSpanID))
@@ -118,11 +118,23 @@ public class TermsSpanScorer extends SpanScorer
 					// not use this matchedRato since it is too mall, would cause the final score hard to differentiate
 					//			float matchedRato = ((matchedTermsNumber + 1) / (totalTermsNumInQuery + 1));
 					//			Assert.isTrue(matchedRato <= 1.0F);
-					float matchLengthFactor = (float) (matchedTermsNumber /*+ 0.1*/);
+					float matchedRatio = ((float) matchedTermsNumber)
+							/ totalTermsNumInQuery;
 
 					// matchedRato^2 since the final score is computed by tf(){ Math.sqrt(freq); }
-					freq += (getSimilarity().sloppyFreq(matchLength)
-							* matchLengthFactor * matchLengthFactor);
+
+					float score = (getSimilarity().sloppyFreq(matchLength)
+							* matchedRatio * matchedRatio * matchedRatio * matchedRatio); // matchedRatio is more important!
+
+					// use the sum of scores
+					freq += score;
+
+					// use the max score
+					// Seems not good at SUM
+					/*if (freq < score)
+					{
+						freq = score;
+					}*/
 				}
 			}
 
