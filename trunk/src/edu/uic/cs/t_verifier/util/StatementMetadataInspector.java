@@ -18,14 +18,15 @@ public class StatementMetadataInspector
 			protected Query getAlternativeUnitAndNonSubTopicUnitQuery(
 					List<String> stemmedNonStopWordsInAlternativeUnit,
 					List<String> stemmedNonStopWordsInTopicUnitButNotInSubTopicUnit,
-					boolean isFrontPositionBetter)
+					boolean isFrontPositionBetter, int alternativeUnitWeight)
 			{
 				return null;
 			}
 
 			@Override
 			protected Query prepareTopicUnitQuery(
-					String[] allStemmedNonstopWordsInTopicUnit)
+					String[] allStemmedNonstopWordsInTopicUnit,
+					int alternativeUnitWeight)
 			{
 				return null;
 			}

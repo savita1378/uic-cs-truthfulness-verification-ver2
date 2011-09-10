@@ -20,7 +20,7 @@ public class BooleanScorer extends AbstractStatementScorer
 	protected Query getAlternativeUnitAndNonSubTopicUnitQuery(
 			List<String> stemmedNonStopWordsInAlternativeUnit,
 			List<String> stemmedNonStopWordsInTopicUnitButNotInSubTopicUnit,
-			boolean isFrontPositionBetter)
+			boolean isFrontPositionBetter, int alternativeUnitWeight)
 	{
 		// ignore isFrontPositionBetter
 
@@ -43,7 +43,8 @@ public class BooleanScorer extends AbstractStatementScorer
 
 	@Override
 	protected Query prepareTopicUnitQuery(
-			String[] allStemmedNonstopWordsInTopicUnit)
+			String[] allStemmedNonstopWordsInTopicUnit,
+			int alternativeUnitWeight)
 	{
 		BooleanQuery query = new BooleanQuery();
 		for (String word : allStemmedNonstopWordsInTopicUnit)

@@ -35,7 +35,7 @@ public class WindowScorer extends AbstractStatementScorer
 	protected Query getAlternativeUnitAndNonSubTopicUnitQuery(
 			List<String> stemmedNonStopWordsInAlternativeUnit,
 			List<String> stemmedNonStopWordsInTopicUnitButNotInSubTopicUnit,
-			boolean isFrontPositionBetter)
+			boolean isFrontPositionBetter, int alternativeUnitWeight)
 	{
 		List<List<String>> powerset = powerset(
 				stemmedNonStopWordsInTopicUnitButNotInSubTopicUnit, false);
@@ -68,7 +68,7 @@ public class WindowScorer extends AbstractStatementScorer
 		TermsSpanNearQuery result = new TermsSpanNearQuery(
 				auQueryAndAllCombinationsOfTuQuery, slop, false,
 				getIndexingFieldName(), termsInQuery,
-				stemmedNonStopWordsInAlternativeUnit); // not in order
+				stemmedNonStopWordsInAlternativeUnit, alternativeUnitWeight); // not in order
 
 		//		SpanNearQuery auNearTuQuery = new SpanNearQuery(
 		//				auQueryAndAllCombinationsOfTuQuery, slop, false); // not in order
@@ -173,7 +173,8 @@ public class WindowScorer extends AbstractStatementScorer
 
 	@Override
 	protected Query prepareTopicUnitQuery(
-			String[] allStemmedNonstopWordsInTopicUnit)
+			String[] allStemmedNonstopWordsInTopicUnit,
+			int alternativeUnitWeight)
 	{
 		List<String> allStemmedNonstopWordsInTopicUnitList = Arrays
 				.asList(allStemmedNonstopWordsInTopicUnit);
@@ -189,7 +190,7 @@ public class WindowScorer extends AbstractStatementScorer
 		@SuppressWarnings("unchecked")
 		TermsSpanNearQuery result = new TermsSpanNearQuery(
 				allCombinationsOfTuQuery, slop, false, getIndexingFieldName(),
-				termsInQuery, Collections.EMPTY_LIST); // not in order
+				termsInQuery, Collections.EMPTY_LIST, alternativeUnitWeight); // not in order
 
 		return result;
 	}

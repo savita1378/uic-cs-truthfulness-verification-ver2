@@ -27,7 +27,6 @@ import edu.uic.cs.t_verifier.index.data.Heading;
 import edu.uic.cs.t_verifier.index.data.Paragraph;
 import edu.uic.cs.t_verifier.index.data.Segment;
 import edu.uic.cs.t_verifier.index.data.Table;
-import edu.uic.cs.t_verifier.input.data.AlternativeUnit;
 import edu.uic.cs.t_verifier.input.data.Statement;
 import edu.uic.cs.t_verifier.misc.Config;
 import edu.uic.cs.t_verifier.misc.GeneralException;
@@ -174,11 +173,9 @@ class StatementIndexWriter implements IndexConstants
 		}
 
 		// AU //////////////////////////////////////////////////////////////////
-		List<AlternativeUnit> alternativeUnits = statement
-				.getAlternativeUnits();
-		for (AlternativeUnit au : alternativeUnits)
+		List<String> alternativeUnits = statement.getAlternativeUnits();
+		for (String auString : alternativeUnits)
 		{
-			String auString = au.getString();
 			document.add(new Field(FIELD_NAME__AlTERNATIVE_UNIT, auString,
 					Store.YES, Index.NOT_ANALYZED_NO_NORMS)); // not analyzed
 			// TODO here, we ignore the weight of the Alternative Units

@@ -29,6 +29,7 @@ import edu.uic.cs.t_verifier.index.IndexConstants;
 import edu.uic.cs.t_verifier.misc.Assert;
 import edu.uic.cs.t_verifier.misc.GeneralException;
 import edu.uic.cs.t_verifier.misc.LogHelper;
+import edu.uic.cs.t_verifier.score.data.AlternativeUnit;
 import edu.uic.cs.t_verifier.score.data.StatementMetadata;
 
 public abstract class AbstractStatementScorer extends AbstractWordOperations
@@ -183,7 +184,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		SCORE_DETAIL_LOGGER.debug(detail);
 	}
 
-	private float scoreAlternativeUnit(String alternativeUnit,
+	private float scoreAlternativeUnit(AlternativeUnit alternativeUnit,
 			StatementMetadata metadata)
 	{
 		float finalScore = 0f;
@@ -220,18 +221,19 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		return finalScore;
 	}
 
-	private float scoreByAlternativeUnit(String alternativeUnit,
+	private float scoreByAlternativeUnit(AlternativeUnit alternativeUnit,
 			StatementMetadata metadata)
 	{
 		BooleanQuery query = new BooleanQuery();
 		query.add(new TermQuery(new Term(FIELD_NAME__DOC_TYPE,
 				DOC_TYPE__PAGE_CONTENT)), Occur.MUST);
 		query.add(new TermQuery(new Term(FIELD_NAME__MATCHED_UNIT,
-				alternativeUnit)), Occur.MUST); // search only in one certain AlternativeUnit page
+				alternativeUnit.getString())), Occur.MUST); // search only in one certain AlternativeUnit page
 
 		String[] allStemmedNonstopWordsInTopicUnit = metadata
 				.getStemmedNonstopTUWords();
-		Query tpoicUnitQuery = prepareTopicUnitQuery(allStemmedNonstopWordsInTopicUnit);
+		Query tpoicUnitQuery = prepareTopicUnitQuery(
+				allStemmedNonstopWordsInTopicUnit, alternativeUnit.getWeight());
 		query.add(tpoicUnitQuery, Occur.MUST);
 
 		logScoreDetail("AU: ["
@@ -240,7 +242,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		logScoreDetail(query.toString());
 
 		////////////////////////////////////////////////////////////////////////
-		float score = doQueryAndScore(alternativeUnit, query);
+		float score = doQueryAndScore(alternativeUnit.getString(), query);
 
 		logScoreDetail("AU SCORE for AU["
 				+ alternativeUnit
@@ -252,9 +254,10 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 	}
 
 	abstract protected Query prepareTopicUnitQuery(
-			String[] allStemmedNonstopWordsInTopicUnit);
+			String[] allStemmedNonstopWordsInTopicUnit,
+			int alternativeUnitWeight);
 
-	private float scoreByTopicUnit(String alternativeUnit,
+	private float scoreByTopicUnit(AlternativeUnit alternativeUnit,
 			StatementMetadata metadata)
 	{
 		String[] subTopicUnits = metadata.getMatchedSubTopicUnits();
@@ -267,7 +270,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		for (String subTopicUnit : subTopicUnits)
 		{
 			logScoreDetail("AU: ["
-					+ alternativeUnit
+					+ alternativeUnit.getString()
 					+ "], SUB_TU: ["
 					+ subTopicUnit
 					+ "] ============================================================");
@@ -295,7 +298,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 	}
 
 	private float scoreAlternativeUnitForOneSubTopicUnit(
-			String alternativeUnit, String subTopicUnit,
+			AlternativeUnit alternativeUnit, String subTopicUnit,
 			String[] allStemmedNonstopWordsInTopicUnit,
 			boolean isFrontPositionBetter)
 	{
@@ -345,11 +348,12 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 	}
 
 	private Query prepareAlternativeUnitAndNonSubTopicUnitQuery(
-			String alternativeUnit, String subTopicUnit,
+			AlternativeUnit alternativeUnit, String subTopicUnit,
 			String[] allStemmedNonstopWordsInTopicUnit,
 			boolean isFrontPositionBetter)
 	{
-		List<String> stemmedNonStopWordsInAlternativeUnit = porterStemmingAnalyzeUsingDefaultStopWords(alternativeUnit);
+		List<String> stemmedNonStopWordsInAlternativeUnit = porterStemmingAnalyzeUsingDefaultStopWords(alternativeUnit
+				.getString());
 
 		List<String> stemmedNonStopWordsInSubTopicUnit = porterStemmingAnalyzeUsingDefaultStopWords(subTopicUnit);
 		List<String> stemmedNonStopWordsInTopicUnitButNotInSubTopicUnit = new ArrayList<String>(
@@ -360,7 +364,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		Query nonSubTopicUnitQuery = getAlternativeUnitAndNonSubTopicUnitQuery(
 				stemmedNonStopWordsInAlternativeUnit,
 				stemmedNonStopWordsInTopicUnitButNotInSubTopicUnit,
-				isFrontPositionBetter);
+				isFrontPositionBetter, alternativeUnit.getWeight());
 
 		return nonSubTopicUnitQuery;
 	}
@@ -368,7 +372,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 	abstract protected Query getAlternativeUnitAndNonSubTopicUnitQuery(
 			List<String> stemmedNonStopWordsInAlternativeUnit,
 			List<String> stemmedNonStopWordsInTopicUnitButNotInSubTopicUnit,
-			boolean isFrontPositionBetter);
+			boolean isFrontPositionBetter, int alternativeUnitWeight);
 
 	protected String getIndexingFieldName()
 	{
@@ -378,49 +382,49 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 	public List<String> findTheMostMatchedAlternativeUnits(
 			StatementMetadata metadata)
 	{
-		System.out.println("\n");
-		System.out.println("ID:\t\t" + metadata.getStatementId());
-		System.out.println("TU_0:\t\t"
-				+ Arrays.toString(metadata.getStemmedNonstopTUWords()));
-		System.out.println("AUs:\t\t"
-				+ Arrays.toString(metadata.getAlternativeUnits()));
-		System.out.println("SUB_TUs:\t"
-				+ Arrays.toString(metadata.getMatchedSubTopicUnits()));
+		//		System.out.println("\n");
+		//		System.out.println("ID:\t\t" + metadata.getStatementId());
+		//		System.out.println("TU_0:\t\t"
+		//				+ Arrays.toString(metadata.getStemmedNonstopTUWords()));
+		//		System.out.println("AUs:\t\t"
+		//				+ Arrays.toString(metadata.getAlternativeUnits()));
+		//		System.out.println("SUB_TUs:\t"
+		//				+ Arrays.toString(metadata.getMatchedSubTopicUnits()));
 
 		List<String> mostMatchedAlternativeUnits = new ArrayList<String>();
 		float maxScore = 0f;
 
-		String[] alternativeUnits = metadata.getAlternativeUnits();
-		System.out.print("SCOREs:\t\t");
-		for (String alternativeUnit : alternativeUnits)
+		List<AlternativeUnit> alternativeUnits = metadata.getAlternativeUnits();
+		//		System.out.print("SCOREs:\t\t");
+		for (AlternativeUnit alternativeUnit : alternativeUnits)
 		{
 			float score = scoreAlternativeUnit(alternativeUnit, metadata);
-			System.out.print("[" + alternativeUnit + "]:" + score + " | ");
-			//			System.out.println(score);
+			//			System.out.print("[" + alternativeUnit + "]:" + score + " | ");
+			System.out.println(score);
 			if (score > maxScore)
 			{
 				maxScore = score;
 				mostMatchedAlternativeUnits.clear();
-				mostMatchedAlternativeUnits.add(alternativeUnit);
+				mostMatchedAlternativeUnits.add(alternativeUnit.getString());
 			}
 			else if (score == maxScore && score != 0f)
 			{
-				mostMatchedAlternativeUnits.add(alternativeUnit);
+				mostMatchedAlternativeUnits.add(alternativeUnit.getString());
 			}
 		}
-		System.out.println();
-
-		if (!mostMatchedAlternativeUnits.isEmpty())
-		{
-			System.out.println("MATCHED_AU:\t" + mostMatchedAlternativeUnits
-					+ ":" + maxScore);
-		}
-		else
-		{
-			System.out.println("NO AU MATCHED... ");
-		}
-
-		System.out.print("============================");
+		//		System.out.println();
+		//
+		//		if (!mostMatchedAlternativeUnits.isEmpty())
+		//		{
+		//			System.out.println("MATCHED_AU:\t" + mostMatchedAlternativeUnits
+		//					+ ":" + maxScore);
+		//		}
+		//		else
+		//		{
+		//			System.out.println("NO AU MATCHED... ");
+		//		}
+		//
+		//		System.out.print("============================");
 
 		return mostMatchedAlternativeUnits;
 	}
