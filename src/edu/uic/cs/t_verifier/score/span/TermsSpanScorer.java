@@ -3,6 +3,7 @@ package edu.uic.cs.t_verifier.score.span;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -28,6 +29,9 @@ public class TermsSpanScorer extends SpanScorer
 
 	//	private List<Entry<Integer, TreeSet<String>>> eachTimeMatchedTermsByNum = new ArrayList<Entry<Integer, TreeSet<String>>>();
 	private Map<String, Integer> termsMatchedTimesByTermsInString = new TreeMap<String, Integer>();
+	private Map<String, List<Integer>> termsMatchedWindowSizeByTermsInString = new TreeMap<String, List<Integer>>();
+
+	private Set<String> alreadyProcessedSpans = new HashSet<String>();
 
 	private Map<Integer, TreeMap<Integer, TreeSet<String>>> termPositionsCache = new HashMap<Integer, TreeMap<Integer, TreeSet<String>>>();
 
@@ -60,6 +64,9 @@ public class TermsSpanScorer extends SpanScorer
 
 		freq = 0.0f;
 		termsMatchedTimesByTermsInString.clear();
+		termsMatchedWindowSizeByTermsInString.clear();
+
+		alreadyProcessedSpans.clear();
 
 		do
 		{
@@ -68,36 +75,57 @@ public class TermsSpanScorer extends SpanScorer
 			//			Assert.isTrue(min_max[1] >= spans.end() - 1);
 
 			int matchLength = spans.end() - spans.start();
-			TreeSet<String> matchedTerms = computeMatchedTerms(spans.start(),
-					spans.end() - 1, positions);
-			int matchedTermsNumber = matchedTerms.size();
-			if (matchedTerms.isEmpty())
+
+			String processingSpanID = doc + "|" + spans.start() + "|"
+					+ spans.end(); 
+			// TODO I am not sure why the same span may be processed may times...
+			// seems related to synonyms
+			if (!alreadyProcessedSpans.contains(processingSpanID))
 			{
-				matchedTerms.add("AU" + stemmedNonStopWordsInAlternativeUnit);
+				alreadyProcessedSpans.add(processingSpanID);
+
+				TreeSet<String> matchedTerms = computeMatchedTerms(
+						spans.start(), spans.end() - 1, positions);
+				int matchedTermsNumber = matchedTerms.size();
+				//			if (matchedTerms.isEmpty())
+				//			{
+				//				matchedTerms.add("AU" + stemmedNonStopWordsInAlternativeUnit);
+				//			}
+
+				if (!matchedTerms.isEmpty())
+				{
+					String matchedTermsInString = matchedTerms.toString();
+					Integer matchedTimes = termsMatchedTimesByTermsInString
+							.get(matchedTermsInString);
+					if (matchedTimes == null)
+					{
+						termsMatchedTimesByTermsInString.put(
+								matchedTermsInString, Integer.valueOf(1));
+						termsMatchedWindowSizeByTermsInString.put(
+								matchedTermsInString, new ArrayList<Integer>());
+						termsMatchedWindowSizeByTermsInString.get(
+								matchedTermsInString).add(matchLength);
+					}
+					else
+					{
+						termsMatchedTimesByTermsInString.put(
+								matchedTermsInString,
+								Integer.valueOf(matchedTimes.intValue() + 1));
+						termsMatchedWindowSizeByTermsInString.get(
+								matchedTermsInString).add(matchLength);
+					}
+
+					// not use this matchedRato since it is too mall, would cause the final score hard to differentiate
+					//			float matchedRato = ((matchedTermsNumber + 1) / (totalTermsNumInQuery + 1));
+					//			Assert.isTrue(matchedRato <= 1.0F);
+					float matchLengthFactor = (float) (matchedTermsNumber /*+ 0.1*/);
+
+					// matchedRato^2 since the final score is computed by tf(){ Math.sqrt(freq); }
+					freq += (getSimilarity().sloppyFreq(matchLength)
+							* matchLengthFactor * matchLengthFactor);
+				}
 			}
 
-			String matchedTermsInString = matchedTerms.toString();
-			Integer matchedTimes = termsMatchedTimesByTermsInString
-					.get(matchedTermsInString);
-			if (matchedTimes == null)
-			{
-				termsMatchedTimesByTermsInString.put(matchedTermsInString,
-						Integer.valueOf(1));
-			}
-			else
-			{
-				termsMatchedTimesByTermsInString.put(matchedTermsInString,
-						Integer.valueOf(matchedTimes.intValue() + 1));
-			}
-
-			// not use this matchedRato since it is too mall, would cause the final score hard to differentiate
-			//			float matchedRato = ((matchedTermsNumber + 1) / (totalTermsNumInQuery + 1));
-			//			Assert.isTrue(matchedRato <= 1.0F);
-			float matchLengthFactor = (float) (matchedTermsNumber + 0.1); // in case zero
-
-			// matchedRato^2 since the final score is computed by tf(){ Math.sqrt(freq); }
-			freq += (getSimilarity().sloppyFreq(matchLength)
-					* matchLengthFactor * matchLengthFactor);
 			more = spans.next();
 		}
 		while (more && (doc == spans.doc()));
@@ -118,11 +146,15 @@ public class TermsSpanScorer extends SpanScorer
 
 		int matchedTime = 0;
 		List<String> termsStringWithTimes = new ArrayList<String>();
-		for (Entry<String, Integer> entry : termsMatchedTimesByTermsInString
+		for (Entry<String, Integer> timesByTerm : termsMatchedTimesByTermsInString
 				.entrySet())
 		{
-			matchedTime += entry.getValue();
-			termsStringWithTimes.add(entry.getKey() + "*" + entry.getValue());
+			matchedTime += timesByTerm.getValue();
+			termsStringWithTimes.add(timesByTerm.getKey()
+					+ "*"
+					+ timesByTerm.getValue()
+					+ termsMatchedWindowSizeByTermsInString.get(timesByTerm
+							.getKey()));
 		}
 
 		tfExplanation.setDescription("tf(phraseFreq=" + phraseFreq
