@@ -271,7 +271,8 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		}
 
 		float score = matchDetail.getScore();
-		logMatchingDetail("Score: " + score + "\n");
+		logMatchingDetail("Score: " + score + " = Sqrt(" + score * score
+				+ ")\n");
 
 		logScoreDetail("AU SCORE for AU["
 				+ alternativeUnit
@@ -314,7 +315,8 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 			}
 
 			float score = matchDetail.getScore();
-			logMatchingDetail("Score: " + score + "\n");
+			logMatchingDetail("Score: " + score + " = Sqrt(" + score * score
+					+ ")\n");
 
 			logScoreDetail("SCORE: ["
 					+ score
