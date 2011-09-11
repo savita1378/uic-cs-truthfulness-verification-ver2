@@ -134,14 +134,13 @@ public class TermsSpanScorer extends SpanScorer
 							matchedRatio, matchLength, score);
 
 					// use the sum of scores
-					freq += score;
+					// freq += score;
 
 					// use the max score
-					// Seems not good at SUM
-					/*if (freq < score)
+					if (freq < score)
 					{
 						freq = score;
-					}*/
+					}
 				}
 			}
 
