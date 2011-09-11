@@ -11,12 +11,11 @@ import java.util.Set;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.spans.SpanNearQuery;
-import org.apache.lucene.search.spans.SpanOrQuery;
 import org.apache.lucene.search.spans.SpanQuery;
 import org.apache.lucene.search.spans.SpanTermQuery;
 
 import edu.uic.cs.t_verifier.misc.Assert;
-import edu.uic.cs.t_verifier.score.span.TermsSpanNearQuery;
+import edu.uic.cs.t_verifier.score.span.TermsSpanOrQuery;
 
 public class WindowScorer extends AbstractStatementScorer
 {
@@ -40,16 +39,7 @@ public class WindowScorer extends AbstractStatementScorer
 		List<List<String>> powerset = powerset(
 				stemmedNonStopWordsInTopicUnitButNotInSubTopicUnit, false);
 
-		SpanNearQuery alternativeUnitQuery = null;
-		//		if (isFrontPositionBetter)
-		//		{
-		alternativeUnitQuery = getAlternativeUnitQuery(stemmedNonStopWordsInAlternativeUnit);
-		//		}
-		//		else
-		//		{
-		// 			// XXX doesn't work
-		//			alternativeUnitQuery = getAlternativeUnitFrontBetterQuery(stemmedNonStopWordsInAlternativeUnit);
-		//		}
+		SpanNearQuery alternativeUnitQuery = getAlternativeUnitQuery(stemmedNonStopWordsInAlternativeUnit);
 
 		// if there's no TU words
 		if (powerset.isEmpty())
@@ -57,30 +47,62 @@ public class WindowScorer extends AbstractStatementScorer
 			return alternativeUnitQuery;
 		}
 
-		SpanOrQuery topicUnitQuery = getTopicUnitQuery(powerset);
-
-		// AU near {powerset of TU (OR)}
-		SpanQuery[] auQueryAndAllCombinationsOfTuQuery = new SpanQuery[] {
-				alternativeUnitQuery, topicUnitQuery };
 		Set<String> termsInQuery = new HashSet<String>(
 				stemmedNonStopWordsInTopicUnitButNotInSubTopicUnit); // only consider TU now
 
-		TermsSpanNearQuery result = new TermsSpanNearQuery(
-				auQueryAndAllCombinationsOfTuQuery, slop, false,
-				getIndexingFieldName(), termsInQuery,
-				stemmedNonStopWordsInAlternativeUnit, alternativeUnitWeight); // not in order
-
-		//		SpanNearQuery auNearTuQuery = new SpanNearQuery(
-		//				auQueryAndAllCombinationsOfTuQuery, slop, false); // not in order
-		//
-		//		TermsSpanOrQuery result = new TermsSpanOrQuery(getIndexingFieldName(),
-		//				termsInQuery, stemmedNonStopWordsInAlternativeUnit,
-		//				auNearTuQuery, alternativeUnitQuery);
+		TermsSpanOrQuery result = getTopicUnitQuery(powerset,
+				alternativeUnitQuery, termsInQuery,
+				stemmedNonStopWordsInAlternativeUnit, alternativeUnitWeight);
 
 		return result;
 	}
 
-	private SpanOrQuery getTopicUnitQuery(List<List<String>> powerset)
+	private TermsSpanOrQuery getTopicUnitQuery(List<List<String>> powerset,
+			SpanNearQuery alternativeUnitQuery, Set<String> termsInQuery,
+			List<String> stemmedNonStopWordsInAlternativeUnit,
+			int alternativeUnitWeight)
+	{
+		TermsSpanOrQuery orQuery = new TermsSpanOrQuery(new SpanQuery[0],
+				getIndexingFieldName(), termsInQuery,
+				stemmedNonStopWordsInAlternativeUnit, alternativeUnitWeight);
+		for (List<String> eachCombination : powerset)
+		{
+			SpanQuery[] terms = null;
+			if (alternativeUnitQuery == null)
+			{
+				terms = new SpanQuery[eachCombination.size()];
+			}
+			else
+			{
+				terms = new SpanQuery[eachCombination.size() + 1];
+			}
+
+			for (int index = 0; index < eachCombination.size(); index++)
+			{
+				String word = eachCombination.get(index);
+				terms[index] = new SpanTermQuery(new Term(
+						getIndexingFieldName(), word));
+			}
+
+			if (alternativeUnitQuery != null)
+			{
+				terms[terms.length - 1] = alternativeUnitQuery;
+			}
+
+			/*TermsSpanNearQuery notInSubTopicUnitQuery = new TermsSpanNearQuery(
+					terms, slop, inOrder, getIndexingFieldName(), termsInQuery,
+					stemmedNonStopWordsInAlternativeUnit, alternativeUnitWeight);*/
+
+			SpanNearQuery notInSubTopicUnitQuery = new SpanNearQuery(terms,
+					slop, inOrder);
+
+			orQuery.addClause(notInSubTopicUnitQuery);
+		}
+
+		return orQuery;
+	}
+
+	/*private SpanOrQuery getTopicUnitQuery(List<List<String>> powerset)
 	{
 		SpanOrQuery orQuery = new SpanOrQuery();
 		for (List<String> eachCombination : powerset)
@@ -101,7 +123,7 @@ public class WindowScorer extends AbstractStatementScorer
 		}
 
 		return orQuery;
-	}
+	}*/
 
 	private SpanNearQuery getAlternativeUnitQuery(
 			List<String> stemmedNonStopWordsInAlternativeUnit)
@@ -182,15 +204,11 @@ public class WindowScorer extends AbstractStatementScorer
 				allStemmedNonstopWordsInTopicUnitList, false);
 		Assert.isTrue(!powerset.isEmpty());
 
-		SpanOrQuery topicUnitQuery = getTopicUnitQuery(powerset);
-		SpanQuery[] allCombinationsOfTuQuery = new SpanQuery[] { topicUnitQuery };
 		Set<String> termsInQuery = new HashSet<String>(
 				allStemmedNonstopWordsInTopicUnitList);
-
 		@SuppressWarnings("unchecked")
-		TermsSpanNearQuery result = new TermsSpanNearQuery(
-				allCombinationsOfTuQuery, slop, false, getIndexingFieldName(),
-				termsInQuery, Collections.EMPTY_LIST, alternativeUnitWeight); // not in order
+		TermsSpanOrQuery result = getTopicUnitQuery(powerset, null,
+				termsInQuery, Collections.EMPTY_LIST, alternativeUnitWeight);
 
 		return result;
 	}
