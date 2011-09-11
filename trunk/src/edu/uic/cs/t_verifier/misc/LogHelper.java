@@ -26,4 +26,9 @@ public class LogHelper
 	{
 		return Logger.getLogger("SCORE_DETAIL");
 	}
+
+	public static Logger getMatchingDetailLogger()
+	{
+		return Logger.getLogger("MATCHING_DETAIL");
+	}
 }

@@ -30,13 +30,19 @@ import edu.uic.cs.t_verifier.misc.Assert;
 import edu.uic.cs.t_verifier.misc.GeneralException;
 import edu.uic.cs.t_verifier.misc.LogHelper;
 import edu.uic.cs.t_verifier.score.data.AlternativeUnit;
+import edu.uic.cs.t_verifier.score.data.MatchDetail;
 import edu.uic.cs.t_verifier.score.data.StatementMetadata;
+import edu.uic.cs.t_verifier.score.data.MatchDetail.EachSpanDetail;
+import edu.uic.cs.t_verifier.score.span.explanation.TermsSpanComplexExplanation;
 
 public abstract class AbstractStatementScorer extends AbstractWordOperations
 		implements IndexConstants
 {
 	private static final Logger SCORE_DETAIL_LOGGER = LogHelper
 			.getScoreDetailLogger();
+
+	private static final Logger MATCHING_DETAIL_LOGGER = LogHelper
+			.getMatchingDetailLogger();
 
 	private File indexFolder = null;
 	private IndexReader indexReader = null;
@@ -184,9 +190,18 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		SCORE_DETAIL_LOGGER.debug(detail);
 	}
 
+	private void logMatchingDetail(String detail)
+	{
+		MATCHING_DETAIL_LOGGER.debug(detail);
+	}
+
 	private float scoreAlternativeUnit(AlternativeUnit alternativeUnit,
 			StatementMetadata metadata)
 	{
+		logMatchingDetail(LogHelper.LOG_LAYER_ONE_BEGIN + "AU["
+				+ alternativeUnit.getString() + "] Score by AU only?["
+				+ metadata.scoreByAlternativeUnitOnly() + "]");
+
 		float finalScore = 0f;
 		if (metadata.scoreByAlternativeUnitOnly())
 		{
@@ -218,6 +233,11 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 				+ finalScore
 				+ " ==========================================================================================================\n\n\n\n");
 
+		logMatchingDetail(LogHelper.LOG_LAYER_ONE_END
+				+ "AU["
+				+ alternativeUnit.getString()
+				+ "] ==========================================================================================================\n\n");
+
 		return finalScore;
 	}
 
@@ -242,7 +262,16 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		logScoreDetail(query.toString());
 
 		////////////////////////////////////////////////////////////////////////
-		float score = doQueryAndScore(alternativeUnit.getString(), query);
+		MatchDetail matchDetail = doQueryAndScore(alternativeUnit.getString(),
+				query);
+		logMatchingDetail("By AU: " + alternativeUnit.getString());
+		for (EachSpanDetail span : matchDetail.getSpanDetails())
+		{
+			logMatchingDetail(span.toString());
+		}
+
+		float score = matchDetail.getScore();
+		logMatchingDetail("Score: " + score + "\n");
 
 		logScoreDetail("AU SCORE for AU["
 				+ alternativeUnit
@@ -274,9 +303,19 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 					+ "], SUB_TU: ["
 					+ subTopicUnit
 					+ "] ============================================================");
-			float score = scoreAlternativeUnitForOneSubTopicUnit(
+			MatchDetail matchDetail = scoreAlternativeUnitForOneSubTopicUnit(
 					alternativeUnit, subTopicUnit,
 					allStemmedNonstopWordsInTopicUnit, isFrontPositionBetter);
+
+			logMatchingDetail("By Sub_TU: " + subTopicUnit);
+			for (EachSpanDetail span : matchDetail.getSpanDetails())
+			{
+				logMatchingDetail(span.toString());
+			}
+
+			float score = matchDetail.getScore();
+			logMatchingDetail("Score: " + score + "\n");
+
 			logScoreDetail("SCORE: ["
 					+ score
 					+ "] =======================================================================\n");
@@ -297,7 +336,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		return maxScore;
 	}
 
-	private float scoreAlternativeUnitForOneSubTopicUnit(
+	private MatchDetail scoreAlternativeUnitForOneSubTopicUnit(
 			AlternativeUnit alternativeUnit, String subTopicUnit,
 			String[] allStemmedNonstopWordsInTopicUnit,
 			boolean isFrontPositionBetter)
@@ -321,8 +360,10 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		return doQueryAndScore(subTopicUnit, query);
 	}
 
-	private float doQueryAndScore(String unit, BooleanQuery query)
+	private MatchDetail doQueryAndScore(String unit, BooleanQuery query)
 	{
+		MatchDetail result = new MatchDetail(); // default empty result
+
 		try
 		{
 			TopDocs topDocs = indexSearcher.search(query, 10);
@@ -336,7 +377,14 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 
 				float score = topDocs.scoreDocs[0].score;
 				Assert.isTrue(score >= 2.0f || score == 0f);
-				return score >= 2.0f ? score - 2.0f : score;
+
+				TermsSpanComplexExplanation termsSpanComplexExplanation = findTermsSpanComplexExplanation(explanation);
+
+				if (termsSpanComplexExplanation != null)
+				{
+					result = termsSpanComplexExplanation.getMatchDetail();
+				}
+				result.setScore(score >= 2.0f ? score - 2.0f : score);
 			}
 		}
 		catch (IOException e)
@@ -344,7 +392,32 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 			throw new GeneralException(e);
 		}
 
-		return 0f;
+		return result;
+	}
+
+	private TermsSpanComplexExplanation findTermsSpanComplexExplanation(
+			Explanation explanation)
+	{
+		if (explanation.getDetails() == null)
+		{
+			return null;
+		}
+
+		for (Explanation innerExplanation : explanation.getDetails())
+		{
+			if (innerExplanation instanceof TermsSpanComplexExplanation)
+			{
+				return (TermsSpanComplexExplanation) innerExplanation;
+			}
+
+			TermsSpanComplexExplanation termsSpanComplexExplanation = findTermsSpanComplexExplanation(innerExplanation);
+			if (termsSpanComplexExplanation != null)
+			{
+				return termsSpanComplexExplanation;
+			}
+		}
+
+		return null;
 	}
 
 	private Query prepareAlternativeUnitAndNonSubTopicUnitQuery(
