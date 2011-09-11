@@ -26,6 +26,16 @@
 			<param name="conversionPattern" value="%m%n" />
 		</layout>
 	</appender>
+	<appender name="matching_detail_file" class="org.apache.log4j.RollingFileAppender">
+		<param name="file" value="output/matching_detail.log" />
+		<param name="immediateFlush" value="true" />
+		<param name="append" value="false" />
+		<param name="maxFileSize" value="50MB" />
+		<param name="maxBackupIndex" value="2" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="conversionPattern" value="%m%n" />
+		</layout>
+	</appender>
 	<logger name="edu.uic.cs.t_verifier" additivity="false">
 		<level value="debug" />
 		<appender-ref ref="projectLogger_file" />
@@ -33,6 +43,10 @@
 	<logger name="SCORE_DETAIL" additivity="false">
 		<level value="debug" />
 		<appender-ref ref="score_detail_file" />
+	</logger>
+	<logger name="MATCHING_DETAIL" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="matching_detail_file" />
 	</logger>
 	<root>
 		<priority value="debug" />

@@ -13,11 +13,13 @@ import java.util.TreeSet;
 
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.TermPositionVector;
-import org.apache.lucene.search.Explanation;
 import org.apache.lucene.search.Similarity;
 import org.apache.lucene.search.Weight;
 import org.apache.lucene.search.spans.SpanScorer;
 import org.apache.lucene.search.spans.Spans;
+
+import edu.uic.cs.t_verifier.score.data.MatchDetail;
+import edu.uic.cs.t_verifier.score.span.explanation.TermsSpanExplanation;
 
 public class TermsSpanScorer extends SpanScorer
 {
@@ -25,7 +27,7 @@ public class TermsSpanScorer extends SpanScorer
 	private Set<String> termsInQuery = null;
 	private String fieldName = null;
 	private int totalTermsNumInQuery;
-	private List<String> stemmedNonStopWordsInAlternativeUnit = null;
+	//	private List<String> stemmedNonStopWordsInAlternativeUnit = null;
 
 	private int alternativeUnitWeight;
 
@@ -36,6 +38,8 @@ public class TermsSpanScorer extends SpanScorer
 	private Set<String> alreadyProcessedSpans = new HashSet<String>();
 
 	private Map<Integer, TreeMap<Integer, TreeSet<String>>> termPositionsCache = new HashMap<Integer, TreeMap<Integer, TreeSet<String>>>();
+
+	private MatchDetail matchDetail = new MatchDetail();
 
 	protected TermsSpanScorer(Spans spans, Weight weight,
 			Similarity similarity, byte[] norms, String fieldName,
@@ -48,7 +52,7 @@ public class TermsSpanScorer extends SpanScorer
 		this.fieldName = fieldName;
 		this.termsInQuery = termsInQuery;
 		this.totalTermsNumInQuery = termsInQuery.size();
-		this.stemmedNonStopWordsInAlternativeUnit = stemmedNonStopWordsInAlternativeUnit;
+		//		this.stemmedNonStopWordsInAlternativeUnit = stemmedNonStopWordsInAlternativeUnit;
 		this.reader = reader;
 		this.alternativeUnitWeight = alternativeUnitWeight;
 	}
@@ -73,10 +77,6 @@ public class TermsSpanScorer extends SpanScorer
 
 		do
 		{
-			//			int[] min_max = getMinAndMaxIndexInDoc(doc);
-			//			Assert.isTrue(min_max[0] <= spans.start());
-			//			Assert.isTrue(min_max[1] >= spans.end() - 1);
-
 			int matchLength = spans.end() - spans.start();
 
 			String processingSpanID = doc + "|" + spans.start() + "|"
@@ -130,6 +130,9 @@ public class TermsSpanScorer extends SpanScorer
 							* getSimilarity().sloppyFreq(matchLength)
 							* (matchedRatio * matchedRatio * matchedRatio * matchedRatio);// matchedRatio is more important!
 
+					matchDetail.addSpanDetail(matchedTerms, termsInQuery,
+							matchedRatio, matchLength, score);
+
 					// use the sum of scores
 					freq += score;
 
@@ -151,9 +154,10 @@ public class TermsSpanScorer extends SpanScorer
 
 	@SuppressWarnings("deprecation")
 	@Override
-	protected Explanation explain(int doc) throws IOException
+	protected TermsSpanExplanation explain(int doc) throws IOException
 	{
-		Explanation tfExplanation = new Explanation();
+		TermsSpanExplanation tfExplanation = new TermsSpanExplanation(
+				this.matchDetail);
 
 		int expDoc = advance(doc);
 
