@@ -25,6 +25,7 @@ import edu.uic.cs.t_verifier.index.data.Heading;
 import edu.uic.cs.t_verifier.index.data.Paragraph;
 import edu.uic.cs.t_verifier.index.data.Segment;
 import edu.uic.cs.t_verifier.index.data.Table;
+import edu.uic.cs.t_verifier.index.data.UrlWithDescription;
 import edu.uic.cs.t_verifier.misc.Assert;
 import edu.uic.cs.t_verifier.misc.GeneralException;
 
@@ -34,13 +35,13 @@ public class HtmlPageExtractor extends WikipediaContentExtractor
 			.compile("(\\[(\\w| )+\\])+\\s");
 
 	@Override
-	public List<Segment> extractPageContentFromWikipedia(String url,
-			boolean isBulletinPage)
+	public List<Segment> extractPageContentFromWikipedia(
+			UrlWithDescription urlWithDescription, boolean isBulletinPage)
 	{
 		List<Segment> result = null;
 		try
 		{
-			parser.setResource(url);
+			parser.setResource(urlWithDescription.getUrl());
 			Node htmlNode = parser.parse(new TagNameFilter(HTML_TAG_HTML))
 					.elementAt(0);
 			Node bodyContentDiv = htmlNode.getChildren()
@@ -48,7 +49,7 @@ public class HtmlPageExtractor extends WikipediaContentExtractor
 					.elementAt(0);
 
 			Node[] contents = bodyContentDiv.getChildren().toNodeArray();
-			result = parseContents(contents, isBulletinPage);
+			result = parseContents(contents, isBulletinPage, urlWithDescription);
 		}
 		catch (Exception e)
 		{
@@ -59,7 +60,7 @@ public class HtmlPageExtractor extends WikipediaContentExtractor
 	}
 
 	private static List<Segment> parseContents(Node[] contents,
-			boolean isBulletinPage)
+			boolean isBulletinPage, UrlWithDescription urlWithDescription)
 	{
 		List<Segment> segments = new ArrayList<Segment>();
 
@@ -172,6 +173,19 @@ public class HtmlPageExtractor extends WikipediaContentExtractor
 				throw new GeneralException("Unsupported Content instance["
 						+ content.getClass() + "]. ");
 			}
+		}
+
+		if (urlWithDescription.isDisambiguationLink())
+		{
+			// description from disambiguation link
+			Segment segment = new Segment();
+
+			Paragraph paragraph = new Paragraph();
+			paragraph.setText(urlWithDescription.getDescription());
+			segment.addParagraph(paragraph);
+
+			// add this description in a new segment
+			segments.add(segment);
 		}
 
 		return segments;
@@ -338,9 +352,15 @@ public class HtmlPageExtractor extends WikipediaContentExtractor
 		//		String pageUrl = "http://en.wikipedia.org/wiki/Big_Mac";
 		//		String pageUrl = "http://en.wikipedia.org/w/index.php?title=Languages_of_the_Philippines";
 		//		String pageUrl = "http://en.wikipedia.org/wiki/1949";
-		String pageUrl = "http://en.wikipedia.org/w/index.php?title=1800%E2%80%931809";
-		List<Segment> result = extractor.extractPageContentFromWikipedia(
-				pageUrl, true);
+		//		String pageUrl = "http://en.wikipedia.org/w/index.php?title=1800%E2%80%931809";
+		//		String pageUrl = "http://en.wikipedia.org/wiki/Sleepless_in_seattle";
+		//		String pageUrl = "http://en.wikipedia.org/wiki/Filipino";
+		String pageUrl = "http://en.wikipedia.org/wiki/Adolph_Rickenbacker";
+		List<Segment> result = extractor
+				.extractPageContentFromWikipedia(
+						new UrlWithDescription(pageUrl, null
+						/*"Filipino language, the national language of the Philippines, based primarily on Tagalog"*/),
+						true);
 
 		for (Segment segment : result)
 		{
@@ -364,14 +384,14 @@ public class HtmlPageExtractor extends WikipediaContentExtractor
 				System.out.println("----------------");
 			}
 
-			//			if (segment.getTables() != null)
-			//			{
-			//				for (Table table : segment.getTables())
-			//				{
-			//					System.out.println("TABLE: [" + table + "]");
-			//					System.out.println("-----");
-			//				}
-			//			}
+			if (segment.getTables() != null)
+			{
+				for (Table table : segment.getTables())
+				{
+					System.out.println("TABLE: [" + table + "]");
+					System.out.println("-----");
+				}
+			}
 			System.out.println("===========================================");
 		}
 

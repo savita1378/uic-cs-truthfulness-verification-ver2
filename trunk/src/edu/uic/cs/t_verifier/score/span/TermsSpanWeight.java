@@ -1,7 +1,6 @@
 package edu.uic.cs.t_verifier.score.span;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.lucene.index.IndexReader;
@@ -22,7 +21,7 @@ public class TermsSpanWeight extends SpanWeight
 
 	private Set<String> termsInQuery = null;
 	private String fieldName = null;
-	private List<String> stemmedNonStopWordsInAlternativeUnit = null;
+	// private List<String> stemmedNonStopWordsInAlternativeUnit = null;
 
 	private int alternativeUnitWeight;
 
@@ -30,7 +29,7 @@ public class TermsSpanWeight extends SpanWeight
 
 	public TermsSpanWeight(SpanQuery query, Searcher searcher,
 			String fieldName, Set<String> termsInQuery,
-			List<String> stemmedNonStopWordsInAlternativeUnit,
+			/*List<String> stemmedNonStopWordsInAlternativeUnit,*/
 			int alternativeUnitWeight) throws IOException
 	{
 		super(query, searcher);
@@ -38,7 +37,7 @@ public class TermsSpanWeight extends SpanWeight
 
 		this.fieldName = fieldName;
 		this.termsInQuery = termsInQuery;
-		this.stemmedNonStopWordsInAlternativeUnit = stemmedNonStopWordsInAlternativeUnit;
+		/*this.stemmedNonStopWordsInAlternativeUnit = stemmedNonStopWordsInAlternativeUnit;*/
 		this.alternativeUnitWeight = alternativeUnitWeight;
 	}
 
@@ -49,7 +48,7 @@ public class TermsSpanWeight extends SpanWeight
 		// System.out.println(query);
 		return new TermsSpanScorer(query.getSpans(reader), this, similarity,
 				reader.norms(query.getField()), fieldName, termsInQuery,
-				stemmedNonStopWordsInAlternativeUnit, reader,
+				/*stemmedNonStopWordsInAlternativeUnit,*/reader,
 				alternativeUnitWeight);
 	}
 

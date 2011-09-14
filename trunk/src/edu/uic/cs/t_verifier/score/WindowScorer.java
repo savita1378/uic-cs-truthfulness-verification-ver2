@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,19 +53,30 @@ public class WindowScorer extends AbstractStatementScorer
 
 		TermsSpanOrQuery result = getTopicUnitQuery(powerset,
 				alternativeUnitQuery, termsInQuery,
-				stemmedNonStopWordsInAlternativeUnit, alternativeUnitWeight);
+				/*stemmedNonStopWordsInAlternativeUnit,*/alternativeUnitWeight);
 
 		return result;
 	}
 
+	private static final Comparator<List<String>> LIST_REVERSE_SIZE_COMPARATOR = new Comparator<List<String>>()
+	{
+		@Override
+		public int compare(List<String> o1, List<String> o2)
+		{
+			return o2.size() - o1.size();
+		}
+	};
+
 	private TermsSpanOrQuery getTopicUnitQuery(List<List<String>> powerset,
 			SpanNearQuery alternativeUnitQuery, Set<String> termsInQuery,
-			List<String> stemmedNonStopWordsInAlternativeUnit,
+			/*List<String> stemmedNonStopWordsInAlternativeUnit,*/
 			int alternativeUnitWeight)
 	{
 		TermsSpanOrQuery orQuery = new TermsSpanOrQuery(new SpanQuery[0],
 				getIndexingFieldName(), termsInQuery,
-				stemmedNonStopWordsInAlternativeUnit, alternativeUnitWeight);
+				/*stemmedNonStopWordsInAlternativeUnit,*/alternativeUnitWeight);
+
+		Collections.sort(powerset, LIST_REVERSE_SIZE_COMPARATOR);
 		for (List<String> eachCombination : powerset)
 		{
 			SpanQuery[] terms = null;
@@ -206,9 +218,9 @@ public class WindowScorer extends AbstractStatementScorer
 
 		Set<String> termsInQuery = new HashSet<String>(
 				allStemmedNonstopWordsInTopicUnitList);
-		@SuppressWarnings("unchecked")
+		// @SuppressWarnings("unchecked")
 		TermsSpanOrQuery result = getTopicUnitQuery(powerset, null,
-				termsInQuery, Collections.EMPTY_LIST, alternativeUnitWeight);
+				termsInQuery, /*Collections.EMPTY_LIST,*/alternativeUnitWeight);
 
 		return result;
 	}

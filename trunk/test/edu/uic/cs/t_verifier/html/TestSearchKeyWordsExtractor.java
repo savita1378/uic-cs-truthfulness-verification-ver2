@@ -8,14 +8,15 @@ import edu.uic.cs.t_verifier.EnhancedTestCase;
 import edu.uic.cs.t_verifier.html.data.MatchedQueryKey;
 import edu.uic.cs.t_verifier.html.data.MatchedQueryKey.DisambiguationEntry;
 import edu.uic.cs.t_verifier.index.data.Segment;
+import edu.uic.cs.t_verifier.index.data.UrlWithDescription;
 
 public class TestSearchKeyWordsExtractor extends EnhancedTestCase
 {
 	private WikipediaContentExtractor wikipediaContentExtractor = new WikipediaContentExtractor()
 	{
 		@Override
-		public List<Segment> extractPageContentFromWikipedia(String url,
-				boolean isBulletinPage)
+		public List<Segment> extractPageContentFromWikipedia(
+				UrlWithDescription url, boolean isBulletinPage)
 		{
 			return null;
 		}
