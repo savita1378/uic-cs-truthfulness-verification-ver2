@@ -9,6 +9,7 @@ import org.htmlparser.util.ParserException;
 
 import edu.uic.cs.t_verifier.html.WikipediaContentExtractor;
 import edu.uic.cs.t_verifier.index.data.Segment;
+import edu.uic.cs.t_verifier.index.data.UrlWithDescription;
 import edu.uic.cs.t_verifier.misc.GeneralException;
 import edu.uic.cs.t_verifier.wikipedia.WikitextParser;
 
@@ -42,11 +43,11 @@ public class WikitextExtractor extends WikipediaContentExtractor
 	}
 
 	@Override
-	public List<Segment> extractPageContentFromWikipedia(String url,
-			boolean isBulletinPage)
+	public List<Segment> extractPageContentFromWikipedia(
+			UrlWithDescription url, boolean isBulletinPage)
 	{
 		// TODO here we ignore BulletinPage...
-		String wikitext = extractWikitext(url);
+		String wikitext = extractWikitext(url.getUrl());
 		List<Segment> segmentsInPage = WikitextParser.parse(wikitext);
 
 		return segmentsInPage;

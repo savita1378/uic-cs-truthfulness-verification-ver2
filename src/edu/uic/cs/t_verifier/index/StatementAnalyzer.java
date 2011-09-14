@@ -19,6 +19,7 @@ import edu.uic.cs.t_verifier.common.AbstractWordOperations;
 import edu.uic.cs.t_verifier.html.WikipediaContentExtractor;
 import edu.uic.cs.t_verifier.html.data.MatchedQueryKey;
 import edu.uic.cs.t_verifier.html.data.MatchedQueryKey.DisambiguationEntry;
+import edu.uic.cs.t_verifier.index.data.UrlWithDescription;
 import edu.uic.cs.t_verifier.input.data.Statement;
 import edu.uic.cs.t_verifier.misc.ClassFactory;
 import edu.uic.cs.t_verifier.misc.Config;
@@ -82,7 +83,8 @@ class StatementAnalyzer extends AbstractWordOperations
 		}
 	}
 
-	public Map<String, List<String>> getUrlsByTopicUnit(Statement statement)
+	public Map<String, List<UrlWithDescription>> getUrlsByTopicUnit(
+			Statement statement)
 	{
 		Collection<String> topicUnits = statement.getTopicUnits();
 		List<String> aus = statement.getAlternativeUnits();
@@ -92,7 +94,7 @@ class StatementAnalyzer extends AbstractWordOperations
 				allWordsInTopicUnits);
 	}
 
-	private Map<String, List<String>> processAllTopicUnitsInStatement(
+	private Map<String, List<UrlWithDescription>> processAllTopicUnitsInStatement(
 			Collection<String> topicUnits, List<String> aus,
 			Set<String> allWordsInTopicUnits)
 	{
@@ -105,7 +107,7 @@ class StatementAnalyzer extends AbstractWordOperations
 		}
 
 		// //////////////////////////////////////////////////////////////////////
-		Map<String, List<String>> result = new HashMap<String, List<String>>();
+		Map<String, List<UrlWithDescription>> result = new HashMap<String, List<UrlWithDescription>>();
 
 		HashSet<String> allMatchedTopicUnits = new HashSet<String>();
 		while (topicUnitsRemovedStopWords.size() != 0)
@@ -131,8 +133,10 @@ class StatementAnalyzer extends AbstractWordOperations
 
 						String matchedUrl = matchedTopicUnit(topicUnit,
 								matchedQueryKey);
+						UrlWithDescription urlWithDescription = new UrlWithDescription(
+								matchedUrl, null);
 						result.put(topicUnit,
-								Collections.singletonList(matchedUrl));
+								Collections.singletonList(urlWithDescription));
 					}
 					// disambiguations
 					else
@@ -142,18 +146,19 @@ class StatementAnalyzer extends AbstractWordOperations
 								allWordsInTopicUnits,
 								wordsInTopicUnitCausingAmbiguities);
 
-						List<String> urls = findTheMostMatchedDisambiguationEntries(
+						List<UrlWithDescription> urlWithDescriptions = findTheMostMatchedDisambiguationEntries(
 								matchedQueryKey.getDisambiguationEntries(),
 								nonstopWordsNotCausingAmbiguities, aus);
 
-						for (String url : urls)
+						for (UrlWithDescription urlWithDescription : urlWithDescriptions)
 						{
-							System.out.println("? " + url);
+							System.out.println("? "
+									+ urlWithDescription.getUrl());
 						}
 
-						if (!urls.isEmpty())
+						if (!urlWithDescriptions.isEmpty())
 						{
-							result.put(topicUnit, urls);
+							result.put(topicUnit, urlWithDescriptions);
 						}
 					}
 				}
@@ -194,7 +199,7 @@ class StatementAnalyzer extends AbstractWordOperations
 	}
 
 	// TODO may need be changed to using Lucene
-	private List<String> findTheMostMatchedDisambiguationEntries(
+	private List<UrlWithDescription> findTheMostMatchedDisambiguationEntries(
 			List<DisambiguationEntry> disambiguationEntries,
 			Set<String> nonstopWordsNotCausingAmbiguities, List<String> aus)
 	{
@@ -202,7 +207,7 @@ class StatementAnalyzer extends AbstractWordOperations
 				nonstopWordsNotCausingAmbiguities, aus);
 
 		int maxScore = 0;
-		List<String> maxScoreUrls = new ArrayList<String>();
+		List<UrlWithDescription> maxScoreUrls = new ArrayList<UrlWithDescription>();
 		for (DisambiguationEntry disambiguationEntry : disambiguationEntries)
 		{
 			int count = 0;
@@ -222,21 +227,20 @@ class StatementAnalyzer extends AbstractWordOperations
 				}
 			}
 
+			String url = MatchedQueryKey
+					.constructPageAddress(disambiguationEntry.getKeyWord());
+			UrlWithDescription urlWithDescription = new UrlWithDescription(url,
+					description);
+
 			if (count > maxScore)
 			{
 				maxScore = count;
 				maxScoreUrls.clear();
-				maxScoreUrls
-						.add(MatchedQueryKey
-								.constructPageAddress(disambiguationEntry
-										.getKeyWord()));
+				maxScoreUrls.add(urlWithDescription);
 			}
 			else if (count != 0 && count == maxScore)
 			{
-				maxScoreUrls
-						.add(MatchedQueryKey
-								.constructPageAddress(disambiguationEntry
-										.getKeyWord()));
+				maxScoreUrls.add(urlWithDescription);
 			}
 		}
 
@@ -331,16 +335,16 @@ class StatementAnalyzer extends AbstractWordOperations
 		return result;
 	}
 
-	public Map<String, List<String>> getUrlsByAlternativeUnit(
+	public Map<String, List<UrlWithDescription>> getUrlsByAlternativeUnit(
 			Statement statement, boolean doFilter)
 	{
 		List<String> alternaitveUnits = statement.getAlternativeUnits();
-		Map<String, List<String>> result = new HashMap<String, List<String>>();
+		Map<String, List<UrlWithDescription>> result = new HashMap<String, List<UrlWithDescription>>();
 
 		for (String auString : alternaitveUnits)
 		{
-			List<String> matchedUrls = matchUrlsForAlternativeUnit(auString,
-					statement, doFilter);
+			List<UrlWithDescription> matchedUrls = matchUrlsForAlternativeUnit(
+					auString, statement, doFilter);
 
 			if (matchedUrls != null)
 			{
@@ -351,8 +355,8 @@ class StatementAnalyzer extends AbstractWordOperations
 		return result;
 	}
 
-	private List<String> matchUrlsForAlternativeUnit(String auString,
-			Statement statement, boolean doFilter)
+	private List<UrlWithDescription> matchUrlsForAlternativeUnit(
+			String auString, Statement statement, boolean doFilter)
 	{
 		MatchedQueryKey matchedQueryKey = wikipediaContentExtractor
 				.matchQueryKey(auString);
@@ -370,7 +374,8 @@ class StatementAnalyzer extends AbstractWordOperations
 						+ auString + "] in the URL[" + certainUrl + "]");
 			}
 
-			return Collections.singletonList(certainUrl);
+			return Collections.singletonList(new UrlWithDescription(certainUrl,
+					null));
 		}
 		else
 		{
@@ -388,13 +393,15 @@ class StatementAnalyzer extends AbstractWordOperations
 			}
 			else
 			{
-				List<String> disambiguationUrls = new ArrayList<String>(
+				List<UrlWithDescription> disambiguationUrls = new ArrayList<UrlWithDescription>(
 						disambiguationEntryList.size());
 				for (DisambiguationEntry disambiguationEntry : disambiguationEntryList)
 				{
 					String keyWord = disambiguationEntry.getKeyWord();
 					String url = MatchedQueryKey.constructPageAddress(keyWord);
-					disambiguationUrls.add(url);
+					String description = disambiguationEntry.getDescription();
+					disambiguationUrls.add(new UrlWithDescription(url,
+							description));
 				}
 
 				return disambiguationUrls;

@@ -44,7 +44,7 @@ public class TermsSpanScorer extends SpanScorer
 	protected TermsSpanScorer(Spans spans, Weight weight,
 			Similarity similarity, byte[] norms, String fieldName,
 			Set<String> termsInQuery,
-			List<String> stemmedNonStopWordsInAlternativeUnit,
+			/*List<String> stemmedNonStopWordsInAlternativeUnit,*/
 			IndexReader reader, int alternativeUnitWeight) throws IOException
 	{
 		super(spans, weight, similarity, norms);
@@ -88,7 +88,7 @@ public class TermsSpanScorer extends SpanScorer
 				alreadyProcessedSpans.add(processingSpanID);
 
 				TreeSet<String> matchedTerms = computeMatchedTerms(
-						spans.start(), spans.end() - 1, positions);
+						spans.start(), spans.end(), positions);
 				int matchedTermsNumber = matchedTerms.size();
 				//			if (matchedTerms.isEmpty())
 				//			{

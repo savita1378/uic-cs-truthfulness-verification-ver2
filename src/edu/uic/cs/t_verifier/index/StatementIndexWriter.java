@@ -27,6 +27,7 @@ import edu.uic.cs.t_verifier.index.data.Heading;
 import edu.uic.cs.t_verifier.index.data.Paragraph;
 import edu.uic.cs.t_verifier.index.data.Segment;
 import edu.uic.cs.t_verifier.index.data.Table;
+import edu.uic.cs.t_verifier.index.data.UrlWithDescription;
 import edu.uic.cs.t_verifier.input.data.Statement;
 import edu.uic.cs.t_verifier.misc.Config;
 import edu.uic.cs.t_verifier.misc.GeneralException;
@@ -133,8 +134,8 @@ class StatementIndexWriter implements IndexConstants
 	}
 
 	public void indexStatementMetadata(Statement statement,
-			Map<String, List<String>> urlsByMatchedSubTopicUnit,
-			Map<String, List<String>> urlsByAlternativeUnit)
+			Map<String, List<UrlWithDescription>> urlsByMatchedSubTopicUnit,
+			Map<String, List<UrlWithDescription>> urlsByAlternativeUnit)
 	{
 		Document document = new Document();
 
@@ -147,20 +148,22 @@ class StatementIndexWriter implements IndexConstants
 				Index.NOT_ANALYZED_NO_NORMS)); // not analyzed
 
 		// TU //////////////////////////////////////////////////////////////////
-		for (Entry<String, List<String>> urlByMatchedSubTopicUnit : urlsByMatchedSubTopicUnit
+		for (Entry<String, List<UrlWithDescription>> urlWithDescriptionByMatchedSubTopicUnit : urlsByMatchedSubTopicUnit
 				.entrySet())
 		{
-			String matchedTopicUnit = urlByMatchedSubTopicUnit.getKey();
+			String matchedTopicUnit = urlWithDescriptionByMatchedSubTopicUnit
+					.getKey();
 			document.add(new Field(FIELD_NAME__MATCHED_SUB_TU,
 					matchedTopicUnit, Store.YES, Index.NOT_ANALYZED_NO_NORMS));
 
 			// use ["MATCHED_SUB_TU_URLS__" + URL] as field name 
 			String fieldNameForUrls = FIELD_NAME__PREFIX__MATCHED_SUB_TU_URLS
 					+ matchedTopicUnit;
-			for (String url : urlByMatchedSubTopicUnit.getValue())
+			for (UrlWithDescription urlWithDescription : urlWithDescriptionByMatchedSubTopicUnit
+					.getValue())
 			{
-				document.add(new Field(fieldNameForUrls, url, Store.YES,
-						Index.NOT_ANALYZED_NO_NORMS));
+				document.add(new Field(fieldNameForUrls, urlWithDescription
+						.getUrl(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
 			}
 		}
 
@@ -185,7 +188,8 @@ class StatementIndexWriter implements IndexConstants
 				continue;
 			}
 
-			List<String> urlsForAu = urlsByAlternativeUnit.get(auString);
+			List<UrlWithDescription> urlsForAu = urlsByAlternativeUnit
+					.get(auString);
 			if (urlsForAu == null) // if AU cann't match a page or pages, this URL list is null
 			{
 				continue;
@@ -194,10 +198,10 @@ class StatementIndexWriter implements IndexConstants
 			// use ["AlTERNATIVE_UNIT_URLS__" + URL] as field name 
 			String fieldNameForUrls = FIELD_NAME__PREFIX__AlTERNATIVE_UNIT_URLS
 					+ auString;
-			for (String url : urlsForAu)
+			for (UrlWithDescription urlWithDescription : urlsForAu)
 			{
-				document.add(new Field(fieldNameForUrls, url, Store.YES,
-						Index.NOT_ANALYZED_NO_NORMS));
+				document.add(new Field(fieldNameForUrls, urlWithDescription
+						.getUrl(), Store.YES, Index.NOT_ANALYZED_NO_NORMS));
 			}
 		}
 
