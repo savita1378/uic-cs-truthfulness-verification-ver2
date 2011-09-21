@@ -137,7 +137,7 @@ public class IndexBuilder
 				List<Segment> segmentsInPage = WIKIPEDIA_CONTENT_EXTRACTOR
 						.extractPageContentFromWikipedia(
 								urlWithDescription,
-								StatementType.match(matchedUnit) == StatementType.YEAR); // YEAR page is BulletinPage
+								StatementType.match(matchedUnit) == StatementType.YEAR).getSegments(); // YEAR page is BulletinPage
 
 				segmentsOfMatchedPages.add(segmentsInPage);
 			}

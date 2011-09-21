@@ -457,24 +457,24 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 	public List<String> findTheMostMatchedAlternativeUnits(
 			StatementMetadata metadata)
 	{
-		System.out.println("\n");
-		System.out.println("ID:\t\t" + metadata.getStatementId());
-		System.out.println("TU_0:\t\t"
-				+ Arrays.toString(metadata.getStemmedNonstopTUWords()));
-		System.out.println("AUs:\t\t" + metadata.getAlternativeUnits());
-		System.out.println("SUB_TUs:\t"
-				+ Arrays.toString(metadata.getMatchedSubTopicUnits()));
+//		System.out.println("\n");
+//		System.out.println("ID:\t\t" + metadata.getStatementId());
+//		System.out.println("TU_0:\t\t"
+//				+ Arrays.toString(metadata.getStemmedNonstopTUWords()));
+//		System.out.println("AUs:\t\t" + metadata.getAlternativeUnits());
+//		System.out.println("SUB_TUs:\t"
+//				+ Arrays.toString(metadata.getMatchedSubTopicUnits()));
 
 		List<String> mostMatchedAlternativeUnits = new ArrayList<String>();
 		float maxScore = 0f;
 
 		List<AlternativeUnit> alternativeUnits = metadata.getAlternativeUnits();
-		System.out.print("SCOREs:\t\t");
+//		System.out.print("SCOREs:\t\t");
 		for (AlternativeUnit alternativeUnit : alternativeUnits)
 		{
 			float score = scoreAlternativeUnit(alternativeUnit, metadata);
-			System.out.print("[" + alternativeUnit + "]:" + score + " | ");
-			//			System.out.println(score);
+//			System.out.print("[" + alternativeUnit + "]:" + score + " | ");
+						System.out.println(score);
 			//			System.out.println(alternativeUnit);
 			if (score > maxScore)
 			{
@@ -487,19 +487,19 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 				mostMatchedAlternativeUnits.add(alternativeUnit.getString());
 			}
 		}
-		System.out.println();
-
-		if (!mostMatchedAlternativeUnits.isEmpty())
-		{
-			System.out.println("MATCHED_AU:\t" + mostMatchedAlternativeUnits
-					+ ":" + maxScore);
-		}
-		else
-		{
-			System.out.println("NO AU MATCHED... ");
-		}
-
-		System.out.print("============================");
+//		System.out.println();
+//
+//		if (!mostMatchedAlternativeUnits.isEmpty())
+//		{
+//			System.out.println("MATCHED_AU:\t" + mostMatchedAlternativeUnits
+//					+ ":" + maxScore);
+//		}
+//		else
+//		{
+//			System.out.println("NO AU MATCHED... ");
+//		}
+//
+//		System.out.print("============================");
 
 		return mostMatchedAlternativeUnits;
 	}

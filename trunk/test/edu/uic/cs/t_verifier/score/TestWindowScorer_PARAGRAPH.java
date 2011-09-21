@@ -33,17 +33,17 @@ public class TestWindowScorer_PARAGRAPH extends EnhancedTestCase
 		}
 		catch (AssertionFailedError e)
 		{
-			System.out.print(" ×   | Expected: [" + expected + "]");
+//			System.out.print(" ×   | Expected: [" + expected + "]");
 			throw e;
 		}
 
 		if (actual.size() > 1)
 		{
-			System.out.print(" ≈√  | Expected: [" + expected + "]");
+//			System.out.print(" ≈√  | Expected: [" + expected + "]");
 		}
 		else
 		{
-			System.out.print(" √   | Expected: [" + expected + "]");
+//			System.out.print(" √   | Expected: [" + expected + "]");
 		}
 	}
 
