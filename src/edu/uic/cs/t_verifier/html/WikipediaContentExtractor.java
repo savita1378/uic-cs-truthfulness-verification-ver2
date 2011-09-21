@@ -22,7 +22,7 @@ import org.htmlparser.util.SimpleNodeIterator;
 
 import edu.uic.cs.t_verifier.html.data.MatchedQueryKey;
 import edu.uic.cs.t_verifier.html.data.MatchedQueryKey.DisambiguationEntry;
-import edu.uic.cs.t_verifier.index.data.Segment;
+import edu.uic.cs.t_verifier.html.data.PageContent;
 import edu.uic.cs.t_verifier.index.data.UrlWithDescription;
 import edu.uic.cs.t_verifier.misc.GeneralException;
 import edu.uic.cs.t_verifier.misc.LogHelper;
@@ -271,7 +271,7 @@ public abstract class WikipediaContentExtractor implements HtmlConstants
 		return ambiguityTag.size() != 0;
 	}
 
-	abstract public List<Segment> extractPageContentFromWikipedia(
+	abstract public PageContent extractPageContentFromWikipedia(
 			UrlWithDescription urlWithDescription, boolean isBulletinPage);
 
 }

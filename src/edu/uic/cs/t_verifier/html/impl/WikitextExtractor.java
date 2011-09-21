@@ -1,5 +1,6 @@
 package edu.uic.cs.t_verifier.html.impl;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -8,6 +9,7 @@ import org.htmlparser.filters.TagNameFilter;
 import org.htmlparser.util.ParserException;
 
 import edu.uic.cs.t_verifier.html.WikipediaContentExtractor;
+import edu.uic.cs.t_verifier.html.data.PageContent;
 import edu.uic.cs.t_verifier.index.data.Segment;
 import edu.uic.cs.t_verifier.index.data.UrlWithDescription;
 import edu.uic.cs.t_verifier.misc.GeneralException;
@@ -42,15 +44,16 @@ public class WikitextExtractor extends WikipediaContentExtractor
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<Segment> extractPageContentFromWikipedia(
-			UrlWithDescription url, boolean isBulletinPage)
+	public PageContent extractPageContentFromWikipedia(UrlWithDescription url,
+			boolean isBulletinPage)
 	{
 		// TODO here we ignore BulletinPage...
 		String wikitext = extractWikitext(url.getUrl());
 		List<Segment> segmentsInPage = WikitextParser.parse(wikitext);
 
-		return segmentsInPage;
+		return new PageContent(segmentsInPage, Collections.EMPTY_LIST);
 	}
 
 }
