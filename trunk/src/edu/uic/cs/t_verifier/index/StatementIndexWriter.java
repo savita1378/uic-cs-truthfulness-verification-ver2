@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.KeywordAnalyzer;
@@ -222,9 +223,11 @@ class StatementIndexWriter implements IndexConstants
 	 * 
 	 * @param matchedUnit
 	 * @param segmentsOfMatchedPages
+	 * @param categoriesBelongsTo 
 	 */
 	public void indexPageContentOfMatchedUnit(String matchedUnit,
-			List<List<Segment>> segmentsOfMatchedPages)
+			List<List<Segment>> segmentsOfMatchedPages,
+			Set<String> categoriesBelongsTo)
 	{
 		// one document for one topic-unit
 		Document document = new Document();
@@ -234,6 +237,8 @@ class StatementIndexWriter implements IndexConstants
 		addMatchedUnitContentIntoDocument(document, matchedUnit,
 				segmentsOfMatchedPages);
 
+		addMatchedUnitCategoriesIntoDocument(document, categoriesBelongsTo);
+
 		try
 		{
 			indexWriter.addDocument(document);
@@ -241,6 +246,17 @@ class StatementIndexWriter implements IndexConstants
 		catch (Exception e)
 		{
 			throw new GeneralException(e);
+		}
+
+	}
+
+	private void addMatchedUnitCategoriesIntoDocument(Document document,
+			Set<String> categoriesBelongsTo)
+	{
+		for (String category : categoriesBelongsTo)
+		{
+			document.add(new Field(FIELD_NAME__CATEGORIES, category, Store.YES,
+					Index.NOT_ANALYZED_NO_NORMS));
 		}
 
 	}

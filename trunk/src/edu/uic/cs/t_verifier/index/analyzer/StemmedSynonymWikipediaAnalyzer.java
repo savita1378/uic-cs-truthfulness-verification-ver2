@@ -59,8 +59,10 @@ public abstract class StemmedSynonymWikipediaAnalyzer extends Analyzer
 		};
 
 		// WikipediaTokenizer cann't distinguish citation, so we need to remove those [xxx] first
-		String INPUT = "nuclear states state electric guitar actress primary primarily language lead Alexey Leonov aleksei leonov place McDonald's hamburger 1964-10-16 Australia smaller 100 2,000, wanghong.nanjing@gmail.com The quick brown fox[1][2] jumps over[3] the lazy[citation needed] dog stemming algorithms sunk age aging";
-		//		String INPUT = "1964-10-16 1,000, 90s";
+		// String INPUT = "luminosity luminous the brightest star visible from earth is light nuclear states state electric guitar actress primary primarily language lead Alexey Leonov aleksei leonov place McDonald's hamburger 1964-10-16 Australia smaller 100 2,000, wanghong.nanjing@gmail.com The quick brown fox[1][2] jumps over[3] the lazy[citation needed] dog stemming algorithms sunk age aging";
+		// String INPUT = "1964-10-16 1,000, 90s";
+		String INPUT = "luminosity and its proximity to the observer. Below are listed the 91 brightest individual stars in order of their apparent magnitudes in the visible spectrum as seen from Earth";
+
 		AnalyzerUtils.displayTokensWithPositions(analyzer, INPUT);
 	}
 }

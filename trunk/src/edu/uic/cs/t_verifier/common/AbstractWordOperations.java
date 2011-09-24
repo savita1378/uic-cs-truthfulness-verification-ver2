@@ -19,13 +19,12 @@ public abstract class AbstractWordOperations
 {
 	private PorterStemmerExporter porterStemmer = new PorterStemmerExporter();
 
-	protected List<String> standardAnalyzeUsingDefaultStopWords(String rawString)
+	public List<String> standardAnalyzeUsingDefaultStopWords(String rawString)
 	{
 		return standardAnalyze(rawString, StandardAnalyzer.STOP_WORDS_SET);
 	}
 
-	protected List<String> standardAnalyzeWithoutRemovingStopWords(
-			String rawString)
+	public List<String> standardAnalyzeWithoutRemovingStopWords(String rawString)
 	{
 		return standardAnalyze(rawString, null);
 	}

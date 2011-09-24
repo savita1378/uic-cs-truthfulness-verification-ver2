@@ -16,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import edu.uic.cs.t_verifier.common.AbstractWordOperations;
+import edu.uic.cs.t_verifier.html.CategoriesExtractor;
 import edu.uic.cs.t_verifier.html.WikipediaContentExtractor;
 import edu.uic.cs.t_verifier.html.data.MatchedQueryKey;
 import edu.uic.cs.t_verifier.html.data.MatchedQueryKey.DisambiguationEntry;
@@ -83,6 +84,10 @@ class StatementAnalyzer extends AbstractWordOperations
 		}
 	}
 
+	private CategoriesExtractor categoriesExtractor = new CategoriesExtractor()
+	{
+	};
+
 	public Map<String, List<UrlWithDescription>> getUrlsByTopicUnit(
 			Statement statement)
 	{
@@ -133,8 +138,10 @@ class StatementAnalyzer extends AbstractWordOperations
 
 						String matchedUrl = matchedTopicUnit(topicUnit,
 								matchedQueryKey);
+						List<String> matchedCategories = matchedQueryKey
+								.getCategories();
 						UrlWithDescription urlWithDescription = new UrlWithDescription(
-								matchedUrl, null);
+								matchedUrl, null, matchedCategories);
 						result.put(topicUnit,
 								Collections.singletonList(urlWithDescription));
 					}
@@ -229,8 +236,10 @@ class StatementAnalyzer extends AbstractWordOperations
 
 			String url = MatchedQueryKey
 					.constructPageAddress(disambiguationEntry.getKeyWord());
+			List<String> categories = categoriesExtractor
+					.extractCategoriesFromPage(url);
 			UrlWithDescription urlWithDescription = new UrlWithDescription(url,
-					description);
+					description, categories);
 
 			if (count > maxScore)
 			{
@@ -374,8 +383,9 @@ class StatementAnalyzer extends AbstractWordOperations
 						+ auString + "] in the URL[" + certainUrl + "]");
 			}
 
+			List<String> matchedCategories = matchedQueryKey.getCategories();
 			return Collections.singletonList(new UrlWithDescription(certainUrl,
-					null));
+					null, matchedCategories));
 		}
 		else
 		{
@@ -399,9 +409,11 @@ class StatementAnalyzer extends AbstractWordOperations
 				{
 					String keyWord = disambiguationEntry.getKeyWord();
 					String url = MatchedQueryKey.constructPageAddress(keyWord);
+					List<String> categories = categoriesExtractor
+							.extractCategoriesFromPage(url);
 					String description = disambiguationEntry.getDescription();
 					disambiguationUrls.add(new UrlWithDescription(url,
-							description));
+							description, categories));
 				}
 
 				return disambiguationUrls;

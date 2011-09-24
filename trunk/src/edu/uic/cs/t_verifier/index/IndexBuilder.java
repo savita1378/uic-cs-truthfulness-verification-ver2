@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import edu.uic.cs.t_verifier.common.StatementType;
 import edu.uic.cs.t_verifier.html.WikipediaContentExtractor;
@@ -39,6 +40,7 @@ public class IndexBuilder
 
 		// either TU or AU
 		HashSet<String> indexedUnits = new HashSet<String>();
+		long beginTime = System.currentTimeMillis();
 		try
 		{
 			for (int index = 0; index < statements.size(); index++)
@@ -54,9 +56,13 @@ public class IndexBuilder
 						.println("=========================================\n\n");
 			}
 
+			long endTime = System.currentTimeMillis();
 			System.out
 					.println("Done. All the needed data have been indexed into folder["
-							+ Config.INDEX_FOLDER + "]. ");
+							+ Config.INDEX_FOLDER
+							+ "]. Cost: "
+							+ (int) ((endTime - beginTime) / 1000 / 60)
+							+ " min. ");
 		}
 		finally
 		{
@@ -130,21 +136,23 @@ public class IndexBuilder
 
 			List<List<Segment>> segmentsOfMatchedPages = new ArrayList<List<Segment>>(
 					urlByUnit.getValue().size());
+			Set<String> categories = new HashSet<String>();
 			// disambiguations may cause multiple matched URLs
 			for (UrlWithDescription urlWithDescription : urlByUnit.getValue())
 			{
 				// extract content from each page
 				List<Segment> segmentsInPage = WIKIPEDIA_CONTENT_EXTRACTOR
-						.extractPageContentFromWikipedia(
+						.extractSegmentsFromWikipedia(
 								urlWithDescription,
-								StatementType.match(matchedUnit) == StatementType.YEAR).getSegments(); // YEAR page is BulletinPage
+								StatementType.match(matchedUnit) == StatementType.YEAR); // YEAR page is BulletinPage
 
 				segmentsOfMatchedPages.add(segmentsInPage);
+				categories.addAll(urlWithDescription.getCategoriesBelongsTo());
 			}
 
 			// add the page content into index
 			INDEX_WRITER.indexPageContentOfMatchedUnit(matchedUnit,
-					segmentsOfMatchedPages);
+					segmentsOfMatchedPages, categories);
 		}
 	}
 }
