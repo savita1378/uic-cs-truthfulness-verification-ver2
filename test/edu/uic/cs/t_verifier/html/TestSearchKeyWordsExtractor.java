@@ -7,7 +7,7 @@ import java.util.List;
 import edu.uic.cs.t_verifier.EnhancedTestCase;
 import edu.uic.cs.t_verifier.html.data.MatchedQueryKey;
 import edu.uic.cs.t_verifier.html.data.MatchedQueryKey.DisambiguationEntry;
-import edu.uic.cs.t_verifier.html.data.PageContent;
+import edu.uic.cs.t_verifier.index.data.Segment;
 import edu.uic.cs.t_verifier.index.data.UrlWithDescription;
 
 public class TestSearchKeyWordsExtractor extends EnhancedTestCase
@@ -15,7 +15,7 @@ public class TestSearchKeyWordsExtractor extends EnhancedTestCase
 	private WikipediaContentExtractor wikipediaContentExtractor = new WikipediaContentExtractor()
 	{
 		@Override
-		public PageContent extractPageContentFromWikipedia(
+		public List<Segment> extractSegmentsFromWikipedia(
 				UrlWithDescription url, boolean isBulletinPage)
 		{
 			return null;

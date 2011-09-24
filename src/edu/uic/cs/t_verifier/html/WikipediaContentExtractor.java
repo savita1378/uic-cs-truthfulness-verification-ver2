@@ -14,7 +14,6 @@ import org.htmlparser.Text;
 import org.htmlparser.filters.TagNameFilter;
 import org.htmlparser.tags.Bullet;
 import org.htmlparser.tags.BulletList;
-import org.htmlparser.tags.Div;
 import org.htmlparser.tags.LinkTag;
 import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
@@ -22,12 +21,12 @@ import org.htmlparser.util.SimpleNodeIterator;
 
 import edu.uic.cs.t_verifier.html.data.MatchedQueryKey;
 import edu.uic.cs.t_verifier.html.data.MatchedQueryKey.DisambiguationEntry;
-import edu.uic.cs.t_verifier.html.data.PageContent;
+import edu.uic.cs.t_verifier.index.data.Segment;
 import edu.uic.cs.t_verifier.index.data.UrlWithDescription;
 import edu.uic.cs.t_verifier.misc.GeneralException;
 import edu.uic.cs.t_verifier.misc.LogHelper;
 
-public abstract class WikipediaContentExtractor implements HtmlConstants
+public abstract class WikipediaContentExtractor extends CategoriesExtractor
 {
 	private static final Logger LOGGER = LogHelper
 			.getLogger(WikipediaContentExtractor.class);
@@ -73,36 +72,6 @@ public abstract class WikipediaContentExtractor implements HtmlConstants
 			return false;
 		}
 	}
-
-	protected static class BodyContentDivFilter implements NodeFilter
-	{
-		private static final long serialVersionUID = 1L;
-
-		private static final String HTML_TAG_DIV_ATTRIBUTE_ID = "id";
-		private static final String HTML_TAG_DIV_ATTRIBUTE_ID_BODYCONTENT = "bodyContent";
-
-		public BodyContentDivFilter()
-		{
-		}
-
-		@Override
-		public boolean accept(Node node)
-		{
-			if (node instanceof Div)
-			{
-				Div div = (Div) node;
-				String id = div.getAttribute(HTML_TAG_DIV_ATTRIBUTE_ID);
-				if (HTML_TAG_DIV_ATTRIBUTE_ID_BODYCONTENT.equals(id))
-				{
-					return true;
-				}
-			}
-
-			return false;
-		}
-	}
-
-	protected PoliteParser parser = new PoliteParser();
 
 	public MatchedQueryKey matchQueryKey(String queryWords)
 	{
@@ -164,8 +133,17 @@ public abstract class WikipediaContentExtractor implements HtmlConstants
 			List<DisambiguationEntry> disambiguationEntries = extractDisambiguationEntries(bodyContentDiv
 					.getChildren());
 
+			List<String> categories = null;
+			if (disambiguationEntries.isEmpty())
+			// no ambiguity
+			{
+				categories = extractCategoriesFromBodyContentDiv(bodyContentDiv);
+			}
+			// else, no cateoories for this page
+
 			MatchedQueryKey result = new MatchedQueryKey(
-					titleString.replaceAll(" ", "_"), disambiguationEntries);
+					titleString.replaceAll(" ", "_"), disambiguationEntries,
+					categories);
 			if (result.isCertainly())
 			{
 				System.out.println(" √");
@@ -271,7 +249,7 @@ public abstract class WikipediaContentExtractor implements HtmlConstants
 		return ambiguityTag.size() != 0;
 	}
 
-	abstract public PageContent extractPageContentFromWikipedia(
+	abstract public List<Segment> extractSegmentsFromWikipedia(
 			UrlWithDescription urlWithDescription, boolean isBulletinPage);
 
 }

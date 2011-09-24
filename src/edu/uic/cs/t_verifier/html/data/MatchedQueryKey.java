@@ -12,6 +12,7 @@ public class MatchedQueryKey
 
 	private String keyWord = null;
 	private List<DisambiguationEntry> disambiguationEntries = null;
+	private List<String> categories = null;
 
 	public static class DisambiguationEntry
 	{
@@ -43,10 +44,12 @@ public class MatchedQueryKey
 	}
 
 	public MatchedQueryKey(String keyWord,
-			List<DisambiguationEntry> disambiguationEntries)
+			List<DisambiguationEntry> disambiguationEntries,
+			List<String> categories)
 	{
 		this.keyWord = keyWord;
 		this.disambiguationEntries = disambiguationEntries;
+		this.categories = categories;
 	}
 
 	public String getKeyWord()
@@ -84,5 +87,10 @@ public class MatchedQueryKey
 	public static String constructPageAddress(String keyWord)
 	{
 		return WIKI_ADDRESS_PREFIX + keyWord /* + WIKI_ADDRESS_EDIT_POSTFIX*/;
+	}
+
+	public List<String> getCategories()
+	{
+		return categories;
 	}
 }

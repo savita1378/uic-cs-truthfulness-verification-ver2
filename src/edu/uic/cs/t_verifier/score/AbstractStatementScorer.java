@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
@@ -30,6 +32,7 @@ import edu.uic.cs.t_verifier.misc.Assert;
 import edu.uic.cs.t_verifier.misc.GeneralException;
 import edu.uic.cs.t_verifier.misc.LogHelper;
 import edu.uic.cs.t_verifier.score.data.AlternativeUnit;
+import edu.uic.cs.t_verifier.score.data.Category;
 import edu.uic.cs.t_verifier.score.data.MatchDetail;
 import edu.uic.cs.t_verifier.score.data.StatementMetadata;
 import edu.uic.cs.t_verifier.score.data.MatchDetail.EachSpanDetail;
@@ -254,6 +257,14 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 				.getStemmedNonstopTUWords();
 		Query tpoicUnitQuery = prepareTopicUnitQuery(
 				allStemmedNonstopWordsInTopicUnit, alternativeUnit.getWeight());
+
+		/*List<String> stemmedNonStopWordsInAlternativeUnit = porterStemmingAnalyzeUsingDefaultStopWords(alternativeUnit
+				.getString());
+		Query tpoicUnitQuery = getAlternativeUnitAndNonSubTopicUnitQuery(
+				stemmedNonStopWordsInAlternativeUnit,
+				Arrays.asList(allStemmedNonstopWordsInTopicUnit), false,
+				alternativeUnit.getWeight());*/
+
 		query.add(tpoicUnitQuery, Occur.MUST);
 
 		logScoreDetail("AU: ["
@@ -457,24 +468,27 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 	public List<String> findTheMostMatchedAlternativeUnits(
 			StatementMetadata metadata)
 	{
-//		System.out.println("\n");
-//		System.out.println("ID:\t\t" + metadata.getStatementId());
-//		System.out.println("TU_0:\t\t"
-//				+ Arrays.toString(metadata.getStemmedNonstopTUWords()));
-//		System.out.println("AUs:\t\t" + metadata.getAlternativeUnits());
-//		System.out.println("SUB_TUs:\t"
-//				+ Arrays.toString(metadata.getMatchedSubTopicUnits()));
+		//		System.out.println("\n");
+		//		System.out.println("ID:\t\t" + metadata.getStatementId());
+		//		System.out.println("TU_0:\t\t"
+		//				+ Arrays.toString(metadata.getStemmedNonstopTUWords()));
+		//		System.out.println("AUs:\t\t" + metadata.getAlternativeUnits());
+		//		System.out.println("SUB_TUs:\t"
+		//				+ Arrays.toString(metadata.getMatchedSubTopicUnits()));
 
 		List<String> mostMatchedAlternativeUnits = new ArrayList<String>();
 		float maxScore = 0f;
 
 		List<AlternativeUnit> alternativeUnits = metadata.getAlternativeUnits();
-//		System.out.print("SCOREs:\t\t");
+		//		System.out.print("SCOREs:\t\t");
+
+		alternativeUnits = filterAlternativeUnitsByCategories(alternativeUnits);
+
 		for (AlternativeUnit alternativeUnit : alternativeUnits)
 		{
 			float score = scoreAlternativeUnit(alternativeUnit, metadata);
-//			System.out.print("[" + alternativeUnit + "]:" + score + " | ");
-						System.out.println(score);
+			//			System.out.print("[" + alternativeUnit + "]:" + score + " | ");
+			System.out.println(alternativeUnit + "\t" + score);
 			//			System.out.println(alternativeUnit);
 			if (score > maxScore)
 			{
@@ -487,21 +501,92 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 				mostMatchedAlternativeUnits.add(alternativeUnit.getString());
 			}
 		}
-//		System.out.println();
-//
-//		if (!mostMatchedAlternativeUnits.isEmpty())
-//		{
-//			System.out.println("MATCHED_AU:\t" + mostMatchedAlternativeUnits
-//					+ ":" + maxScore);
-//		}
-//		else
-//		{
-//			System.out.println("NO AU MATCHED... ");
-//		}
-//
-//		System.out.print("============================");
+		//		System.out.println();
+		//
+		//		if (!mostMatchedAlternativeUnits.isEmpty())
+		//		{
+		//			System.out.println("MATCHED_AU:\t" + mostMatchedAlternativeUnits
+		//					+ ":" + maxScore);
+		//		}
+		//		else
+		//		{
+		//			System.out.println("NO AU MATCHED... ");
+		//		}
+		//
+		//		System.out.print("============================");
 
 		return mostMatchedAlternativeUnits;
 	}
 
+	private List<AlternativeUnit> filterAlternativeUnitsByCategories(
+			List<AlternativeUnit> alternativeUnits)
+	{
+		Map<Category, List<AlternativeUnit>> alternativeUnitsByCategory = new HashMap<Category, List<AlternativeUnit>>();
+
+		for (AlternativeUnit alternativeUnit : alternativeUnits)
+		{
+			String[] categories = retrieveCategories(alternativeUnit
+					.getString());
+			if (categories != null)
+			{
+				// System.out.println(Arrays.asList(categories));
+				Category category = Category.matchCategory(categories);
+				List<AlternativeUnit> alternativeUnitsOfCategory = alternativeUnitsByCategory
+						.get(category);
+				if (alternativeUnitsOfCategory == null)
+				{
+					alternativeUnitsOfCategory = new ArrayList<AlternativeUnit>();
+					alternativeUnitsByCategory.put(category,
+							alternativeUnitsOfCategory);
+				}
+
+				alternativeUnitsOfCategory.add(alternativeUnit);
+			}
+
+		}
+
+		List<AlternativeUnit> alternativeUnitsOfPeople = alternativeUnitsByCategory
+				.get(Category.PEOPLE);
+		if (alternativeUnitsOfPeople != null
+				&& alternativeUnitsOfPeople.size() >= 2) // at least 2/5 AUs are people
+		{
+			return alternativeUnitsOfPeople;
+		}
+
+		return alternativeUnits;
+	}
+
+	private String[] retrieveCategories(String alternativeUnitString)
+	{
+		try
+		{
+			BooleanQuery query = new BooleanQuery();
+			query.add(new TermQuery(new Term(FIELD_NAME__DOC_TYPE,
+					DOC_TYPE__PAGE_CONTENT)), Occur.MUST);
+			query.add(new TermQuery(new Term(FIELD_NAME__MATCHED_UNIT,
+					alternativeUnitString)), Occur.MUST);
+
+			TopDocs topDocs = indexSearcher.search(query, 10);
+			Assert.isTrue(topDocs.totalHits <= 1,
+					"There should be at most one document matched for AU["
+							+ alternativeUnitString + "]! ");
+
+			if (topDocs.totalHits == 1)
+			{
+				ScoreDoc scoreDoc = topDocs.scoreDocs[0];
+				int docNumber = scoreDoc.doc;
+				Document document = indexReader.document(docNumber);
+				String[] categories = document
+						.getValues(FIELD_NAME__CATEGORIES);
+
+				return categories;
+			}
+
+			return null;
+		}
+		catch (IOException e)
+		{
+			throw new GeneralException(e);
+		}
+	}
 }

@@ -1,6 +1,7 @@
 package edu.uic.cs.t_verifier.html.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -21,7 +22,6 @@ import org.htmlparser.tags.TableTag;
 import org.htmlparser.util.NodeList;
 
 import edu.uic.cs.t_verifier.html.WikipediaContentExtractor;
-import edu.uic.cs.t_verifier.html.data.PageContent;
 import edu.uic.cs.t_verifier.index.data.Heading;
 import edu.uic.cs.t_verifier.index.data.Paragraph;
 import edu.uic.cs.t_verifier.index.data.Segment;
@@ -35,19 +35,11 @@ public class HtmlPageExtractor extends WikipediaContentExtractor
 	private static Pattern REFERENCE_SYMBOL_PATTERN = Pattern
 			.compile("(\\[(\\w| )+\\])+\\s");
 
-	private static final String HTML_TAG_DIV_ATTRIBUTE_ID = "id";
-	private static final String HTML_TAG_DIV_ATTRIBUTE_ID_CATEGORIES = "catlinks";
-	private static final String HTML_TAG_DIV_ATTRIBUTE_ID_NORMAL_CATEGORIES = "mw-normal-catlinks";
-
-	private static final String KEY_WORD_CATEGORIES = "Categories:";
-	private static final int KEY_WORD_CATEGORIES_LENGTH = KEY_WORD_CATEGORIES
-			.length();
-
 	@Override
-	public PageContent extractPageContentFromWikipedia(
+	public List<Segment> extractSegmentsFromWikipedia(
 			UrlWithDescription urlWithDescription, boolean isBulletinPage)
 	{
-		PageContent result = null;
+		List<Segment> result = null;
 		try
 		{
 			parser.setResource(urlWithDescription.getUrl());
@@ -68,11 +60,11 @@ public class HtmlPageExtractor extends WikipediaContentExtractor
 		return result;
 	}
 
-	private static PageContent parseContents(Node[] contents,
+	private static List<Segment> parseContents(Node[] contents,
 			boolean isBulletinPage, UrlWithDescription urlWithDescription)
 	{
 		List<Segment> segments = new ArrayList<Segment>();
-		List<String> categories = new ArrayList<String>();
+		// List<String> categories = new ArrayList<String>();
 
 		for (Node content : contents)
 		{
@@ -172,33 +164,8 @@ public class HtmlPageExtractor extends WikipediaContentExtractor
 				Segment segment = segments.get(segments.size() - 1);
 				segment.addTable(table);
 			}
-			else if (content instanceof Div
-					&& HTML_TAG_DIV_ATTRIBUTE_ID_CATEGORIES
-							.equals(((Div) content)
-									.getAttribute(HTML_TAG_DIV_ATTRIBUTE_ID)))
-			{
-				Node firstChild = content.getFirstChild();
-				String id = ((Div) firstChild)
-						.getAttribute(HTML_TAG_DIV_ATTRIBUTE_ID);
-				if (HTML_TAG_DIV_ATTRIBUTE_ID_NORMAL_CATEGORIES.equals(id))
-				{
-					String categoriesString = firstChild.toPlainTextString();
-					int index = categoriesString.indexOf(KEY_WORD_CATEGORIES);
-					Assert.isTrue(index == 0);
-					categoriesString = categoriesString
-							.substring(KEY_WORD_CATEGORIES_LENGTH);
-
-					String[] categoriesArray = StringUtils.split(
-							categoriesString, '|');
-					for (String category : categoriesArray)
-					{
-						categories.add(category.trim());
-					}
-
-				}
-			}
 			else if (content instanceof TextNode
-					|| content instanceof RemarkNode /*|| content instanceof Div*/
+					|| content instanceof RemarkNode || content instanceof Div
 					|| content instanceof TagNode)
 			{
 				// ignore... 
@@ -223,7 +190,8 @@ public class HtmlPageExtractor extends WikipediaContentExtractor
 			segments.add(segment);
 		}
 
-		return new PageContent(segments, categories);
+		// return new PageContent(segments, categories);
+		return segments;
 	}
 
 	private static void recursiveExtractBullets(String textInUpperLevels,
@@ -391,13 +359,12 @@ public class HtmlPageExtractor extends WikipediaContentExtractor
 		//		String pageUrl = "http://en.wikipedia.org/wiki/Sleepless_in_seattle";
 		//		String pageUrl = "http://en.wikipedia.org/wiki/Filipino";
 		String pageUrl = "http://en.wikipedia.org/wiki/Adolph_Rickenbacker";
-		PageContent result = extractor
-				.extractPageContentFromWikipedia(
-						new UrlWithDescription(pageUrl, null
-						/*"Filipino language, the national language of the Philippines, based primarily on Tagalog"*/),
-						true);
+		@SuppressWarnings("unchecked")
+		List<Segment> segments = extractor.extractSegmentsFromWikipedia(
+				new UrlWithDescription(pageUrl, null, Collections.EMPTY_LIST),
+				true);
 
-		for (Segment segment : result.getSegments())
+		for (Segment segment : segments)
 		{
 			if (segment.getHeading() != null)
 			{
@@ -428,11 +395,6 @@ public class HtmlPageExtractor extends WikipediaContentExtractor
 				}
 			}
 			System.out.println("===========================================");
-		}
-
-		for (String category : result.getCategoriesBelongsTo())
-		{
-			System.out.println(category);
 		}
 
 	}
