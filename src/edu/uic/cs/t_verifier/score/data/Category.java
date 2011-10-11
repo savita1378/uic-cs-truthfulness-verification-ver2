@@ -6,7 +6,7 @@ import edu.uic.cs.t_verifier.common.AbstractWordOperations;
 
 public enum Category
 {
-	PEOPLE, OTHER;
+	PEOPLE, CITY, OTHER;
 
 	private static final AbstractWordOperations WORD_OPERATIONS = new AbstractWordOperations()
 	{
@@ -23,6 +23,11 @@ public enum Category
 				if (word.equals("people"))
 				{
 					return PEOPLE;
+				}
+				else if (word.equals("cities") || word.equals("city"))
+				{
+					// TODO whether it is a city, actually we can also identify from the TU 'city'
+					return CITY;
 				}
 			}
 		}

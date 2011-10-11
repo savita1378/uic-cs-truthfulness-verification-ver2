@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import org.htmlparser.Node;
 import org.htmlparser.NodeFilter;
 import org.htmlparser.filters.TagNameFilter;
+import org.htmlparser.tags.BulletList;
 import org.htmlparser.tags.Div;
 import org.htmlparser.util.ParserException;
 import org.htmlparser.util.SimpleNodeIterator;
@@ -23,6 +24,34 @@ public abstract class CategoriesExtractor implements HtmlConstants
 	private static final String KEY_WORD_CATEGORIES = "Categories:";
 	private static final int KEY_WORD_CATEGORIES_LENGTH = KEY_WORD_CATEGORIES
 			.length();
+
+	protected static class ContentLtrDivFilter implements NodeFilter
+	{
+		private static final long serialVersionUID = 1L;
+
+		private static final String HTML_TAG_DIV_ATTRIBUTE_CLASS = "class";
+		private static final String HTML_TAG_DIV_ATTRIBUTE_CLASS_CONTENT = "mw-content-ltr";
+
+		public ContentLtrDivFilter()
+		{
+		}
+
+		@Override
+		public boolean accept(Node node)
+		{
+			if (node instanceof Div)
+			{
+				Div div = (Div) node;
+				String id = div.getAttribute(HTML_TAG_DIV_ATTRIBUTE_CLASS);
+				if (HTML_TAG_DIV_ATTRIBUTE_CLASS_CONTENT.equals(id))
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+	}
 
 	protected static class BodyContentDivFilter implements NodeFilter
 	{
@@ -73,17 +102,34 @@ public abstract class CategoriesExtractor implements HtmlConstants
 						.getAttribute(HTML_TAG_DIV_ATTRIBUTE_ID);
 				if (HTML_TAG_DIV_ATTRIBUTE_ID_NORMAL_CATEGORIES.equals(id))
 				{
-					String categoriesString = firstChild.toPlainTextString();
-					int index = categoriesString.indexOf(KEY_WORD_CATEGORIES);
-					Assert.isTrue(index == 0);
-					categoriesString = categoriesString
-							.substring(KEY_WORD_CATEGORIES_LENGTH);
-
-					String[] categoriesArray = StringUtils.split(
-							categoriesString, '|');
-					for (String category : categoriesArray)
+					for (Node node : firstChild.getChildren().toNodeArray())
 					{
-						categories.add(category.trim());
+						if (node instanceof BulletList)
+						{
+							for (Node bullet : node.getChildren().toNodeArray())
+							{
+								categories.add(bullet.toPlainTextString()
+										.trim());
+							}
+						}
+					}
+
+					if (categories.isEmpty())
+					{
+						String categoriesString = firstChild
+								.toPlainTextString();
+						int index = categoriesString
+								.indexOf(KEY_WORD_CATEGORIES);
+						Assert.isTrue(index == 0);
+						categoriesString = categoriesString
+								.substring(KEY_WORD_CATEGORIES_LENGTH);
+
+						String[] categoriesArray = StringUtils.split(
+								categoriesString, '|');
+						for (String category : categoriesArray)
+						{
+							categories.add(category.trim());
+						}
 					}
 
 					break;
@@ -113,5 +159,27 @@ public abstract class CategoriesExtractor implements HtmlConstants
 				.elementAt(0);
 
 		return extractCategoriesFromBodyContentDiv(bodyContentDiv);
+	}
+
+	public static void main(String[] args)
+	{
+		String pageUrl = "http://en.wikipedia.org/wiki/Frances_Folsom_Cleveland_Preston";
+		//		String pageUrl = "http://en.wikipedia.org/wiki/Big_Mac";
+		//		String pageUrl = "http://en.wikipedia.org/w/index.php?title=Languages_of_the_Philippines";
+		//		String pageUrl = "http://en.wikipedia.org/wiki/1949";
+		//		String pageUrl = "http://en.wikipedia.org/w/index.php?title=1800%E2%80%931809";
+		//		String pageUrl = "http://en.wikipedia.org/wiki/Sleepless_in_seattle";
+		//		String pageUrl = "http://en.wikipedia.org/wiki/Filipino";
+		//		String pageUrl = "http://en.wikipedia.org/wiki/Adolph_Rickenbacker";
+		//		String pageUrl = "http://en.wikipedia.org/wiki/Naples";
+
+		List<String> categories = new CategoriesExtractor()
+		{
+		}.extractCategoriesFromPage(pageUrl);
+
+		for (String category : categories)
+		{
+			System.out.println(category);
+		}
 	}
 }
