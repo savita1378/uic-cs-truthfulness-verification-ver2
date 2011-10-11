@@ -92,6 +92,21 @@ public abstract class WikipediaContentExtractor extends CategoriesExtractor
 		return result;
 	}
 
+	/*public static void main(String[] args)
+	{
+		MatchedQueryKey key = new WikipediaContentExtractor()
+		{
+			@Override
+			public List<Segment> extractSegmentsFromWikipedia(
+					UrlWithDescription urlWithDescription,
+					boolean isBulletinPage)
+			{
+				// TODO Auto-generated method stub
+				return null;
+			}
+		}.matchQueryKey("frances folsom");
+	}*/
+
 	private MatchedQueryKey matchQueryKeyInternal(String queryWords)
 	{
 		String url = WIKI_SEARCH_URL_PREFIX
@@ -126,9 +141,25 @@ public abstract class WikipediaContentExtractor extends CategoriesExtractor
 			titleString = titleString
 					.substring(0, titleString.lastIndexOf('-')).trim();
 
-			Node bodyContentDiv = htmlNode.getChildren()
+			/*Node bodyContentDiv = htmlNode.getChildren()
 					.extractAllNodesThatMatch(new BodyContentDivFilter(), true)
-					.elementAt(0);
+					.elementAt(0);*/
+
+			// They added a new DIV <div lang="en" dir="ltr" class="mw-content-ltr"> outside original Body
+			NodeList contentLtrNodeList = htmlNode.getChildren()
+					.extractAllNodesThatMatch(new ContentLtrDivFilter(), true);
+			NodeList contentNodeList = htmlNode.getChildren()
+					.extractAllNodesThatMatch(new BodyContentDivFilter(), true);
+			Node bodyContentDiv = null;
+			if (contentLtrNodeList.size() > 0)
+			{
+				bodyContentDiv = contentLtrNodeList.elementAt(0);
+			}
+			else
+			{
+				bodyContentDiv = contentNodeList.elementAt(0);
+			}
+
 			// there may be ambiguous key words
 			List<DisambiguationEntry> disambiguationEntries = extractDisambiguationEntries(bodyContentDiv
 					.getChildren());
@@ -137,7 +168,8 @@ public abstract class WikipediaContentExtractor extends CategoriesExtractor
 			if (disambiguationEntries.isEmpty())
 			// no ambiguity
 			{
-				categories = extractCategoriesFromBodyContentDiv(bodyContentDiv);
+				categories = extractCategoriesFromBodyContentDiv(contentNodeList
+						.elementAt(0)); // this must use contentNodeList.elementAt(0)
 			}
 			// else, no cateoories for this page
 

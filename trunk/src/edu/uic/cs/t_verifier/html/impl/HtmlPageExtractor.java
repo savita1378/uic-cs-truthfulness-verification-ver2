@@ -43,11 +43,24 @@ public class HtmlPageExtractor extends WikipediaContentExtractor
 		try
 		{
 			parser.setResource(urlWithDescription.getUrl());
-			Node htmlNode = parser.parse(new TagNameFilter(HTML_TAG_HTML))
-					.elementAt(0);
-			Node bodyContentDiv = htmlNode.getChildren()
-					.extractAllNodesThatMatch(new BodyContentDivFilter(), true)
-					.elementAt(0);
+			NodeList nl = parser.parse(new TagNameFilter(HTML_TAG_HTML));
+			Node htmlNode = nl.elementAt(0);
+			// System.out.println(htmlNode.toPlainTextString());
+			NodeList contentNodeList = htmlNode.getChildren()
+					.extractAllNodesThatMatch(new ContentLtrDivFilter(), true);
+			Node bodyContentDiv = null;
+			// They added a new DIV <div lang="en" dir="ltr" class="mw-content-ltr"> outside original Body
+			if (contentNodeList.size() > 0)
+			{
+				bodyContentDiv = contentNodeList.elementAt(0);
+			}
+			else
+			{
+				bodyContentDiv = htmlNode
+						.getChildren()
+						.extractAllNodesThatMatch(new BodyContentDivFilter(),
+								true).elementAt(0);
+			}
 
 			Node[] contents = bodyContentDiv.getChildren().toNodeArray();
 			result = parseContents(contents, isBulletinPage, urlWithDescription);
@@ -68,6 +81,8 @@ public class HtmlPageExtractor extends WikipediaContentExtractor
 
 		for (Node content : contents)
 		{
+			//			System.out.println("[" + content.getClass() + "]"
+			//					+ content.toPlainTextString());
 			if (content instanceof HeadingTag)
 			{
 				String headingString = toPlainTextStringWithoutReferenceSymbol(content);
@@ -339,7 +354,7 @@ public class HtmlPageExtractor extends WikipediaContentExtractor
 		System.out.println(str2);
 	}
 
-	public static void main(String[] args) throws Exception
+	public static void main(String[] args)
 	{
 		//		String str = "100 2,000, wanghong.nanjing@gmail.com The quick brown[  sda sf 1 ] fox[1][2] jumps over[3] the lazy[citation needed] dog stemming algorithms sunk age aging";
 		//		//str = StringUtils.remove(str, "[*]");
@@ -358,7 +373,8 @@ public class HtmlPageExtractor extends WikipediaContentExtractor
 		//		String pageUrl = "http://en.wikipedia.org/w/index.php?title=1800%E2%80%931809";
 		//		String pageUrl = "http://en.wikipedia.org/wiki/Sleepless_in_seattle";
 		//		String pageUrl = "http://en.wikipedia.org/wiki/Filipino";
-		String pageUrl = "http://en.wikipedia.org/wiki/Adolph_Rickenbacker";
+		//		String pageUrl = "http://en.wikipedia.org/wiki/Adolph_Rickenbacker";
+		String pageUrl = "http://en.wikipedia.org/wiki/Naples";
 		@SuppressWarnings("unchecked")
 		List<Segment> segments = extractor.extractSegmentsFromWikipedia(
 				new UrlWithDescription(pageUrl, null, Collections.EMPTY_LIST),

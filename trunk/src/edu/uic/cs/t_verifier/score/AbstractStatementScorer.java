@@ -2,11 +2,13 @@ package edu.uic.cs.t_verifier.score;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
@@ -34,8 +36,8 @@ import edu.uic.cs.t_verifier.misc.LogHelper;
 import edu.uic.cs.t_verifier.score.data.AlternativeUnit;
 import edu.uic.cs.t_verifier.score.data.Category;
 import edu.uic.cs.t_verifier.score.data.MatchDetail;
-import edu.uic.cs.t_verifier.score.data.StatementMetadata;
 import edu.uic.cs.t_verifier.score.data.MatchDetail.EachSpanDetail;
+import edu.uic.cs.t_verifier.score.data.StatementMetadata;
 import edu.uic.cs.t_verifier.score.span.explanation.TermsSpanComplexExplanation;
 
 public abstract class AbstractStatementScorer extends AbstractWordOperations
@@ -149,7 +151,11 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 						if (urls.length != 0)
 						{
 							// right now we ignore the URLs... 
-							System.out.println('\t' + Arrays.toString(urls));
+							System.out
+									.println('\t'
+											+ Arrays.toString(urls)
+											+ '\t'
+											+ Arrays.asList(retrieveCategories(alternativeUnit)));
 						}
 					}
 
@@ -161,7 +167,11 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 								.getValues(FIELD_NAME__PREFIX__MATCHED_SUB_TU_URLS
 										+ matchedTopicUnit);
 						// right now we ignore the URLs... 
-						System.out.println('\t' + Arrays.toString(urls));
+						System.out
+								.println('\t'
+										+ Arrays.toString(urls)
+										+ '\t'
+										+ Arrays.asList(retrieveCategories(matchedTopicUnit)));
 					}
 					System.out.println("============================\n\n");
 				}
@@ -482,11 +492,20 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		List<AlternativeUnit> alternativeUnits = metadata.getAlternativeUnits();
 		//		System.out.print("SCOREs:\t\t");
 
-		alternativeUnits = filterAlternativeUnitsByCategories(alternativeUnits);
-
+		Entry<Category, List<AlternativeUnit>> alternativeUnitsByCategory = filterAlternativeUnitsByCategories(alternativeUnits);
+		Category category = alternativeUnitsByCategory.getKey();
+		alternativeUnits = alternativeUnitsByCategory.getValue();
 		for (AlternativeUnit alternativeUnit : alternativeUnits)
 		{
-			float score = scoreAlternativeUnit(alternativeUnit, metadata);
+			float score = 0f;
+			if (category == Category.CITY)
+			{
+				score = scoreAlternativeUnit(alternativeUnit, metadata);
+			}
+			else
+			{
+				score = scoreAlternativeUnit(alternativeUnit, metadata);
+			}
 			//			System.out.print("[" + alternativeUnit + "]:" + score + " | ");
 			System.out.println(alternativeUnit + "\t" + score);
 			//			System.out.println(alternativeUnit);
@@ -518,7 +537,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		return mostMatchedAlternativeUnits;
 	}
 
-	private List<AlternativeUnit> filterAlternativeUnitsByCategories(
+	private Entry<Category, List<AlternativeUnit>> filterAlternativeUnitsByCategories(
 			List<AlternativeUnit> alternativeUnits)
 	{
 		Map<Category, List<AlternativeUnit>> alternativeUnitsByCategory = new HashMap<Category, List<AlternativeUnit>>();
@@ -545,15 +564,25 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 
 		}
 
-		List<AlternativeUnit> alternativeUnitsOfPeople = alternativeUnitsByCategory
-				.get(Category.PEOPLE);
-		if (alternativeUnitsOfPeople != null
-				&& alternativeUnitsOfPeople.size() >= 2) // at least 2/5 AUs are people
+		for (Category category : Category.values())
 		{
-			return alternativeUnitsOfPeople;
+			if (category == Category.OTHER)
+			{
+				continue;
+			}
+
+			List<AlternativeUnit> alternativeUnitsOfCertainCategory = alternativeUnitsByCategory
+					.get(category);
+			if (alternativeUnitsOfCertainCategory != null
+					&& alternativeUnitsOfCertainCategory.size() >= 2) // at least 2/5 AUs are certain type
+			{
+				return new SimpleEntry<Category, List<AlternativeUnit>>(
+						category, alternativeUnitsOfCertainCategory);
+			}
 		}
 
-		return alternativeUnits;
+		return new SimpleEntry<Category, List<AlternativeUnit>>(Category.OTHER,
+				alternativeUnits);
 	}
 
 	private String[] retrieveCategories(String alternativeUnitString)

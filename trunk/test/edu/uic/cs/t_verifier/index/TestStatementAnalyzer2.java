@@ -17,7 +17,7 @@ public class TestStatementAnalyzer2 extends EnhancedTestCase
 
 	private StatementAnalyzer analyzer = new StatementAnalyzer();
 
-	public void testGetUrlsByAlternativeUnit()
+	public void testGetUrlsByAlternativeUnit_1()
 	{
 		for (Statement statement : STATEMENTS)
 		{
@@ -50,4 +50,16 @@ public class TestStatementAnalyzer2 extends EnhancedTestCase
 		}
 
 	}
+
+	public void testGetUrlsByAlternativeUnit_2()
+	{
+		String tu = "is the primary language of the philippines";
+		Statement statement = new Statement(null, tu, null);
+		statement.addAlternativeUnit("filipino");
+
+		Map<String, List<UrlWithDescription>> actual = analyzer
+				.getUrlsByAlternativeUnit(statement, true);
+		System.out.println(actual);
+	}
+
 }
