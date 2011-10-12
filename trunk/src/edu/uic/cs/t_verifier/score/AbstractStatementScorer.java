@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
@@ -24,6 +25,11 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.spans.SpanNearQuery;
+import org.apache.lucene.search.spans.SpanOrQuery;
+import org.apache.lucene.search.spans.SpanQuery;
+import org.apache.lucene.search.spans.SpanTermQuery;
+import org.apache.lucene.search.spans.Spans;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
@@ -38,6 +44,8 @@ import edu.uic.cs.t_verifier.score.data.Category;
 import edu.uic.cs.t_verifier.score.data.MatchDetail;
 import edu.uic.cs.t_verifier.score.data.MatchDetail.EachSpanDetail;
 import edu.uic.cs.t_verifier.score.data.StatementMetadata;
+import edu.uic.cs.t_verifier.score.span.WindowTermVectorMapper;
+import edu.uic.cs.t_verifier.score.span.WindowTermVectorMapper.WindowEntry;
 import edu.uic.cs.t_verifier.score.span.explanation.TermsSpanComplexExplanation;
 
 public abstract class AbstractStatementScorer extends AbstractWordOperations
@@ -48,6 +56,13 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 
 	private static final Logger MATCHING_DETAIL_LOGGER = LogHelper
 			.getMatchingDetailLogger();
+
+	private static final String __SEARCH_WORDS = "population total city density";
+
+	private final String searchWordPopulation;
+	private final String searchWordTotal;
+	private final String searchWordCity;
+	private final String searchWordDensity;
 
 	private File indexFolder = null;
 	private IndexReader indexReader = null;
@@ -73,6 +88,12 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		this.indexSearcher = new IndexSearcher(indexReader);
 		// Defined as default Similarity in Config.java
 		// this.indexSearcher.setSimilarity(new StatementSimilarity());
+
+		List<String> searchWords = porterStemmingAnalyzeUsingDefaultStopWords(__SEARCH_WORDS);
+		searchWordPopulation = searchWords.get(0);
+		searchWordTotal = searchWords.get(1);
+		searchWordCity = searchWords.get(2);
+		searchWordDensity = searchWords.get(3);
 	}
 
 	public void close()
@@ -208,7 +229,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		MATCHING_DETAIL_LOGGER.debug(detail);
 	}
 
-	private float scoreAlternativeUnit(AlternativeUnit alternativeUnit,
+	private float scoreNormalAlternativeUnit(AlternativeUnit alternativeUnit,
 			StatementMetadata metadata)
 	{
 		logMatchingDetail(LogHelper.LOG_LAYER_ONE_BEGIN + "AU["
@@ -315,7 +336,8 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		String[] allStemmedNonstopWordsInTopicUnit = metadata
 				.getStemmedNonstopTUWords();
 
-		boolean isFrontPositionBetter = metadata.isFrontPositionBetter();
+		// TODO we don't use it now
+		boolean isFrontPositionBetter = false/*metadata.isFrontPositionBetter()*/;
 
 		float maxScore = 0f;
 		for (String subTopicUnit : subTopicUnits)
@@ -498,13 +520,18 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		for (AlternativeUnit alternativeUnit : alternativeUnits)
 		{
 			float score = 0f;
-			if (category == Category.CITY)
+			switch (category)
 			{
-				score = scoreAlternativeUnit(alternativeUnit, metadata);
-			}
-			else
-			{
-				score = scoreAlternativeUnit(alternativeUnit, metadata);
+				case CITY:
+					score = scoreCityAlternativeUnit(alternativeUnit, metadata);
+					break;
+				case PEOPLE:
+				case OTHER:
+					score = scoreNormalAlternativeUnit(alternativeUnit,
+							metadata);
+					break;
+				default:
+					Assert.isTrue(false);
 			}
 			//			System.out.print("[" + alternativeUnit + "]:" + score + " | ");
 			System.out.println(alternativeUnit + "\t" + score);
@@ -520,21 +547,184 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 				mostMatchedAlternativeUnits.add(alternativeUnit.getString());
 			}
 		}
-		//		System.out.println();
-		//
-		//		if (!mostMatchedAlternativeUnits.isEmpty())
-		//		{
-		//			System.out.println("MATCHED_AU:\t" + mostMatchedAlternativeUnits
-		//					+ ":" + maxScore);
-		//		}
-		//		else
-		//		{
-		//			System.out.println("NO AU MATCHED... ");
-		//		}
-		//
-		//		System.out.print("============================");
 
 		return mostMatchedAlternativeUnits;
+	}
+
+	private float scoreCityAlternativeUnit(AlternativeUnit alternativeUnit,
+			StatementMetadata metadata)
+	{
+		logMatchingDetail(LogHelper.LOG_LAYER_ONE_BEGIN + "AU<City>["
+				+ alternativeUnit.getString() + "], StatementType["
+				+ metadata.getStatementType() + "]");
+
+		float finalScore = 0f;
+		Assert.isTrue(!metadata.scoreByAlternativeUnitOnly(),
+				"Right now, only AU with StatementType.YEAR is scored by AU only. ");
+
+		if (metadata.getStatementType() == StatementType.SUPERLATIVE_STRING)
+		{
+			// score by population of the city
+			int population = scoreByPopulationOfCity(alternativeUnit, metadata);
+			if (population == 0)
+			{
+				// if we can't find population, then use normal way
+				finalScore = scoreNormalAlternativeUnit(alternativeUnit,
+						metadata);
+			}
+			else
+			{
+				finalScore = population;
+			}
+
+		}
+		else
+		{
+			// use normal way
+			finalScore = scoreNormalAlternativeUnit(alternativeUnit, metadata);
+		}
+
+		logScoreDetail("FINAL SCORE for AU<City>["
+				+ alternativeUnit
+				+ "]: "
+				+ finalScore
+				+ " ==========================================================================================================\n\n\n\n");
+
+		logMatchingDetail(LogHelper.LOG_LAYER_ONE_END
+				+ "AU<City>["
+				+ alternativeUnit.getString()
+				+ "] ==========================================================================================================\n\n");
+
+		return finalScore;
+	}
+
+	/*public static void main(String[] args)
+	{
+		AbstractStatementScorer scorer = new AbstractStatementScorer(
+				Config.INDEX_FOLDER, IndexBy.PARAGRAPH)
+		{
+			@Override
+			protected Query prepareTopicUnitQuery(
+					String[] allStemmedNonstopWordsInTopicUnit,
+					int alternativeUnitWeight)
+			{
+				return null;
+			}
+
+			@Override
+			protected Query getAlternativeUnitAndNonSubTopicUnitQuery(
+					List<String> stemmedNonStopWordsInAlternativeUnit,
+					List<String> stemmedNonStopWordsInTopicUnitButNotInSubTopicUnit,
+					boolean isFrontPositionBetter, int alternativeUnitWeight)
+			{
+				return null;
+			}
+		};
+
+		List<StatementMetadata> allMetadata = scorer
+				.retrieveStatementsMetadata(false);
+		for (StatementMetadata metadata : allMetadata)
+		{
+			if (metadata.getStatementId() == 19
+					|| metadata.getStatementId() == 22
+					|| metadata.getStatementId() == 32)
+			{
+				List<AlternativeUnit> aus = metadata.getAlternativeUnits();
+				Entry<Category, List<AlternativeUnit>> alternativeUnitsByCategory = scorer
+						.filterAlternativeUnitsByCategories(aus);
+
+				for (AlternativeUnit alternativeUnit : alternativeUnitsByCategory
+						.getValue())
+				{
+					System.out.println(alternativeUnit.getString());
+					scorer.scoreByPopulationOfCity(alternativeUnit, metadata);
+				}
+			}
+		}
+
+	}*/
+
+	private int scoreByPopulationOfCity(AlternativeUnit alternativeUnit,
+			StatementMetadata metadata)
+	{
+		BooleanQuery query = new BooleanQuery();
+		query.add(new TermQuery(new Term(FIELD_NAME__DOC_TYPE,
+				DOC_TYPE__PAGE_CONTENT)), Occur.MUST);
+		query.add(new TermQuery(new Term(FIELD_NAME__MATCHED_UNIT,
+				alternativeUnit.getString())), Occur.MUST); // search only in one certain AlternativeUnit page
+
+		try
+		{
+			TopDocs topDocs = indexSearcher.search(query, 10);
+			Assert.isTrue(topDocs.totalHits == 1,
+					"There should be one document matched for AU["
+							+ alternativeUnit.getString() + "]! ");
+			ScoreDoc scoreDoc = topDocs.scoreDocs[0];
+			int docNumber = scoreDoc.doc;
+
+			SpanTermQuery populationQuery = new SpanTermQuery(new Term(
+					getIndexingFieldName(), searchWordPopulation));
+			SpanOrQuery totalOrCityOrDensityQuery = new SpanOrQuery(
+					new SpanTermQuery(new Term(getIndexingFieldName(),
+							searchWordTotal)), new SpanTermQuery(new Term(
+							getIndexingFieldName(), searchWordCity)),
+					new SpanTermQuery(new Term(getIndexingFieldName(),
+							searchWordDensity)));
+			SpanNearQuery spanNearQuery = new SpanNearQuery(new SpanQuery[] {
+					populationQuery, totalOrCityOrDensityQuery }, 4, true);
+
+			Spans spans = spanNearQuery.getSpans(indexReader);
+			if (spans.skipTo(docNumber))
+			{
+				int maxNumber = 0;
+				Assert.isTrue(docNumber == spans.doc());
+				WindowTermVectorMapper tvm = null;
+				outter: do
+				{
+					int start = spans.start();
+					int end = spans.end() + 1;
+					tvm = new WindowTermVectorMapper(start, end);
+					indexReader.getTermFreqVector(docNumber,
+							getIndexingFieldName(), tvm);
+
+					boolean hasNumeric = false;
+					for (WindowEntry entry : tvm.getAllEntriesInWindow())
+					{
+						if (StringUtils.isNumeric(entry.getTerm()))
+						{
+							int number = Integer.parseInt(entry.getTerm());
+							// System.out.println(entry);
+							if (StatementType.match(entry.getTerm()) == StatementType.YEAR)
+							{
+								// there's always date like '(30 April 2011)' nearby
+								hasNumeric = true;
+							}
+							else if (maxNumber < number)
+							{
+								maxNumber = number;
+							}
+						}
+
+					}
+					tvm.clean();
+
+					if (hasNumeric) // the first window contains numeric
+					{
+						break outter;
+					}
+				}
+				while (spans.next() && spans.doc() == docNumber);
+
+				// System.out.println("*" + maxNumber);
+				return maxNumber;
+			}
+
+			return 0;
+		}
+		catch (IOException e)
+		{
+			throw new GeneralException(e);
+		}
 	}
 
 	private Entry<Category, List<AlternativeUnit>> filterAlternativeUnitsByCategories(

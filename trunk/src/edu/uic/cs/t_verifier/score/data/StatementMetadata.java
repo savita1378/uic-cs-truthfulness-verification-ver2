@@ -163,9 +163,14 @@ public class StatementMetadata
 		return statementType == StatementType.YEAR;
 	}
 
-	public boolean isFrontPositionBetter()
+	public StatementType getStatementType()
+	{
+		return statementType;
+	}
+
+	/*public boolean isFrontPositionBetter()
 	{
 		return statementType == StatementType.SUPERLATIVE_STRING;
-	}
+	}*/
 
 }
