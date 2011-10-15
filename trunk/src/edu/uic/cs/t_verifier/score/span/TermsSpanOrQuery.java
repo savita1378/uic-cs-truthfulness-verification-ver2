@@ -1,6 +1,7 @@
 package edu.uic.cs.t_verifier.score.span;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.lucene.search.Searcher;
@@ -15,28 +16,32 @@ public class TermsSpanOrQuery extends SpanOrQuery
 
 	private Set<String> termsInQuery = null;
 	private String fieldName = null;
-	// private List<String> stemmedNonStopWordsInAlternativeUnit = null;
+	private List<String> stemmedNonStopWordsInAlternativeUnit = null;
 
 	private int alternativeUnitWeight;
 
-	public TermsSpanOrQuery(SpanQuery[] clauses, String fieldName,
+	private int docID;
+
+	public TermsSpanOrQuery(int docID, SpanQuery[] clauses, String fieldName,
 			Set<String> termsInQuery,
-			/*List<String> stemmedNonStopWordsInAlternativeUnit,*/
+			List<String> stemmedNonStopWordsInAlternativeUnit,
 			int alternativeUnitWeight)
 	{
 		super(clauses);
 
+		this.docID = docID;
 		this.fieldName = fieldName;
 		this.termsInQuery = termsInQuery;
-		// this.stemmedNonStopWordsInAlternativeUnit = stemmedNonStopWordsInAlternativeUnit;
+		this.stemmedNonStopWordsInAlternativeUnit = stemmedNonStopWordsInAlternativeUnit;
 		this.alternativeUnitWeight = alternativeUnitWeight;
 	}
 
 	@Override
 	public Weight createWeight(Searcher searcher) throws IOException
 	{
-		return new TermsSpanWeight(this, searcher, fieldName, termsInQuery,
-		/*stemmedNonStopWordsInAlternativeUnit,*/alternativeUnitWeight);
+		return new TermsSpanWeight(docID, this, searcher, fieldName,
+				termsInQuery, stemmedNonStopWordsInAlternativeUnit,
+				alternativeUnitWeight);
 	}
 
 }

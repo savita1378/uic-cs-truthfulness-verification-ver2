@@ -275,9 +275,36 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		return finalScore;
 	}
 
+	private int retrieveDocID(String unitString)
+	{
+		BooleanQuery query = new BooleanQuery();
+		query.add(new TermQuery(new Term(FIELD_NAME__DOC_TYPE,
+				DOC_TYPE__PAGE_CONTENT)), Occur.MUST);
+		query.add(
+				new TermQuery(new Term(FIELD_NAME__MATCHED_UNIT, unitString)),
+				Occur.MUST);
+		try
+		{
+			TopDocs topDocs = indexSearcher.search(query, 10);
+			Assert.isTrue(topDocs.totalHits <= 1);
+			if (topDocs.totalHits == 0)
+			{
+				return -1;
+			}
+
+			return topDocs.scoreDocs[0].doc;
+		}
+		catch (IOException e)
+		{
+			throw new GeneralException(e);
+		}
+	}
+
 	private float scoreByAlternativeUnit(AlternativeUnit alternativeUnit,
 			StatementMetadata metadata)
 	{
+		int docID = retrieveDocID(alternativeUnit.getString());
+
 		BooleanQuery query = new BooleanQuery();
 		query.add(new TermQuery(new Term(FIELD_NAME__DOC_TYPE,
 				DOC_TYPE__PAGE_CONTENT)), Occur.MUST);
@@ -286,7 +313,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 
 		String[] allStemmedNonstopWordsInTopicUnit = metadata
 				.getStemmedNonstopTUWords();
-		Query tpoicUnitQuery = prepareTopicUnitQuery(
+		Query tpoicUnitQuery = prepareTopicUnitQuery(docID,
 				allStemmedNonstopWordsInTopicUnit, alternativeUnit.getWeight());
 
 		/*List<String> stemmedNonStopWordsInAlternativeUnit = porterStemmingAnalyzeUsingDefaultStopWords(alternativeUnit
@@ -325,7 +352,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		return score;
 	}
 
-	abstract protected Query prepareTopicUnitQuery(
+	abstract protected Query prepareTopicUnitQuery(int docID,
 			String[] allStemmedNonstopWordsInTopicUnit,
 			int alternativeUnitWeight);
 
@@ -386,8 +413,11 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 			String[] allStemmedNonstopWordsInTopicUnit,
 			boolean isFrontPositionBetter)
 	{
+		// get docID
+		int docID = retrieveDocID(subTopicUnit);
+		////////////////////////////////////////////////////////////////////////
 		Query alternativeUnitAndNonSubTopicUnitQuery = prepareAlternativeUnitAndNonSubTopicUnitQuery(
-				alternativeUnit, subTopicUnit,
+				docID, alternativeUnit, subTopicUnit,
 				allStemmedNonstopWordsInTopicUnit, isFrontPositionBetter);
 		//		Query alternativeUnitQuery = prepareAlternativeUnitQuery(alternativeUnit);
 
@@ -465,7 +495,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		return null;
 	}
 
-	private Query prepareAlternativeUnitAndNonSubTopicUnitQuery(
+	private Query prepareAlternativeUnitAndNonSubTopicUnitQuery(int docID,
 			AlternativeUnit alternativeUnit, String subTopicUnit,
 			String[] allStemmedNonstopWordsInTopicUnit,
 			boolean isFrontPositionBetter)
@@ -476,11 +506,16 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		List<String> stemmedNonStopWordsInSubTopicUnit = porterStemmingAnalyzeUsingDefaultStopWords(subTopicUnit);
 		List<String> stemmedNonStopWordsInTopicUnitButNotInSubTopicUnit = new ArrayList<String>(
 				Arrays.asList(allStemmedNonstopWordsInTopicUnit));
+		//		System.out.println("*" + stemmedNonStopWordsInSubTopicUnit);
+		//		System.out.println("*"
+		//				+ stemmedNonStopWordsInTopicUnitButNotInSubTopicUnit);
 		Assert.isTrue(stemmedNonStopWordsInTopicUnitButNotInSubTopicUnit
 				.removeAll(stemmedNonStopWordsInSubTopicUnit));
+		//		System.out.println("*"
+		//				+ stemmedNonStopWordsInTopicUnitButNotInSubTopicUnit);
 
 		Query nonSubTopicUnitQuery = getAlternativeUnitAndNonSubTopicUnitQuery(
-				stemmedNonStopWordsInAlternativeUnit,
+				docID, stemmedNonStopWordsInAlternativeUnit,
 				stemmedNonStopWordsInTopicUnitButNotInSubTopicUnit,
 				isFrontPositionBetter, alternativeUnit.getWeight());
 
@@ -488,7 +523,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 	}
 
 	abstract protected Query getAlternativeUnitAndNonSubTopicUnitQuery(
-			List<String> stemmedNonStopWordsInAlternativeUnit,
+			int docID, List<String> stemmedNonStopWordsInAlternativeUnit,
 			List<String> stemmedNonStopWordsInTopicUnitButNotInSubTopicUnit,
 			boolean isFrontPositionBetter, int alternativeUnitWeight);
 
