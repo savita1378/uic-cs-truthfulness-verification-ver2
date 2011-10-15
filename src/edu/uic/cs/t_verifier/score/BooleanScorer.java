@@ -17,7 +17,7 @@ public class BooleanScorer extends AbstractStatementScorer
 	}
 
 	@Override
-	protected Query getAlternativeUnitAndNonSubTopicUnitQuery(
+	protected Query getAlternativeUnitAndNonSubTopicUnitQuery(int docID,
 			List<String> stemmedNonStopWordsInAlternativeUnit,
 			List<String> stemmedNonStopWordsInTopicUnitButNotInSubTopicUnit,
 			boolean isFrontPositionBetter, int alternativeUnitWeight)
@@ -42,7 +42,7 @@ public class BooleanScorer extends AbstractStatementScorer
 	}
 
 	@Override
-	protected Query prepareTopicUnitQuery(
+	protected Query prepareTopicUnitQuery(int docID,
 			String[] allStemmedNonstopWordsInTopicUnit,
 			int alternativeUnitWeight)
 	{

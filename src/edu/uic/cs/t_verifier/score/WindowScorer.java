@@ -32,7 +32,7 @@ public class WindowScorer extends AbstractStatementScorer
 	}
 
 	@Override
-	protected Query getAlternativeUnitAndNonSubTopicUnitQuery(
+	protected Query getAlternativeUnitAndNonSubTopicUnitQuery(int docID,
 			List<String> stemmedNonStopWordsInAlternativeUnit,
 			List<String> stemmedNonStopWordsInTopicUnitButNotInSubTopicUnit,
 			boolean isFrontPositionBetter, int alternativeUnitWeight)
@@ -40,7 +40,7 @@ public class WindowScorer extends AbstractStatementScorer
 		List<List<String>> powerset = powerset(
 				stemmedNonStopWordsInTopicUnitButNotInSubTopicUnit, false);
 
-		SpanNearQuery alternativeUnitQuery = getAlternativeUnitQuery(stemmedNonStopWordsInAlternativeUnit);
+		SpanQuery alternativeUnitQuery = getAlternativeUnitQuery(stemmedNonStopWordsInAlternativeUnit);
 
 		// if there's no TU words
 		if (powerset.isEmpty())
@@ -51,9 +51,9 @@ public class WindowScorer extends AbstractStatementScorer
 		Set<String> termsInQuery = new HashSet<String>(
 				stemmedNonStopWordsInTopicUnitButNotInSubTopicUnit); // only consider TU now
 
-		TermsSpanOrQuery result = getTopicUnitQuery(powerset,
+		TermsSpanOrQuery result = getTopicUnitQuery(docID, powerset,
 				alternativeUnitQuery, termsInQuery,
-				/*stemmedNonStopWordsInAlternativeUnit,*/alternativeUnitWeight);
+				stemmedNonStopWordsInAlternativeUnit, alternativeUnitWeight);
 
 		return result;
 	}
@@ -67,14 +67,15 @@ public class WindowScorer extends AbstractStatementScorer
 		}
 	};
 
-	private TermsSpanOrQuery getTopicUnitQuery(List<List<String>> powerset,
-			SpanNearQuery alternativeUnitQuery, Set<String> termsInQuery,
-			/*List<String> stemmedNonStopWordsInAlternativeUnit,*/
+	private TermsSpanOrQuery getTopicUnitQuery(int docID,
+			List<List<String>> powerset, SpanQuery alternativeUnitQuery,
+			Set<String> termsInQuery,
+			List<String> stemmedNonStopWordsInAlternativeUnit,
 			int alternativeUnitWeight)
 	{
-		TermsSpanOrQuery orQuery = new TermsSpanOrQuery(new SpanQuery[0],
-				getIndexingFieldName(), termsInQuery,
-				/*stemmedNonStopWordsInAlternativeUnit,*/alternativeUnitWeight);
+		TermsSpanOrQuery orQuery = new TermsSpanOrQuery(docID,
+				new SpanQuery[0], getIndexingFieldName(), termsInQuery,
+				stemmedNonStopWordsInAlternativeUnit, alternativeUnitWeight);
 
 		Collections.sort(powerset, LIST_REVERSE_SIZE_COMPARATOR);
 		for (List<String> eachCombination : powerset)
@@ -137,10 +138,14 @@ public class WindowScorer extends AbstractStatementScorer
 		return orQuery;
 	}*/
 
-	private SpanNearQuery getAlternativeUnitQuery(
+	private SpanQuery getAlternativeUnitQuery(
 			List<String> stemmedNonStopWordsInAlternativeUnit)
 	{
 		SpanTermQuery[] wordsInAU = constructAuTerms(stemmedNonStopWordsInAlternativeUnit);
+		if (wordsInAU.length == 1)
+		{
+			return wordsInAU[0];
+		}
 
 		// AU is considered as a whole, and no span within - (span=0, inOrder) 
 		SpanNearQuery result = new SpanNearQuery(wordsInAU, 0, true);
@@ -206,7 +211,7 @@ public class WindowScorer extends AbstractStatementScorer
 	}
 
 	@Override
-	protected Query prepareTopicUnitQuery(
+	protected Query prepareTopicUnitQuery(int docID,
 			String[] allStemmedNonstopWordsInTopicUnit,
 			int alternativeUnitWeight)
 	{
@@ -218,9 +223,9 @@ public class WindowScorer extends AbstractStatementScorer
 
 		Set<String> termsInQuery = new HashSet<String>(
 				allStemmedNonstopWordsInTopicUnitList);
-		// @SuppressWarnings("unchecked")
-		TermsSpanOrQuery result = getTopicUnitQuery(powerset, null,
-				termsInQuery, /*Collections.EMPTY_LIST,*/alternativeUnitWeight);
+		@SuppressWarnings("unchecked")
+		TermsSpanOrQuery result = getTopicUnitQuery(docID, powerset, null,
+				termsInQuery, Collections.EMPTY_LIST, alternativeUnitWeight);
 
 		return result;
 	}

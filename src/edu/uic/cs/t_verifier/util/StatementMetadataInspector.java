@@ -16,6 +16,7 @@ public class StatementMetadataInspector
 		{
 			@Override
 			protected Query getAlternativeUnitAndNonSubTopicUnitQuery(
+					int docID,
 					List<String> stemmedNonStopWordsInAlternativeUnit,
 					List<String> stemmedNonStopWordsInTopicUnitButNotInSubTopicUnit,
 					boolean isFrontPositionBetter, int alternativeUnitWeight)
@@ -24,7 +25,7 @@ public class StatementMetadataInspector
 			}
 
 			@Override
-			protected Query prepareTopicUnitQuery(
+			protected Query prepareTopicUnitQuery(int docID,
 					String[] allStemmedNonstopWordsInTopicUnit,
 					int alternativeUnitWeight)
 			{
