@@ -175,7 +175,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 							System.out
 									.println('\t'
 											+ Arrays.toString(urls)
-											+ '\t'
+											+ "\tCategories"
 											+ Arrays.asList(retrieveCategories(alternativeUnit)));
 						}
 					}
@@ -191,7 +191,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 						System.out
 								.println('\t'
 										+ Arrays.toString(urls)
-										+ '\t'
+										+ "\tCategories"
 										+ Arrays.asList(retrieveCategories(matchedTopicUnit)));
 					}
 					System.out.println("============================\n\n");
