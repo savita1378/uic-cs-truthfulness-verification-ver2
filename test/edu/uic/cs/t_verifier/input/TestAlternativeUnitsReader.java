@@ -27,6 +27,18 @@ public class TestAlternativeUnitsReader extends EnhancedTestCase
 
 		List<String> expected = getExpectedAsList("TestAlternativeUnitsReader.expected");
 		assertEquals(expected, actualAll);
+
+		actual = StatementCache.retrieveAllCachedStatements();
+		assertEquals(expected, actualAll);
+
+		actual = AlternativeUnitsReader.parseAllStatementsFromInputFiles();
+		assertEquals(expected, actualAll);
+
+		actual = AlternativeUnitsReader.parseAllStatementsFromInputFiles();
+		assertEquals(expected, actualAll);
+
+		actual = StatementCache.retrieveAllCachedStatements();
+		assertEquals(expected, actualAll);
 	}
 
 }

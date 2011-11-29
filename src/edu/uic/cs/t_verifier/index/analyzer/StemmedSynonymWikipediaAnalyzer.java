@@ -16,7 +16,7 @@ import org.apache.lucene.analysis.wikipedia.WikipediaTokenizer;
 
 import edu.uic.cs.t_verifier.index.synonym.SynonymEngine;
 import edu.uic.cs.t_verifier.index.synonym.SynonymFilter;
-import edu.uic.cs.t_verifier.index.synonym.WordNetSynonymEngine;
+import edu.uic.cs.t_verifier.index.synonym.WordNetSynonymEngine2;
 import edu.uic.cs.t_verifier.misc.Config;
 
 public abstract class StemmedSynonymWikipediaAnalyzer extends Analyzer
@@ -25,7 +25,8 @@ public abstract class StemmedSynonymWikipediaAnalyzer extends Analyzer
 
 	public StemmedSynonymWikipediaAnalyzer() throws IOException
 	{
-		this.engine = new WordNetSynonymEngine(Config.WORDNET_INDEX_FOLDER);
+		// this.engine = new WordNetSynonymEngine(Config.WORDNET_INDEX_FOLDER);
+		this.engine = new WordNetSynonymEngine2(Config.WORDNET_FOLDER);
 	}
 
 	public TokenStream tokenStream(String fieldName, Reader reader)
@@ -63,7 +64,7 @@ public abstract class StemmedSynonymWikipediaAnalyzer extends Analyzer
 		// String INPUT = "1964-10-16 1,000, 90s";
 		// String INPUT = "Population luminosity and its proximity to the observer. Below are listed the 91 brightest individual stars in order of their apparent magnitudes in the visible spectrum as seen from Earth";
 		String INPUT = "history famous famou histori mount climb mountain mexico";
-		
+
 		AnalyzerUtils.displayTokensWithPositions(analyzer, INPUT);
 	}
 }

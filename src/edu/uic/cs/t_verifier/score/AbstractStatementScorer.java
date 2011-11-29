@@ -6,9 +6,11 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
@@ -36,9 +38,13 @@ import org.apache.lucene.store.FSDirectory;
 import edu.uic.cs.t_verifier.common.AbstractWordOperations;
 import edu.uic.cs.t_verifier.common.StatementType;
 import edu.uic.cs.t_verifier.index.IndexConstants;
+import edu.uic.cs.t_verifier.input.AlternativeUnitsReader;
+import edu.uic.cs.t_verifier.input.StatementCache;
+import edu.uic.cs.t_verifier.input.data.Statement;
 import edu.uic.cs.t_verifier.misc.Assert;
 import edu.uic.cs.t_verifier.misc.GeneralException;
 import edu.uic.cs.t_verifier.misc.LogHelper;
+import edu.uic.cs.t_verifier.nlp.NLPAnalyzer;
 import edu.uic.cs.t_verifier.score.data.AlternativeUnit;
 import edu.uic.cs.t_verifier.score.data.Category;
 import edu.uic.cs.t_verifier.score.data.MatchDetail;
@@ -68,6 +74,8 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 	private IndexReader indexReader = null;
 	private IndexSearcher indexSearcher = null;
 
+	private NLPAnalyzer nlpAnalyzer = null;
+
 	private IndexBy indexBy;
 
 	protected AbstractStatementScorer(String indexFolder, IndexBy indexBy)
@@ -94,6 +102,10 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		searchWordTotal = searchWords.get(1);
 		searchWordCity = searchWords.get(2);
 		searchWordDensity = searchWords.get(3);
+
+		nlpAnalyzer = new NLPAnalyzer();
+		// load the StatementCache
+		AlternativeUnitsReader.parseAllStatementsFromInputFiles();
 	}
 
 	public void close()
@@ -549,6 +561,9 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		List<AlternativeUnit> alternativeUnits = metadata.getAlternativeUnits();
 		//		System.out.print("SCOREs:\t\t");
 
+		/*updateAlternativeUnitWeightByCoreNouns(alternativeUnits, metadata);*/
+		updateAlternativeUnitWeightBySubject(alternativeUnits, metadata);
+
 		Entry<Category, List<AlternativeUnit>> alternativeUnitsByCategory = filterAlternativeUnitsByCategories(alternativeUnits);
 		Category category = alternativeUnitsByCategory.getKey();
 		alternativeUnits = alternativeUnitsByCategory.getValue();
@@ -761,6 +776,117 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 			throw new GeneralException(e);
 		}
 	}
+
+	private void updateAlternativeUnitWeightBySubject(
+			List<AlternativeUnit> alternativeUnits, StatementMetadata metadata)
+	{
+		List<Statement> allCachedStatements = StatementCache
+				.retrieveAllCachedStatements();
+		int id = metadata.getStatementId();
+		Statement statement = allCachedStatements.get(id - 1);
+		Assert.isTrue(statement.getId().intValue() == id);
+
+		// String subjectTerm = nlpAnalyzer.retrieveSubject(statement);
+		String subjectTerm = nlpAnalyzer
+				.retrieveSubjectIfSameTypeAsAU(statement);
+		if (subjectTerm == null)
+		{
+			return;
+		}
+
+		for (AlternativeUnit alternativeUnit : alternativeUnits)
+		{
+			String[] categories = retrieveCategories(alternativeUnit
+					.getString());
+			if (categories == null)
+			{
+				continue;
+			}
+
+			Set<String> stemmedTermsInAllCategories = new HashSet<String>();
+			for (String categoryString : categories)
+			{
+				stemmedTermsInAllCategories
+						.addAll(porterStemmingAnalyzeUsingDefaultStopWords(categoryString));
+			}
+
+			// FIXME consider synonyms?
+			if (stemmedTermsInAllCategories.contains(stem(subjectTerm)))
+			{
+				alternativeUnit.setWeight(alternativeUnit.getWeight() * 4);
+			}
+		}
+
+	}
+
+	/*privateList<AlternativeUnit>void updateAlternativeUnitWeightByCoreNouns(
+			List<AlternativeUnit> alternativeUnits, StatementMetadata metadata)
+	{
+		List<Statement> allCachedStatements = StatementCache
+				.retrieveAllCachedStatements();
+		int id = metadata.getStatementId();
+		Statement statement = allCachedStatements.get(id - 1);
+		Assert.isTrue(statement.getId().intValue() == id);
+
+		List<List<String>> nounsGroups = nlpAnalyzer.retrieveNouns(statement);
+		if (nounsGroups.isEmpty())
+		{
+			return alternativeUnits;
+		}
+		// TODO currently, we do not differentiate the nouns in different group
+		List<String> allStemmedNouns = new ArrayList<String>();
+		for (List<String> group : nounsGroups)
+		{
+			for (String noun : group)
+			{
+				allStemmedNouns
+						.addAll(porterStemmingAnalyzeUsingDefaultStopWords(noun));
+			}
+		}
+		if (allStemmedNouns.isEmpty())
+		{
+			return alternativeUnits;
+		}
+		////////////////////////////////////////////////////////////////////////
+
+		List<AlternativeUnit> result = new ArrayList<AlternativeUnit>(
+				alternativeUnits.size());
+
+		for (AlternativeUnit alternativeUnit : alternativeUnits)
+		{
+			String[] categories = retrieveCategories(alternativeUnit
+					.getString());
+			if (categories == null)
+			{
+				result.add(alternativeUnit);
+				continue;
+			}
+
+			Set<String> stemmedTermsInAllCategories = new HashSet<String>();
+			for (String categoryString : categories)
+			{
+				stemmedTermsInAllCategories
+						.addAll(porterStemmingAnalyzeUsingDefaultStopWords(categoryString));
+			}
+
+			int count = 0;
+			for (String stemmedNoun : allStemmedNouns)
+			{
+				// FIXME consider synonyms?
+				if (stemmedTermsInAllCategories.contains(stemmedNoun))
+				{
+					count++;
+				}
+			}
+
+			if (count > 0)
+			{
+				alternativeUnit.setWeight(alternativeUnit.getWeight()
+						* (count + 1));
+			}
+		}
+
+	}*/
 
 	private Entry<Category, List<AlternativeUnit>> filterAlternativeUnitsByCategories(
 			List<AlternativeUnit> alternativeUnits)
