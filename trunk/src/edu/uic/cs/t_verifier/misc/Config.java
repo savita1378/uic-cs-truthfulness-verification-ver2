@@ -78,4 +78,11 @@ public class Config
 	public static final String WIKIPEDIACONTENTEXTRACTOR_CLASS_NAME = CONFIG
 			.getProperty("WikipediaContentExtractor_class_name");
 
+	public static final String WORDNET_FOLDER = CONFIG
+			.getProperty("wordnet_folder");
+
+	public static final int WORDNET_SYNSET_FREQUENCY_LOWER_BOUND = Integer
+			.parseInt(CONFIG
+					.getProperty("wordnet_synset_frequency_lower_bound"));
+
 }

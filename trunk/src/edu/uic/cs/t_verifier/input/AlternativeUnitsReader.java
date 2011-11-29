@@ -2,7 +2,6 @@ package edu.uic.cs.t_verifier.input;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +30,8 @@ public class AlternativeUnitsReader
 
 	public static List<Statement> parseAllStatementsFromInputFiles()
 	{
+		StatementCache.reflash();
+
 		File inputFolder = new File(INPUT_FOLDER_PATH);
 		Assert.isTrue(inputFolder.isDirectory());
 
@@ -40,14 +41,13 @@ public class AlternativeUnitsReader
 			return Collections.emptyList();
 		}
 
-		List<Statement> result = new ArrayList<Statement>();
 		for (File file : inputFiles)
 		{
 			Collection<Statement> statements = parseStatementsFromOneInputFile(file);
-			result.addAll(statements);
+			StatementCache.addAll(statements);
 		}
 
-		return result;
+		return StatementCache.retrieveAllCachedStatements();
 	}
 
 	private static Collection<Statement> parseStatementsFromOneInputFile(
