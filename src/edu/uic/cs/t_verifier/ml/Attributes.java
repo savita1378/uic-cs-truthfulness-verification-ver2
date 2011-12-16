@@ -1,4 +1,4 @@
-package edu.uic.cs.t_verifier.score;
+package edu.uic.cs.t_verifier.ml;
 
 public interface Attributes
 {

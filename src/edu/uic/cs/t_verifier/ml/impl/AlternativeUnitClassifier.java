@@ -21,7 +21,7 @@ import weka.core.Instances;
 import edu.uic.cs.t_verifier.misc.Assert;
 import edu.uic.cs.t_verifier.misc.Config;
 import edu.uic.cs.t_verifier.ml.AttributeGatherer;
-import edu.uic.cs.t_verifier.score.Attributes;
+import edu.uic.cs.t_verifier.ml.Attributes;
 import edu.uic.cs.t_verifier.score.IndexBy;
 import edu.uic.cs.t_verifier.score.WindowScorer;
 import edu.uic.cs.t_verifier.score.data.AlternativeUnit;
