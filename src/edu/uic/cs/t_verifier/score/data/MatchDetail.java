@@ -71,6 +71,26 @@ public class MatchDetail
 			return stringBuilder.toString();
 		}
 
+		public int getMatchedNumber()
+		{
+			return matchedTermsInQuery.size();
+		}
+
+		public int getNotMatchedNumber()
+		{
+			return notMatchedTermsInQuery.size();
+		}
+
+		public int getTotalTermsNumber()
+		{
+			return getMatchedNumber() + getNotMatchedNumber();
+		}
+
+		public int getMatchWindowSize()
+		{
+			return matchLength;
+		}
+
 	}
 
 	public void addSpanDetail(TreeSet<String> matchedTerms,

@@ -8,10 +8,13 @@ public class AlternativeUnit
 	private String[] words = null;
 	private int weight = 0;
 
-	public AlternativeUnit(String auString)
+	private int statementIdBelongsTo;
+
+	public AlternativeUnit(String auString, int statementIdBelongsTo)
 	{
 		this.auString = auString;
 		this.words = StringUtils.split(auString);
+		this.statementIdBelongsTo = statementIdBelongsTo;
 	}
 
 	@Override
@@ -38,6 +41,39 @@ public class AlternativeUnit
 	public String getString()
 	{
 		return auString;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((auString == null) ? 0 : auString.hashCode());
+		result = prime * result + statementIdBelongsTo;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AlternativeUnit other = (AlternativeUnit) obj;
+		if (auString == null)
+		{
+			if (other.auString != null)
+				return false;
+		}
+		else if (!auString.equals(other.auString))
+			return false;
+		if (statementIdBelongsTo != other.statementIdBelongsTo)
+			return false;
+		return true;
 	}
 
 }
