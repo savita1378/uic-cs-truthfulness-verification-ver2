@@ -1,5 +1,6 @@
 package edu.uic.cs.t_verifier.score.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.uic.cs.t_verifier.common.AbstractWordOperations;
@@ -33,5 +34,16 @@ public enum Category
 		}
 
 		return OTHER;
+	}
+
+	public static List<String> toStringList()
+	{
+		List<String> result = new ArrayList<String>(values().length);
+		for (Category category : values())
+		{
+			result.add(category.toString());
+		}
+
+		return result;
 	}
 }

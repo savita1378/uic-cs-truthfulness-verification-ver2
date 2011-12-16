@@ -43,7 +43,7 @@ public class StatementMetadata
 				alternativeUnits.length);
 		for (String auString : alternativeUnits)
 		{
-			result.add(new AlternativeUnit(auString));
+			result.add(new AlternativeUnit(auString, statementId));
 		}
 
 		if (statementType == StatementType.YEAR)

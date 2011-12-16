@@ -44,6 +44,7 @@ import edu.uic.cs.t_verifier.input.data.Statement;
 import edu.uic.cs.t_verifier.misc.Assert;
 import edu.uic.cs.t_verifier.misc.GeneralException;
 import edu.uic.cs.t_verifier.misc.LogHelper;
+import edu.uic.cs.t_verifier.ml.AttributeGatherer;
 import edu.uic.cs.t_verifier.nlp.NLPAnalyzer;
 import edu.uic.cs.t_verifier.score.data.AlternativeUnit;
 import edu.uic.cs.t_verifier.score.data.Category;
@@ -55,7 +56,7 @@ import edu.uic.cs.t_verifier.score.span.WindowTermVectorMapper.WindowEntry;
 import edu.uic.cs.t_verifier.score.span.explanation.TermsSpanComplexExplanation;
 
 public abstract class AbstractStatementScorer extends AbstractWordOperations
-		implements IndexConstants
+		implements IndexConstants, Attributes
 {
 	private static final Logger SCORE_DETAIL_LOGGER = LogHelper
 			.getScoreDetailLogger();
@@ -75,6 +76,8 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 	private IndexSearcher indexSearcher = null;
 
 	private NLPAnalyzer nlpAnalyzer = null;
+
+	private AttributeGatherer attributeGatherer = AttributeGatherer.DummyAttributeGatherer;
 
 	private IndexBy indexBy;
 
@@ -346,10 +349,9 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		MatchDetail matchDetail = doQueryAndScore(alternativeUnit.getString(),
 				query);
 		logMatchingDetail("By AU: " + alternativeUnit.getString());
-		for (EachSpanDetail span : matchDetail.getSpanDetails())
-		{
-			logMatchingDetail(span.toString());
-		}
+
+		EachSpanDetail bestSpan = logAndFindBestSpan(null, matchDetail);
+		gatherAttributesFromBestSpan(bestSpan, alternativeUnit, true);
 
 		float score = matchDetail.getScore();
 		logMatchingDetail("Score: " + score + " = Sqrt(" + score * score
@@ -362,6 +364,65 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 				+ " =======================================================\n\n");
 
 		return score;
+	}
+
+	private EachSpanDetail logAndFindBestSpan(EachSpanDetail bestSpan,
+			MatchDetail matchDetail)
+	{
+		for (EachSpanDetail span : matchDetail.getSpanDetails())
+		{
+			if (bestSpan == null
+					|| bestSpan.getMatchedNumber() < span.getMatchedNumber() // the more matched, the better
+					|| (bestSpan.getMatchedNumber() == span.getMatchedNumber() && bestSpan // if matched numbers are same,
+							.getMatchWindowSize() > span.getMatchWindowSize())) // the smaller window size, the better
+			{
+				bestSpan = span;
+			}
+
+			logMatchingDetail(span.toString());
+		}
+
+		return bestSpan;
+	}
+
+	private void gatherAttributesFromBestSpan(EachSpanDetail bestSPan,
+			AlternativeUnit alternativeUnit, boolean forAU)
+	{
+		if (bestSPan == null)
+		{
+			return;
+		}
+
+		if (forAU)
+		{
+			attributeGatherer.addAttribute(alternativeUnit,
+					ATTR_MATCHED_BY_AU.name, ATTR_VALUE_TRUE,
+					ATTR_MATCHED_BY_AU.domain);
+
+			attributeGatherer.addAttribute(alternativeUnit,
+					ATTR_AU_TOTAL_NUM_TO_MATCH.name,
+					bestSPan.getTotalTermsNumber());
+			attributeGatherer.addAttribute(alternativeUnit,
+					ATTR_AU_MAX_NUM_MATCHED.name, bestSPan.getMatchedNumber());
+			attributeGatherer.addAttribute(alternativeUnit,
+					ATTR_AU_MIN_WIN_SIZE/*_FOR_MAX_MATCH*/.name,
+					bestSPan.getMatchWindowSize());
+		}
+		else
+		{
+			attributeGatherer.addAttribute(alternativeUnit,
+					ATTR_MATCHED_BY_TU.name, ATTR_VALUE_TRUE,
+					ATTR_MATCHED_BY_TU.domain);
+
+			attributeGatherer.addAttribute(alternativeUnit,
+					ATTR_TU_TOTAL_NUM_TO_MATCH.name,
+					bestSPan.getTotalTermsNumber());
+			attributeGatherer.addAttribute(alternativeUnit,
+					ATTR_TU_MAX_NUM_MATCHED.name, bestSPan.getMatchedNumber());
+			attributeGatherer.addAttribute(alternativeUnit,
+					ATTR_TU_MIN_WIN_SIZE/*_FOR_MAX_MATCH*/.name,
+					bestSPan.getMatchWindowSize());
+		}
 	}
 
 	abstract protected Query prepareTopicUnitQuery(int docID,
@@ -379,6 +440,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		boolean isFrontPositionBetter = false/*metadata.isFrontPositionBetter()*/;
 
 		float maxScore = 0f;
+		EachSpanDetail bestSpan = null;
 		for (String subTopicUnit : subTopicUnits)
 		{
 			logScoreDetail("AU: ["
@@ -391,10 +453,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 					allStemmedNonstopWordsInTopicUnit, isFrontPositionBetter);
 
 			logMatchingDetail("By Sub_TU: " + subTopicUnit);
-			for (EachSpanDetail span : matchDetail.getSpanDetails())
-			{
-				logMatchingDetail(span.toString());
-			}
+			bestSpan = logAndFindBestSpan(bestSpan, matchDetail);
 
 			float score = matchDetail.getScore();
 			logMatchingDetail("Score: " + score + " = Sqrt(" + score * score
@@ -410,6 +469,8 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 			}
 
 		}
+
+		gatherAttributesFromBestSpan(bestSpan, alternativeUnit, false);
 
 		logScoreDetail("TU SCORE for AU["
 				+ alternativeUnit
@@ -969,4 +1030,11 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 			throw new GeneralException(e);
 		}
 	}
+
+	public void setAttributeGather(AttributeGatherer attributeGatherer)
+	{
+		Assert.notNull(attributeGatherer);
+		this.attributeGatherer = attributeGatherer;
+	}
+
 }
