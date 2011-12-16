@@ -45,6 +45,7 @@ import edu.uic.cs.t_verifier.misc.Assert;
 import edu.uic.cs.t_verifier.misc.GeneralException;
 import edu.uic.cs.t_verifier.misc.LogHelper;
 import edu.uic.cs.t_verifier.ml.AttributeGatherer;
+import edu.uic.cs.t_verifier.ml.Attributes;
 import edu.uic.cs.t_verifier.nlp.NLPAnalyzer;
 import edu.uic.cs.t_verifier.score.data.AlternativeUnit;
 import edu.uic.cs.t_verifier.score.data.Category;
