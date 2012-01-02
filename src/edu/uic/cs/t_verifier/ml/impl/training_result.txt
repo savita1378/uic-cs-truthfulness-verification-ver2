@@ -28,7 +28,7 @@
 7_2009=false
 7_2010=false
 7_1987=true
-8_meg ryan=false
+8_meg ryan=true
 8_tom hanks=false
 8_harry=false
 8_nora=false
