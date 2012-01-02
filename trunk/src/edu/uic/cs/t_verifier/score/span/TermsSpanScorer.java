@@ -167,7 +167,8 @@ public class TermsSpanScorer extends SpanScorer
 							* (matchedRatio * matchedRatio * matchedRatio * matchedRatio);// matchedRatio is more important!
 
 					matchDetail.addSpanDetail(matchedTerms, tuTermsInQuery,
-							matchedRatio, matchLength, score);
+							matchedRatio, matchLength, score, spans.doc(),
+							spans.start(), spans.end());
 
 					// use the sum of scores
 					// freq += score;

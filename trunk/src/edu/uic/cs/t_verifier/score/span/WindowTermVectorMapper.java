@@ -24,8 +24,9 @@ public class WindowTermVectorMapper extends TermVectorMapper
 		@Override
 		public String toString()
 		{
-			return "WindowEntry{" + "term='" + term + '\'' + ", positions="
-					+ positions + '}';
+			/*return "WindowEntry{" + "term='" + term + '\'' + ", positions="
+					+ positions + '}';*/
+			return term + "(" + positions + ")";
 		}
 
 		public String getTerm()

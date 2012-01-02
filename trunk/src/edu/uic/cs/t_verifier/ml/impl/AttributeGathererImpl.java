@@ -7,10 +7,10 @@ import java.util.Map.Entry;
 
 import weka.core.Attribute;
 import weka.core.FastVector;
-import weka.core.Instance;
 import weka.core.Instances;
 import edu.uic.cs.t_verifier.misc.Assert;
 import edu.uic.cs.t_verifier.ml.AttributeGatherer;
+import edu.uic.cs.t_verifier.ml.data.ExtendedInstance;
 
 public class AttributeGathererImpl implements AttributeGatherer
 {
@@ -81,7 +81,7 @@ public class AttributeGathererImpl implements AttributeGatherer
 
 	@Override
 	public Instances getDataset(Map<?, ?> targetValueByKey,
-			String[] targetDomain)
+			String[] targetDomain, Map<String, String> unsignedValueByName)
 	{
 		int numAttributes = attributeDefinitionByName.size() + 1;
 		FastVector allAttributeDefinitions = new FastVector(numAttributes); // plus 1 for targetValue
@@ -113,8 +113,9 @@ public class AttributeGathererImpl implements AttributeGatherer
 				allAttributeDefinitions, attributeValuesById.size());
 		for (Object id : attributeValuesById.keySet())
 		{
-			Instance instance = new Instance(numAttributes);
+			ExtendedInstance instance = new ExtendedInstance(numAttributes);
 			instance.setDataset(dataset);
+			instance.setInfo(id);
 
 			Map<String, Object> attributeValueByName = attributeValuesById
 					.get(id);
@@ -128,8 +129,18 @@ public class AttributeGathererImpl implements AttributeGatherer
 				Object attributeValue = attributeValueByName.get(attributeName);
 				if (attributeValue == null)
 				{
-					// one record don't have such attribute
-					instance.setMissing(attributeDef);
+					String unsignedValue;
+					if (unsignedValueByName != null
+							&& (unsignedValue = unsignedValueByName
+									.get(attributeName)) != null)
+					{
+						instance.setValue(attributeDef, unsignedValue);
+					}
+					else
+					{
+						// one record don't have such attribute
+						instance.setMissing(attributeDef);
+					}
 				}
 				else if (attributeValue instanceof String)
 				{

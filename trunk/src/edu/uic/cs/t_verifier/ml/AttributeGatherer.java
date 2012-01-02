@@ -28,7 +28,7 @@ public interface AttributeGatherer
 
 		@Override
 		public Instances getDataset(Map<?, ?> targetValueByKey,
-				String[] targetDomain)
+				String[] targetDomain, Map<String, String> unsignedValueByName)
 		{
 			return null;
 		}
@@ -42,5 +42,6 @@ public interface AttributeGatherer
 
 	void addAttribute(Object recordId, String attributeName, int arrtibuteValue);
 
-	Instances getDataset(Map<?, ?> targetValueByKey, String[] targetDomain);
+	Instances getDataset(Map<?, ?> targetValueByKey, String[] targetDomain,
+			Map<String, String> unsignedValueByName);
 }

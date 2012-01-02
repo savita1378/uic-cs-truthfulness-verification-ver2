@@ -20,7 +20,7 @@ public class AlternativeUnit
 	@Override
 	public String toString()
 	{
-		return auString + "[" + weight + "]";
+		return statementIdBelongsTo + " : " + auString /*+ "[" + weight + "]"*/;
 	}
 
 	String[] getWords()
