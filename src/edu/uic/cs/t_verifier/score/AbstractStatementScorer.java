@@ -380,7 +380,21 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 				bestSpan = span;
 			}
 
-			logMatchingDetail(span.toString());
+			WindowTermVectorMapper tvm = new WindowTermVectorMapper(
+					span.getStart(), span.getEnd());
+			try
+			{
+				indexReader.getTermFreqVector(span.getDocID(),
+						getIndexingFieldName(), tvm);
+			}
+			catch (IOException e)
+			{
+				throw new GeneralException(e);
+			}
+
+			logMatchingDetail(span.toString() + " | "
+					+ tvm.getAllEntriesInWindow().toString());
+			tvm.clean();
 		}
 
 		return bestSpan;

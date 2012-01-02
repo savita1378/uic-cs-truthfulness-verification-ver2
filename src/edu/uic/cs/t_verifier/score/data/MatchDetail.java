@@ -45,15 +45,23 @@ public class MatchDetail
 		private TreeSet<String> notMatchedTermsInQuery;
 		private TreeSet<String> matchedTermsInQuery;
 
+		private int docID;
+		private int start;
+		private int end;
+
 		private EachSpanDetail(float score, float matchedRatio,
 				int matchLength, TreeSet<String> matchedTermsInQuery,
-				TreeSet<String> notMatchedTermsInQuery)
+				TreeSet<String> notMatchedTermsInQuery, int docID, int start,
+				int end)
 		{
 			this.score = score;
 			this.matchedRatio = matchedRatio;
 			this.matchLength = matchLength;
 			this.matchedTermsInQuery = matchedTermsInQuery;
 			this.notMatchedTermsInQuery = notMatchedTermsInQuery;
+			this.docID = docID;
+			this.start = start;
+			this.end = end;
 		}
 
 		@Override
@@ -91,18 +99,34 @@ public class MatchDetail
 			return matchLength;
 		}
 
+		public int getDocID()
+		{
+			return docID;
+		}
+
+		public int getStart()
+		{
+			return start;
+		}
+
+		public int getEnd()
+		{
+			return end;
+		}
+
 	}
 
 	public void addSpanDetail(TreeSet<String> matchedTerms,
 			Set<String> termsInQuery, float matchedRatio, int matchLength,
-			float score)
+			float score, int docID, int start, int end)
 	{
 		TreeSet<String> notMatchedTermsInQuery = new TreeSet<String>(
 				termsInQuery);
 		notMatchedTermsInQuery.removeAll(matchedTerms);
 
 		EachSpanDetail eachSpanDetail = new EachSpanDetail(score, matchedRatio,
-				matchLength, matchedTerms, notMatchedTermsInQuery);
+				matchLength, matchedTerms, notMatchedTermsInQuery, docID,
+				start, end);
 		spanDetails.add(eachSpanDetail);
 	}
 
