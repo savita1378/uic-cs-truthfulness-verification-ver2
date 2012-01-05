@@ -107,7 +107,6 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		searchWordCity = searchWords.get(2);
 		searchWordDensity = searchWords.get(3);
 
-		nlpAnalyzer = new NLPAnalyzer();
 		// load the StatementCache
 		AlternativeUnitsReader.parseAllStatementsFromInputFiles();
 	}
@@ -235,12 +234,12 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 
 	}
 
-	private void logScoreDetail(String detail)
+	protected void logScoreDetail(String detail)
 	{
 		SCORE_DETAIL_LOGGER.debug(detail);
 	}
 
-	private void logMatchingDetail(String detail)
+	protected void logMatchingDetail(String detail)
 	{
 		MATCHING_DETAIL_LOGGER.debug(detail);
 	}
@@ -291,7 +290,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		return finalScore;
 	}
 
-	private int retrieveDocID(String unitString)
+	protected int retrieveDocID(String unitString)
 	{
 		BooleanQuery query = new BooleanQuery();
 		query.add(new TermQuery(new Term(FIELD_NAME__DOC_TYPE,
@@ -367,7 +366,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		return score;
 	}
 
-	private EachSpanDetail logAndFindBestSpan(EachSpanDetail bestSpan,
+	protected EachSpanDetail logAndFindBestSpan(EachSpanDetail bestSpan,
 			MatchDetail matchDetail)
 	{
 		for (EachSpanDetail span : matchDetail.getSpanDetails())
@@ -496,7 +495,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		return maxScore;
 	}
 
-	private MatchDetail scoreAlternativeUnitForOneSubTopicUnit(
+	protected MatchDetail scoreAlternativeUnitForOneSubTopicUnit(
 			AlternativeUnit alternativeUnit, String subTopicUnit,
 			String[] allStemmedNonstopWordsInTopicUnit,
 			boolean isFrontPositionBetter)
@@ -523,7 +522,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		return doQueryAndScore(subTopicUnit, query);
 	}
 
-	private MatchDetail doQueryAndScore(String unit, BooleanQuery query)
+	protected MatchDetail doQueryAndScore(String unit, BooleanQuery query)
 	{
 		MatchDetail result = new MatchDetail(); // default empty result
 
@@ -770,7 +769,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 
 	}*/
 
-	private int scoreByPopulationOfCity(AlternativeUnit alternativeUnit,
+	protected int scoreByPopulationOfCity(AlternativeUnit alternativeUnit,
 			StatementMetadata metadata)
 	{
 		BooleanQuery query = new BooleanQuery();
@@ -863,8 +862,8 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		Assert.isTrue(statement.getId().intValue() == id);
 
 		// String subjectTerm = nlpAnalyzer.retrieveSubject(statement);
-		String subjectTerm = nlpAnalyzer
-				.retrieveSubjectIfSameTypeAsAU(statement);
+		String subjectTerm = getNlpAnalyzer().retrieveSubjectIfSameTypeAsAU(
+				statement);
 		if (subjectTerm == null)
 		{
 			return;
@@ -964,7 +963,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 
 	}*/
 
-	private Entry<Category, List<AlternativeUnit>> filterAlternativeUnitsByCategories(
+	protected Entry<Category, List<AlternativeUnit>> filterAlternativeUnitsByCategories(
 			List<AlternativeUnit> alternativeUnits)
 	{
 		Map<Category, List<AlternativeUnit>> alternativeUnitsByCategory = new HashMap<Category, List<AlternativeUnit>>();
@@ -1050,6 +1049,16 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 	{
 		Assert.notNull(attributeGatherer);
 		this.attributeGatherer = attributeGatherer;
+	}
+
+	public NLPAnalyzer getNlpAnalyzer()
+	{
+		if (nlpAnalyzer == null)
+		{
+			nlpAnalyzer = new NLPAnalyzer();
+		}
+
+		return nlpAnalyzer;
 	}
 
 }
