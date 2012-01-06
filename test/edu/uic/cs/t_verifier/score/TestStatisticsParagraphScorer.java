@@ -8,9 +8,9 @@ import edu.uic.cs.t_verifier.EnhancedTestCase;
 import edu.uic.cs.t_verifier.misc.Config;
 import edu.uic.cs.t_verifier.score.data.StatementMetadata;
 
-public class TestStatisticsScorer_PARAGRAPH extends EnhancedTestCase
+public class TestStatisticsParagraphScorer extends EnhancedTestCase
 {
-	private static final StatisticsScorer SCORER = new StatisticsScorer(
+	private static final StatisticsParagraphScorer SCORER = new StatisticsParagraphScorer(
 			Config.INDEX_FOLDER);
 
 	private static final List<StatementMetadata> ALL_METADATA = SCORER

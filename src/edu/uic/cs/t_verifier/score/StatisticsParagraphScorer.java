@@ -19,9 +19,9 @@ import edu.uic.cs.t_verifier.score.data.MatchDetail;
 import edu.uic.cs.t_verifier.score.data.MatchDetail.EachSpanDetail;
 import edu.uic.cs.t_verifier.score.data.StatementMetadata;
 
-public class StatisticsScorer extends WindowScorer
+public class StatisticsParagraphScorer extends WindowScorer
 {
-	public StatisticsScorer(String indexFolder)
+	public StatisticsParagraphScorer(String indexFolder)
 	{
 		super(indexFolder, IndexBy.PARAGRAPH, Config.SEARCH_WINDOW, false);
 	}
