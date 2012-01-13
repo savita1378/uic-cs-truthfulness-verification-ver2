@@ -3,8 +3,8 @@ package edu.uic.cs.t_verifier.score;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
@@ -13,7 +13,6 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 
 import edu.uic.cs.t_verifier.common.StatementType;
-import edu.uic.cs.t_verifier.input.AlternativeUnitsReader;
 import edu.uic.cs.t_verifier.input.StatementCache;
 import edu.uic.cs.t_verifier.input.data.Statement;
 import edu.uic.cs.t_verifier.misc.Assert;
