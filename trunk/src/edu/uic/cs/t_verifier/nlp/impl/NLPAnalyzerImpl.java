@@ -16,6 +16,7 @@ import edu.uic.cs.t_verifier.input.AlternativeUnitsReader;
 import edu.uic.cs.t_verifier.input.data.Statement;
 import edu.uic.cs.t_verifier.nlp.NLPAnalyzer;
 
+@Deprecated
 public class NLPAnalyzerImpl extends AbstractWordOperations implements
 		NLPAnalyzer
 {
