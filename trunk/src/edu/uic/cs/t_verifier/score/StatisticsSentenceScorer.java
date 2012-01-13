@@ -4,11 +4,11 @@ import edu.uic.cs.t_verifier.misc.LogHelper;
 import edu.uic.cs.t_verifier.score.data.AlternativeUnit;
 import edu.uic.cs.t_verifier.score.data.StatementMetadata;
 
-public class StatisticsParagraphScorer extends AbstractStatisticsScorer
+public class StatisticsSentenceScorer extends AbstractStatisticsScorer
 {
-	public StatisticsParagraphScorer(String indexFolder)
+	public StatisticsSentenceScorer(String indexFolder)
 	{
-		super(indexFolder, IndexBy.PARAGRAPH);
+		super(indexFolder, IndexBy.SENTENCE);
 	}
 
 	protected int scoreNormalAlternativeUnit(AlternativeUnit alternativeUnit,
@@ -55,4 +55,5 @@ public class StatisticsParagraphScorer extends AbstractStatisticsScorer
 
 		return winSize;
 	}
+
 }

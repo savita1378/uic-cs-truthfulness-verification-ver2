@@ -47,6 +47,7 @@ import edu.uic.cs.t_verifier.misc.LogHelper;
 import edu.uic.cs.t_verifier.ml.AttributeGatherer;
 import edu.uic.cs.t_verifier.ml.Attributes;
 import edu.uic.cs.t_verifier.nlp.NLPAnalyzer;
+import edu.uic.cs.t_verifier.nlp.impl.NLPAnalyzerImpl;
 import edu.uic.cs.t_verifier.score.data.AlternativeUnit;
 import edu.uic.cs.t_verifier.score.data.Category;
 import edu.uic.cs.t_verifier.score.data.MatchDetail;
@@ -1011,7 +1012,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 				alternativeUnits);
 	}
 
-	private String[] retrieveCategories(String alternativeUnitString)
+	protected String[] retrieveCategories(String alternativeUnitString)
 	{
 		try
 		{
@@ -1055,10 +1056,15 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 	{
 		if (nlpAnalyzer == null)
 		{
-			nlpAnalyzer = new NLPAnalyzer();
+			nlpAnalyzer = new NLPAnalyzerImpl();
 		}
 
 		return nlpAnalyzer;
+	}
+
+	protected void setNlpAnalyzer(NLPAnalyzer nlpAnalyzer)
+	{
+		this.nlpAnalyzer = nlpAnalyzer;
 	}
 
 }
