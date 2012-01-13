@@ -3,8 +3,8 @@ package edu.uic.cs.t_verifier.nlp.impl;
 import java.util.List;
 import java.util.Locale;
 
-import edu.stanford.nlp.ling.TaggedWord;
 import edu.stanford.nlp.ling.CoreAnnotations.IndexAnnotation;
+import edu.stanford.nlp.ling.TaggedWord;
 import edu.stanford.nlp.parser.lexparser.LexicalizedParser;
 import edu.stanford.nlp.trees.GrammaticalRelation;
 import edu.stanford.nlp.trees.GrammaticalStructure;
@@ -14,13 +14,11 @@ import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.trees.TreeGraphNode;
 import edu.stanford.nlp.trees.TreebankLanguagePack;
 import edu.stanford.nlp.trees.TypedDependency;
-import edu.uic.cs.t_verifier.common.AbstractWordOperations;
 import edu.uic.cs.t_verifier.input.AlternativeUnitsReader;
 import edu.uic.cs.t_verifier.input.data.Statement;
 import edu.uic.cs.t_verifier.nlp.NLPAnalyzer;
 
-public class NLPAnalyzerImpl2 extends AbstractWordOperations implements
-		NLPAnalyzer
+public class NLPAnalyzerImpl2 implements NLPAnalyzer
 {
 	private static final String GRAMMAR = "englishPCFG.ser.gz";
 
