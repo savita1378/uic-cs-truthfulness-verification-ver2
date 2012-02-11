@@ -39,7 +39,7 @@ public class NLPAnalyzerImpl extends AbstractWordOperations implements
 	 * @see edu.uic.cs.t_verifier.nlp.NLPAnalyzer1#retrieveSubjectIfSameTypeAsAU(edu.uic.cs.t_verifier.input.data.Statement)
 	 */
 	@Override
-	public String retrieveSubjectIfSameTypeAsAU(Statement statement)
+	public String retrieveTopicTermIfSameTypeAsAU(Statement statement)
 	{
 		String sentence = statement.getAllAlternativeStatements().get(0);
 		String alternativeUint = statement.getAlternativeUnits().get(0);
@@ -179,7 +179,7 @@ public class NLPAnalyzerImpl extends AbstractWordOperations implements
 			System.out.print(statement.getId() + "\t");
 			/*System.out.println(analyzer.retrieveSubject(statement));*/
 			System.out.println("["
-					+ analyzer.retrieveSubjectIfSameTypeAsAU(statement) + "]\t"
+					+ analyzer.retrieveTopicTermIfSameTypeAsAU(statement) + "]\t"
 					+ statement.getAllAlternativeStatements().get(0));
 		}
 	}
