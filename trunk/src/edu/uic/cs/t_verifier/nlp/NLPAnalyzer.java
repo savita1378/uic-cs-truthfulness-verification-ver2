@@ -5,6 +5,6 @@ import edu.uic.cs.t_verifier.input.data.Statement;
 public interface NLPAnalyzer
 {
 
-	String retrieveSubjectIfSameTypeAsAU(Statement statement);
+	String retrieveTopicTermIfSameTypeAsAU(Statement statement);
 
 }

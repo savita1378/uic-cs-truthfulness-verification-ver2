@@ -102,7 +102,7 @@ abstract class AbstractStatisticsScorer extends WindowScorer
 		Statement statement = allCachedStatements.get(id - 1);
 		Assert.isTrue(statement.getId().intValue() == id);
 
-		String subject = getNlpAnalyzer().retrieveSubjectIfSameTypeAsAU(
+		String subject = getNlpAnalyzer().retrieveTopicTermIfSameTypeAsAU(
 				statement);
 
 		return subject;

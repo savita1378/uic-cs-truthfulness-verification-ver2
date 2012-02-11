@@ -863,7 +863,7 @@ public abstract class AbstractStatementScorer extends AbstractWordOperations
 		Assert.isTrue(statement.getId().intValue() == id);
 
 		// String subjectTerm = nlpAnalyzer.retrieveSubject(statement);
-		String subjectTerm = getNlpAnalyzer().retrieveSubjectIfSameTypeAsAU(
+		String subjectTerm = getNlpAnalyzer().retrieveTopicTermIfSameTypeAsAU(
 				statement);
 		if (subjectTerm == null)
 		{
