@@ -1,6 +1,5 @@
 package edu.uic.cs.t_verifier.nlp.impl;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -92,19 +91,19 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 						alternativeUint, false);
 			}
 
-			if (subjectTerm == null && isPassive.get())
-			{
-				String objectTerm = retrieveObjectTerm(alternativeUint,
-						parsedTree, typedDependencyList);
-
-				return objectTerm;
-			}
+			//			if (subjectTerm == null && isPassive.get())
+			//			{
+			//				String objectTerm = retrieveObjectTerm(alternativeUint,
+			//						parsedTree, typedDependencyList);
+			//
+			//				return objectTerm;
+			//			}
 		}
 
 		return subjectTerm;
 	}
 
-	private String retrieveObjectTerm(String alternativeUint, Tree parsedTree,
+	/*private String retrieveObjectTerm(String alternativeUint, Tree parsedTree,
 			Collection<TypedDependency> typedDependencyList)
 	{
 		List<TreeGraphNode> allPossibleObjects = retrieveObjectTermInternal(typedDependencyList);
@@ -139,14 +138,14 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 					.intValue() - 1;
 			TaggedWord object = taggedWords.get(index);
 
-			/*int indexDiff = Math.abs(auIndex - index);
+			int indexDiff = Math.abs(auIndex - index);
 			if (indexDiff != 0 && indexDiff < smallestDiff
 					&& auTag.equals(mapPosTagToBasicForm(object.tag())))
 			{
 				objectTerm = objectNode.toString("value")
 						.toLowerCase(Locale.US);
 				smallestDiff = indexDiff;
-			}*/
+			}
 
 			if (auIndex != index
 					&& auTag.equals(mapPosTagToBasicForm(object.tag())))
@@ -169,7 +168,7 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 		{
 			GrammaticalRelation grammaticalRelation = typedDependency.reln();
 			String shortName = grammaticalRelation.getShortName();
-			if (shortName.equals("dobj") /*|| shortName.equals("iobj")*/
+			if (shortName.equals("dobj") || shortName.equals("iobj")
 					|| shortName.equals("pobj"))
 			{
 				TreeGraphNode dep = typedDependency.dep();
@@ -178,7 +177,7 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 		}
 
 		return result;
-	}
+	}*/
 
 	private String retrieveSubjectTerm(String alternativeUint, Tree parsedTree,
 			Collection<TypedDependency> typedDependencyList,
@@ -321,13 +320,13 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 					+ "]\t" + statement.getAllAlternativeStatements().get(0));
 		}
 
-		System.out.println(analyzer.retrieveTopicTermIfSameTypeAsAU(
-				"poseidon is known as the greek god of sea", "poseidon"));
-
-		System.out
-				.println(analyzer
-						.retrieveTopicTermIfSameTypeAsAU(
-								"ronald reagan is known as the first private citizen to fly in space",
-								"ronald reagan"));
+		//		System.out.println(analyzer.retrieveTopicTermIfSameTypeAsAU(
+		//				"poseidon is known as the greek god of sea", "poseidon"));
+		//
+		//		System.out
+		//				.println(analyzer
+		//						.retrieveTopicTermIfSameTypeAsAU(
+		//								"ronald reagan is known as the first private citizen to fly in space",
+		//								"ronald reagan"));
 	}
 }
