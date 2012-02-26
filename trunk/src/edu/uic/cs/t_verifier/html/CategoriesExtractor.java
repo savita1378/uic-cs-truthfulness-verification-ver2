@@ -98,6 +98,11 @@ public abstract class CategoriesExtractor implements HtmlConstants
 									.getAttribute(HTML_TAG_DIV_ATTRIBUTE_ID)))
 			{
 				Node firstChild = child.getFirstChild();
+				if (firstChild == null)
+				{
+					break;
+				}
+
 				String id = ((Div) firstChild)
 						.getAttribute(HTML_TAG_DIV_ATTRIBUTE_ID);
 				if (HTML_TAG_DIV_ATTRIBUTE_ID_NORMAL_CATEGORIES.equals(id))
