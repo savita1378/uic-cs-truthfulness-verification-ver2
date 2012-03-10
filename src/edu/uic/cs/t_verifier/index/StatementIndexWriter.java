@@ -38,9 +38,9 @@ class StatementIndexWriter implements IndexConstants
 	private File indexFolder = null;
 	private IndexWriter indexWriter = null;
 
-	StatementIndexWriter(String indexFolder)
+	StatementIndexWriter(String indexFolder, boolean reBuildIndex)
 	{
-		if (!Config.ALLOW_REBUILD_INDEX)
+		if (!Config.ALLOW_REBUILD_INDEX && reBuildIndex)
 		{
 			throw new GeneralException(
 					"Rebuid index is not allowed! "
@@ -58,7 +58,14 @@ class StatementIndexWriter implements IndexConstants
 
 			IndexWriterConfig config = new IndexWriterConfig(
 					Config.LUCENE_VERSION, analyzer);
-			config.setOpenMode(OpenMode.CREATE);
+			if (reBuildIndex)
+			{
+				config.setOpenMode(OpenMode.CREATE);
+			}
+			else
+			{
+				config.setOpenMode(OpenMode.APPEND);
+			}
 			// Defined as default Similarity in Config.java
 			// config.setSimilarity(new StatementSimilarity());
 			LogMergePolicy logMergePolicy = (LogMergePolicy) config
@@ -67,13 +74,21 @@ class StatementIndexWriter implements IndexConstants
 
 			indexWriter = new IndexWriter(directory, config);
 
-			indexWriter.deleteAll();
-			indexWriter.commit();
+			if (reBuildIndex)
+			{
+				indexWriter.deleteAll();
+				indexWriter.commit();
+			}
 		}
 		catch (Exception e)
 		{
 			throw new GeneralException(e);
 		}
+	}
+
+	StatementIndexWriter(String indexFolder)
+	{
+		this(indexFolder, true);
 	}
 
 	private Analyzer initializeAnalyzers() throws IOException
@@ -102,6 +117,22 @@ class StatementIndexWriter implements IndexConstants
 				new StemmedStandardAnalyzer());
 
 		return wrapper;
+	}
+
+	public void commit()
+	{
+		try
+		{
+			if (indexWriter != null)
+			{
+				indexWriter.optimize();
+				indexWriter.commit();
+			}
+		}
+		catch (Exception e)
+		{
+			throw new GeneralException(e);
+		}
 	}
 
 	public void close()
