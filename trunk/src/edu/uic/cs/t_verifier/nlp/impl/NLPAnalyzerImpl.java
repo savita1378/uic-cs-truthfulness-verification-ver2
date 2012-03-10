@@ -1,5 +1,6 @@
 package edu.uic.cs.t_verifier.nlp.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -179,8 +180,21 @@ public class NLPAnalyzerImpl extends AbstractWordOperations implements
 			System.out.print(statement.getId() + "\t");
 			/*System.out.println(analyzer.retrieveSubject(statement));*/
 			System.out.println("["
-					+ analyzer.retrieveTopicTermIfSameTypeAsAU(statement) + "]\t"
-					+ statement.getAllAlternativeStatements().get(0));
+					+ analyzer.retrieveTopicTermIfSameTypeAsAU(statement)
+					+ "]\t" + statement.getAllAlternativeStatements().get(0));
 		}
+	}
+
+	@Override
+	public HashMap<String, String> parseSentenceIntoTermsWithPosTag(
+			String sentence)
+	{
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public boolean hasAlternativeUnitDoneSomething(Statement statement)
+	{
+		throw new UnsupportedOperationException();
 	}
 }

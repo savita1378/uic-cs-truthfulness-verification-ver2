@@ -1,6 +1,8 @@
 package edu.uic.cs.t_verifier.nlp.impl;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -52,7 +54,7 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 		return retrieveTopicTermIfSameTypeAsAU(sentence, alternativeUint);
 	}
 
-	public String retrieveTopicTermIfSameTypeAsAU(String sentence,
+	private String retrieveTopicTermIfSameTypeAsAU(String sentence,
 			String alternativeUint)
 	{
 		boolean doubleCheckSubject = true;
@@ -300,25 +302,122 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 		return posTag;
 	}
 
+	@Override
+	public HashMap<String, String> parseSentenceIntoTermsWithPosTag(
+			String sentence)
+	{
+		// sentence = StringUtils.capitalize(sentence);
+		Tree parsedTree = lexicalizedParser.apply(sentence);
+		List<TaggedWord> taggedWords = parsedTree.taggedYield();
+
+		HashMap<String, String> result = new LinkedHashMap<String, String>();
+		for (TaggedWord taggedWord : taggedWords)
+		{
+			String psoTag = mapPosTagToBasicForm(taggedWord.tag());
+			result.put(taggedWord.word(), psoTag);
+		}
+
+		return result;
+	}
+
+	@Override
+	public boolean hasAlternativeUnitDoneSomething(Statement statement)
+	{
+		String sentence = statement.getAllAlternativeStatements().get(0);
+		String alternativeUint = statement.getAlternativeUnits().get(0);
+
+		return hasAlternativeUnitDoneSomething(sentence, alternativeUint);
+	}
+
+	private boolean hasAlternativeUnitDoneSomething(String sentence,
+			String alternativeUint)
+	{
+		if (alternativeUint.contains(" ")) // if AU contains more than one term, use "AU" instead. 
+		{
+			sentence = sentence.replace(alternativeUint, AU_SUBSTITUTE);
+			alternativeUint = AU_SUBSTITUTE.toLowerCase(Locale.US);
+		}
+		sentence = StringUtils.capitalize(sentence);
+
+		Tree parsedTree = lexicalizedParser.apply(sentence);
+		GrammaticalStructure gs = grammaticalStructureFactory
+				.newGrammaticalStructure(parsedTree);
+		Collection<TypedDependency> typedDependencyList = gs
+				.typedDependenciesCollapsed(); // collapsed!!
+
+		List<TaggedWord> taggedWords = parsedTree.taggedYield();
+		for (TypedDependency typedDependency : typedDependencyList)
+		{
+			GrammaticalRelation grammaticalRelation = typedDependency.reln();
+			String shortName = grammaticalRelation.getShortName();
+
+			/**
+			 * AU/NNP invented/VBD the/DT electric/JJ guitar/NN
+			 * 
+			 * nsubj(invented-2, AU-1)	<--- HERE
+			 * root(ROOT-0, invented-2)
+			 * det(guitar-5, the-3)
+			 * amod(guitar-5, electric-4)
+			 * dobj(invented-2, guitar-5)
+			 * 
+			 * 
+			 * the/DT electric/JJ guitar/NN is/VBZ invented/VBN by/IN AU/NNP
+			 * 
+			 * det(guitar-3, the-1)
+			 * amod(guitar-3, electric-2)
+			 * nsubjpass(invented-5, guitar-3)
+			 * auxpass(invented-5, is-4)
+			 * root(ROOT-0, invented-5)
+			 * agent(invented-5, AU-7)	<--- HERE
+			 */
+			if (shortName.equals("nsubj") || shortName.equals("agent")) //(did~gov, AU~dep)
+			{
+				TreeGraphNode gov = typedDependency.gov();
+				TreeGraphNode dep = typedDependency.dep();
+
+				// String govValue = gov.toString("value").toLowerCase(Locale.US);
+				String depValue = dep.toString("value").toLowerCase(Locale.US);
+
+				if (alternativeUint.equals(depValue))
+				{
+					int govIndex = gov.index() - 1;
+					TaggedWord govTaggedWord = taggedWords.get(govIndex);
+					if ("VB".equals(mapPosTagToBasicForm(govTaggedWord.tag())))
+					{
+						return true;
+					}
+
+				}
+			}
+
+		}
+
+		return false;
+	}
+
 	public static void main(String[] args)
 	{
 		List<Statement> statements = AlternativeUnitsReader
 				.parseAllStatementsFromInputFiles();
 
 		NLPAnalyzerImpl2 analyzer = new NLPAnalyzerImpl2();
-		for (Statement statement : statements)
-		{
-			/*System.out.println(statement.getId() + "\t"
-					+ statement.getAllAlternativeStatements().get(0));
-			
-			analyzer.retrieveTopicTermIfSameTypeAsAU(statement);
-			System.out.println();*/
+		//		HashMap<String, String> result = analyzer
+		//				.parseSentenceIntoTermsWithPosTag("the biggest producer of tungsten is china");
+		//		System.out.println(result);
 
-			System.out.print(statement.getId() + "\t");
-			System.out.println("["
-					+ analyzer.retrieveTopicTermIfSameTypeAsAU(statement)
-					+ "]\t" + statement.getAllAlternativeStatements().get(0));
-		}
+		//		for (Statement statement : statements)
+		//		{
+		//			/*System.out.println(statement.getId() + "\t"
+		//					+ statement.getAllAlternativeStatements().get(0));
+		//			
+		//			analyzer.retrieveTopicTermIfSameTypeAsAU(statement);
+		//			System.out.println();*/
+		//
+		//			System.out.print(statement.getId() + "\t");
+		//			System.out.println("["
+		//					+ analyzer.retrieveTopicTermIfSameTypeAsAU(statement)
+		//					+ "]\t" + statement.getAllAlternativeStatements().get(0));
+		//		}
 
 		//		System.out.println(analyzer.retrieveTopicTermIfSameTypeAsAU(
 		//				"poseidon is known as the greek god of sea", "poseidon"));
@@ -328,5 +427,11 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 		//						.retrieveTopicTermIfSameTypeAsAU(
 		//								"ronald reagan is known as the first private citizen to fly in space",
 		//								"ronald reagan"));
+
+		System.out.println(analyzer.hasAlternativeUnitDoneSomething(
+				"les paul invented the electric guitar", "les paul"));
+		System.out.println(analyzer.hasAlternativeUnitDoneSomething(
+				"the electric guitar was invented by les paul", "les paul"));
 	}
+
 }
