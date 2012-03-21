@@ -304,8 +304,10 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 
 	@Override
 	public HashMap<String, String> parseSentenceIntoTermsWithPosTag(
-			String sentence)
+			String sentence, List<String> resultTerms)
 	{
+		Assert.notNull(resultTerms);
+
 		// sentence = StringUtils.capitalize(sentence);
 		Tree parsedTree = lexicalizedParser.apply(sentence);
 		List<TaggedWord> taggedWords = parsedTree.taggedYield();
@@ -315,6 +317,7 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 		{
 			String psoTag = mapPosTagToBasicForm(taggedWord.tag());
 			result.put(taggedWord.word(), psoTag);
+			resultTerms.add(taggedWord.word());
 		}
 
 		return result;
