@@ -377,11 +377,11 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 
 			if (indexUpdater == null)
 			{
-				indexUpdater = new StatementIndexUpdater();
+				indexUpdater = StatementIndexUpdater.getInstance();
 			}
 
 			List<String> insertedCategories = indexUpdater
-					.retrieveAndInsertUnitPage(topicTerm);
+					.retrieveAndIndexUnitPage(topicTerm);
 			if (insertedCategories == null)
 			{
 				return false;
@@ -492,4 +492,5 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 					+ "] ===========================================\n");
 		}
 	}
+
 }

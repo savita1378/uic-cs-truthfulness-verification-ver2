@@ -6,7 +6,7 @@ public interface StatementTypeIdentifier
 {
 	enum StatementType
 	{
-		/*TIME,*/ LOCATION, /*ORGANIZATION,*/ PERSON, /*MONEY, PERCENT,*/ DATE,
+		TIME, LOCATION, ORGANIZATION, PERSON, MONEY, PERCENT, DATE,
 		///////////////////////////////////////////////////////////
 		NUMBER, OTHER;
 
