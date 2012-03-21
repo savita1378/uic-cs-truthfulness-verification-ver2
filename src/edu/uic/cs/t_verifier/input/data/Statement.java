@@ -34,6 +34,16 @@ public class Statement extends AbstractWordOperations
 		this.topicUnitRight = topicUnitRight != null ? topicUnitRight : "";
 	}
 
+	public String getTopicUnitLeft()
+	{
+		return topicUnitLeft;
+	}
+
+	public String getTopicUnitRight()
+	{
+		return topicUnitRight;
+	}
+
 	public void addAlternativeUnit(String alternativeUnit)
 	{
 		alternativeUnits.add(alternativeUnit.toLowerCase(Locale.US));
