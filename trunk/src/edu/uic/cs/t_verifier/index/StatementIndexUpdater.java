@@ -3,8 +3,10 @@ package edu.uic.cs.t_verifier.index;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
@@ -36,7 +38,14 @@ public class StatementIndexUpdater implements IndexConstants
 
 	private IndexSearcher indexSearcher;
 
-	public StatementIndexUpdater()
+	private static final StatementIndexUpdater INSTANCE = new StatementIndexUpdater();
+
+	public static StatementIndexUpdater getInstance()
+	{
+		return INSTANCE;
+	}
+
+	private StatementIndexUpdater()
 	{
 		try
 		{
@@ -53,8 +62,19 @@ public class StatementIndexUpdater implements IndexConstants
 
 	}
 
-	public List<String> retrieveAndInsertUnitPage(String unit)
+	private Map<String, List<String>> runtimeCache = new HashMap<String, List<String>>();
+
+	/**
+	 * NOT thread safety!
+	 */
+	public List<String> retrieveAndIndexUnitPage(String unit)
 	{
+		if (runtimeCache.containsKey(unit))
+		{
+			// if user didn't re-open indexer, she can't see the updated data
+			return runtimeCache.get(unit);
+		}
+
 		checkUnitNotExistingInIndex(unit);
 
 		MatchedQueryKey matchedQueryKey = wikipediaContentExtractor
@@ -79,7 +99,10 @@ public class StatementIndexUpdater implements IndexConstants
 
 		indexWriter.commit();
 
-		return urlWithDescription.getCategoriesBelongsTo();
+		List<String> result = urlWithDescription.getCategoriesBelongsTo();
+		runtimeCache.put(unit, result);
+
+		return result;
 	}
 
 	private void checkUnitNotExistingInIndex(String unitString)
@@ -94,7 +117,7 @@ public class StatementIndexUpdater implements IndexConstants
 
 			TopDocs topDocs = indexSearcher.search(query, 10);
 			Assert.isTrue(topDocs.totalHits == 0,
-					"There should be at NO document matched for Unit["
+					"There should be NO document matched for Unit["
 							+ unitString + "]! ");
 		}
 		catch (IOException e)
