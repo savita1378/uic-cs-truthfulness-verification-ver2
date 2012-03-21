@@ -81,8 +81,8 @@ public class Config
 	public static final String WORDNET_FOLDER = CONFIG
 			.getProperty("wordnet_folder");
 
-	public static final int WORDNET_SYNSET_FREQUENCY_LOWER_BOUND = Integer
-			.parseInt(CONFIG
-					.getProperty("wordnet_synset_frequency_lower_bound"));
+	public static final double WORDNET_SYNSET_FREQUENCY_RATIO_TO_MAX_LOWER_BOUND = Double
+			.parseDouble(CONFIG
+					.getProperty("wordnet_synset_frequency_ratio_to_max_lower_bound"));
 
 }

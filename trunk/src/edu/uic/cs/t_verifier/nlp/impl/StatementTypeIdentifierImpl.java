@@ -2,6 +2,7 @@ package edu.uic.cs.t_verifier.nlp.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -24,6 +25,7 @@ import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
+import edu.mit.jwi.item.POS;
 import edu.stanford.nlp.ie.AbstractSequenceClassifier;
 import edu.stanford.nlp.ie.crf.CRFClassifier;
 import edu.stanford.nlp.ling.CoreAnnotations.AnswerAnnotation;
@@ -37,6 +39,7 @@ import edu.uic.cs.t_verifier.misc.Config;
 import edu.uic.cs.t_verifier.misc.GeneralException;
 import edu.uic.cs.t_verifier.nlp.NLPAnalyzer;
 import edu.uic.cs.t_verifier.nlp.StatementTypeIdentifier;
+import edu.uic.cs.t_verifier.nlp.WordNetReader;
 
 public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 		IndexConstants
@@ -44,6 +47,7 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 	private static final double MINMUM_MAX_RATIO = 0.2;
 
 	private NLPAnalyzer nlpAnalyzer = new NLPAnalyzerImpl2();
+	private WordNetReader wordNetReader = new WordNetReaderImpl();
 
 	private static final String SERIALIZED_CLASSIFIER_PATH = "StanfordNer_classifiers/muc.7class.distsim.crf.ser.gz";
 	@SuppressWarnings("rawtypes")
@@ -105,12 +109,14 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 	private String capitalizeNounTerms(String sentence)
 	{
 		sentence = StringUtils.capitalize(sentence);
+		List<String> terms = new ArrayList<String>();
 		HashMap<String, String> posTagByTerm = nlpAnalyzer
-				.parseSentenceIntoTermsWithPosTag(sentence);
+				.parseSentenceIntoTermsWithPosTag(sentence, terms);
+		// System.out.println("\t" + posTagByTerm);
 
 		StringBuilder result = new StringBuilder();
-		String[] terms = sentence.split("(?<=\\W)");
-		for (String term : terms)
+		// String[] terms = sentence.split("(?<=\\W)");
+		/*for (String term : terms)
 		{
 			String posTag = posTagByTerm.get(term.trim());
 			if ("NN".equals(posTag))
@@ -119,9 +125,97 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 			}
 
 			result.append(term);
+		}*/
+
+		int properNounBegin = -1;
+		boolean processingNoun = false;
+		String term = null;
+		int index = 0;
+		for (; index < terms.size(); index++)
+		{
+			term = terms.get(index);
+			String posTag = posTagByTerm.get(term);
+			if ("NN".equals(posTag))
+			{
+				if (!processingNoun)
+				{
+					processingNoun = true; // begin noun
+					properNounBegin = index;
+				}
+				// else leave it along
+			}
+			else
+			// not noun term
+			{
+				if (processingNoun) // there are noun(s) pending
+				{
+					if (index - properNounBegin > 1)
+					{
+						// more than one noun together
+						for (int innerIndex = properNounBegin; innerIndex < index; innerIndex++)
+						{
+							// first try WordNet
+							String noun = wordNetReader
+									.retrieveTermInStandardCase(
+											terms.get(innerIndex), POS.NOUN);
+							// then no matter what WordNet gives back, capitalize it
+							noun = StringUtils.capitalize(noun);
+
+							result.append(noun).append(" ");
+						}
+					}
+					else if (index - properNounBegin == 1)
+					{
+						// just one noun
+						String noun = wordNetReader.retrieveTermInStandardCase(
+								terms.get(properNounBegin), POS.NOUN);
+						result.append(noun).append(" ");
+					}
+					else
+					{
+						throw new GeneralException("Can not happen! ");
+					}
+
+					processingNoun = false; // end noun
+				}
+
+				if ("POS".equals(posTag))
+				{
+					result.deleteCharAt(result.length() - 1);
+				}
+
+				result.append(term).append(" ");
+			}
 		}
 
-		return result.toString();
+		// still some nouns pending
+		if (processingNoun)
+		{
+			if (index - properNounBegin > 1)
+			{
+				// more than one noun together
+				for (int innerIndex = properNounBegin; innerIndex < index; innerIndex++)
+				{
+					String noun = StringUtils.capitalize(terms.get(innerIndex));
+					result.append(noun).append(" ");
+				}
+			}
+			else if (index - properNounBegin == 1)
+			{
+				// just one noun
+				String noun = wordNetReader.retrieveTermInStandardCase(
+						terms.get(properNounBegin), POS.NOUN);
+				result.append(noun); //final noun, no need to append(" ")
+			}
+			else
+			{
+				throw new GeneralException("Can not happen! ");
+			}
+
+			// processingNoun = false; // end noun
+		}
+
+		return StringUtils.capitalize(result.toString().trim());
 
 	}
 
@@ -139,11 +233,9 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 			String alternativeUnit = allAlternativeUnits.get(index);
 			String sentence = allAlternativeStatements.get(index);
 
-			String alternativeUnitCapitalized = WordUtils
-					.capitalize(alternativeUnit);
-			sentence = sentence.replace(alternativeUnit,
-					alternativeUnitCapitalized); // capitalize AU
-			sentence = capitalizeNounTerms(sentence);
+			sentence = restoreWordCasesForSentence(sentence, alternativeUnit);
+
+			// System.out.println(sentence);
 
 			@SuppressWarnings("unchecked")
 			List<List<CoreLabel>> terms = classifier.classify(sentence);
@@ -200,6 +292,18 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 		//System.out.println();
 
 		return result;
+
+	}
+
+	protected String restoreWordCasesForSentence(String sentence,
+			String alternativeUnit)
+	{
+		String alternativeUnitCapitalized = WordUtils
+				.capitalize(alternativeUnit);
+		sentence = sentence
+				.replace(alternativeUnit, alternativeUnitCapitalized); // capitalize AU
+		sentence = capitalizeNounTerms(sentence);
+		return sentence;
 	}
 
 	private boolean isPerson(Statement statement)

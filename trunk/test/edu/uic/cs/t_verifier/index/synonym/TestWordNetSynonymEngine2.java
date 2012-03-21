@@ -5,15 +5,13 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import edu.uic.cs.t_verifier.EnhancedTestCase;
-import edu.uic.cs.t_verifier.misc.Config;
 
 public class TestWordNetSynonymEngine2 extends EnhancedTestCase
 {
 
 	public void testGetSynonyms()
 	{
-		WordNetSynonymEngine2 synonymEngine = new WordNetSynonymEngine2(
-				Config.WORDNET_FOLDER);
+		WordNetSynonymEngine2 synonymEngine = new WordNetSynonymEngine2();
 		Set<String> actual = new TreeSet<String>(Arrays.asList(synonymEngine
 				.getSynonyms("goodness")));
 
@@ -25,8 +23,7 @@ public class TestWordNetSynonymEngine2 extends EnhancedTestCase
 
 	public void testRetrieveSynonyms()
 	{
-		WordNetSynonymEngine2 synonymEngine = new WordNetSynonymEngine2(
-				Config.WORDNET_FOLDER);
+		WordNetSynonymEngine2 synonymEngine = new WordNetSynonymEngine2();
 		Set<String> actual = new TreeSet<String>();
 		synonymEngine.retrieveSynonyms("good", actual);
 

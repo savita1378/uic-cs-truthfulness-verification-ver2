@@ -26,7 +26,7 @@ public abstract class StemmedSynonymWikipediaAnalyzer extends Analyzer
 	public StemmedSynonymWikipediaAnalyzer() throws IOException
 	{
 		// this.engine = new WordNetSynonymEngine(Config.WORDNET_INDEX_FOLDER);
-		this.engine = new WordNetSynonymEngine2(Config.WORDNET_FOLDER);
+		this.engine = new WordNetSynonymEngine2();
 	}
 
 	public TokenStream tokenStream(String fieldName, Reader reader)

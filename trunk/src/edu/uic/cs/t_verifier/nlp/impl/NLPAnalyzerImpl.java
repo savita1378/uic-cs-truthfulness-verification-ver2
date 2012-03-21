@@ -187,7 +187,7 @@ public class NLPAnalyzerImpl extends AbstractWordOperations implements
 
 	@Override
 	public HashMap<String, String> parseSentenceIntoTermsWithPosTag(
-			String sentence)
+			String sentence, List<String> resultTerms)
 	{
 		throw new UnsupportedOperationException();
 	}
