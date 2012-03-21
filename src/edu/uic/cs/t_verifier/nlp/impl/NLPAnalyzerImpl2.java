@@ -48,10 +48,23 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 	@Override
 	public String retrieveTopicTermIfSameTypeAsAU(Statement statement)
 	{
-		String sentence = statement.getAllAlternativeStatements().get(0);
-		String alternativeUint = statement.getAlternativeUnits().get(0);
+		List<String> allAlternativeUnits = statement.getAlternativeUnits();
+		List<String> allAlternativeStatements = statement
+				.getAllAlternativeStatements();
+		for (int index = 0; index < allAlternativeStatements.size(); index++)
+		{
+			String sentence = allAlternativeStatements.get(index);
+			String alternativeUint = allAlternativeUnits.get(index);
 
-		return retrieveTopicTermIfSameTypeAsAU(sentence, alternativeUint);
+			String topicTerm = retrieveTopicTermIfSameTypeAsAU(sentence,
+					alternativeUint);
+			if (topicTerm != null)
+			{
+				return topicTerm;
+			}
+		}
+
+		return null;
 	}
 
 	private String retrieveTopicTermIfSameTypeAsAU(String sentence,
