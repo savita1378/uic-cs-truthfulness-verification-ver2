@@ -3,6 +3,7 @@ package edu.uic.cs.t_verifier.nlp.impl;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -16,12 +17,12 @@ import org.apache.commons.lang.WordUtils;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
@@ -179,7 +180,7 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 					processingNoun = false; // end noun
 				}
 
-				if ("POS".equals(posTag))
+				if ("POS".equals(posTag) || isPunctuation(posTag))
 				{
 					result.deleteCharAt(result.length() - 1);
 				}
@@ -219,6 +220,14 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 
 	}
 
+	private static final List<String> PUNCTUATIONS = Arrays
+			.asList(new String[] { ".", "," });
+
+	private boolean isPunctuation(String posTag)
+	{
+		return PUNCTUATIONS.contains(posTag);
+	}
+
 	@Override
 	public StatementType identifyType(Statement statement)
 	{
@@ -241,27 +250,38 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 			List<List<CoreLabel>> terms = classifier.classify(sentence);
 			Assert.isTrue(terms.size() == 1);
 
-			//System.out.print("[" + statement.getId() + "]\t" + sentence + "\t");
+			System.out.print("[" + statement.getId() + "]\t" + sentence
+					+ "\t|\t");
 			for (CoreLabel term : terms.get(0))
 			{
 				String termString = term.word();
+				String typeString = term.get(AnswerAnnotation.class);
+				StatementType statementType = StatementType.parse(typeString);
+
 				if (!alternativeUnit.contains(termString.toLowerCase(Locale.US)
 						.trim()))
 				{
+					if (statementType != StatementType.OTHER)
+					{
+						System.out
+								.print(termString + "/" + statementType + " ");
+					}
 					continue; // not AU term
 				}
 
-				String typeString = term.get(AnswerAnnotation.class);
-				StatementType statementType = StatementType.parse(typeString);
+				//				String typeString = term.get(AnswerAnnotation.class);
+				//				StatementType statementType = StatementType.parse(typeString);
 				if (statementType == StatementType.OTHER)
 				{
 					continue;
 				}
 
-				//System.out.print(termString + "/" + statementType + " ");
+				System.out.print("*" + termString + "/" + statementType + "* ");
 				increaseNumberOfType(numberOfType, statementType);
 
 			}
+
+			System.out.println();
 		}
 
 		StatementType result = StatementType.OTHER;
@@ -288,8 +308,6 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 				return StatementType.PERSON;
 			}
 		}
-
-		//System.out.println();
 
 		return result;
 
@@ -467,11 +485,11 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 		for (Statement statement : statements)
 		{
 			StatementType type = typeIdentifier.identifyType(statement);
-			// if (type == StatementType.OTHER)
-			// {
-			System.out.println(statement.getId() + "\t[" + type + "]\t"
-					+ statement.getAllAlternativeStatements().get(0));
-			// }
+
+			/*System.out.println(statement.getId() + "\t[" + type + "]\t"
+					+ statement.getAllAlternativeStatements().get(0));*/
+			System.out.println("[" + type
+					+ "] ===========================================\n");
 		}
 	}
 }
