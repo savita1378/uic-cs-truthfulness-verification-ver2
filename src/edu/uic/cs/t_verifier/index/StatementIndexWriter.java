@@ -33,12 +33,12 @@ import edu.uic.cs.t_verifier.input.data.Statement;
 import edu.uic.cs.t_verifier.misc.Config;
 import edu.uic.cs.t_verifier.misc.GeneralException;
 
-class StatementIndexWriter implements IndexConstants
+public class StatementIndexWriter implements IndexConstants
 {
 	private File indexFolder = null;
 	private IndexWriter indexWriter = null;
 
-	StatementIndexWriter(String indexFolder, boolean reBuildIndex)
+	public StatementIndexWriter(String indexFolder, boolean reBuildIndex)
 	{
 		if (!Config.ALLOW_REBUILD_INDEX && reBuildIndex)
 		{
