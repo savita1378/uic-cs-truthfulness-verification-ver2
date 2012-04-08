@@ -1,5 +1,6 @@
 package edu.uic.cs.t_verifier.index.synonym;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -49,7 +50,8 @@ public class WordNetSynonymEngine2 implements SynonymEngine
 
 	public static void main(String[] args) throws Exception
 	{
-		new WordNetSynonymEngine2().getSynonyms("good");
+		String[] result = new WordNetSynonymEngine2().getSynonyms("nice");
+		System.out.println(Arrays.asList(result));
 	}
 
 }
