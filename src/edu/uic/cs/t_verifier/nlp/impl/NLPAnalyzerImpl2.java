@@ -1,5 +1,7 @@
 package edu.uic.cs.t_verifier.nlp.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -8,7 +10,9 @@ import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
 
+import edu.mit.jwi.item.POS;
 import edu.stanford.nlp.ling.CoreAnnotations.IndexAnnotation;
 import edu.stanford.nlp.ling.TaggedWord;
 import edu.stanford.nlp.parser.lexparser.LexicalizedParser;
@@ -23,7 +27,9 @@ import edu.stanford.nlp.trees.TypedDependency;
 import edu.uic.cs.t_verifier.input.AlternativeUnitsReader;
 import edu.uic.cs.t_verifier.input.data.Statement;
 import edu.uic.cs.t_verifier.misc.Assert;
+import edu.uic.cs.t_verifier.misc.GeneralException;
 import edu.uic.cs.t_verifier.nlp.NLPAnalyzer;
+import edu.uic.cs.t_verifier.nlp.WordNetReader;
 
 public class NLPAnalyzerImpl2 implements NLPAnalyzer
 {
@@ -31,9 +37,14 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 
 	private static final String AU_SUBSTITUTE = "AU";
 
+	private static final List<String> PUNCTUATIONS = Arrays
+			.asList(new String[] { ".", "," });
+
 	private LexicalizedParser lexicalizedParser;
 
 	private GrammaticalStructureFactory grammaticalStructureFactory;
+
+	private WordNetReader wordNetReader = new WordNetReaderImpl();
 
 	public NLPAnalyzerImpl2()
 	{
@@ -54,10 +65,21 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 		for (int index = 0; index < allAlternativeStatements.size(); index++)
 		{
 			String sentence = allAlternativeStatements.get(index);
-			String alternativeUint = allAlternativeUnits.get(index);
+			String alternativeUnit = allAlternativeUnits.get(index);
 
-			String topicTerm = retrieveTopicTermIfSameTypeAsAU(sentence,
-					alternativeUint);
+			boolean doubleCheckSubject = true;
+			if (alternativeUnit.contains(" ")) // if AU contains more than one term, use "AU" instead. 
+			{
+				sentence = sentence.replace(alternativeUnit, AU_SUBSTITUTE);
+				alternativeUnit = AU_SUBSTITUTE;
+				doubleCheckSubject = false;
+			}
+
+			sentence = restoreWordCasesForSentence(sentence, alternativeUnit);
+			alternativeUnit = StringUtils.capitalize(alternativeUnit);
+
+			String topicTerm = retrieveTopicTermIfSameTypeAsAUInternal(
+					sentence, alternativeUnit, doubleCheckSubject);
 			if (topicTerm != null)
 			{
 				return topicTerm;
@@ -65,23 +87,6 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 		}
 
 		return null;
-	}
-
-	private String retrieveTopicTermIfSameTypeAsAU(String sentence,
-			String alternativeUint)
-	{
-		boolean doubleCheckSubject = true;
-		if (alternativeUint.contains(" ")) // if AU contains more than one term, use "AU" instead. 
-		{
-			sentence = sentence.replace(alternativeUint, AU_SUBSTITUTE);
-			alternativeUint = AU_SUBSTITUTE.toLowerCase(Locale.US);
-			doubleCheckSubject = false;
-		}
-
-		sentence = StringUtils.capitalize(sentence);
-
-		return retrieveTopicTermIfSameTypeAsAUInternal(sentence,
-				alternativeUint, doubleCheckSubject);
 	}
 
 	private String retrieveTopicTermIfSameTypeAsAUInternal(String sentence,
@@ -100,8 +105,7 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 		{
 			if (doubleCheckSubject) // check it again. This time, we use AU to replace single AU term. 
 			{
-				sentence = sentence.replace(alternativeUint,
-						StringUtils.capitalize(alternativeUint));
+				sentence = sentence.replace(alternativeUint, AU_SUBSTITUTE);
 				subjectTerm = retrieveTopicTermIfSameTypeAsAUInternal(sentence,
 						alternativeUint, false);
 			}
@@ -257,8 +261,8 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 				TreeGraphNode gov = typedDependency.gov();
 				TreeGraphNode dep = typedDependency.dep();
 
-				String govValue = gov.toString("value").toLowerCase(Locale.US);
-				String depValue = dep.toString("value").toLowerCase(Locale.US);
+				String govValue = gov.toString("value")/*.toLowerCase(Locale.US)*/;
+				String depValue = dep.toString("value")/*.toLowerCase(Locale.US)*/;
 
 				if (alternativeUint.equals(govValue))
 				{
@@ -411,43 +415,188 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 		return false;
 	}
 
+	protected String restoreWordCasesForSentence(String sentence,
+			String alternativeUnit)
+	{
+		String alternativeUnitCapitalized = WordUtils
+				.capitalize(alternativeUnit);
+		sentence = sentence
+				.replace(alternativeUnit, alternativeUnitCapitalized); // capitalize AU
+		sentence = capitalizeNounTerms(sentence);
+		return sentence;
+	}
+
+	private String capitalizeNounTerms(String sentence)
+	{
+		sentence = StringUtils.capitalize(sentence);
+		List<String> terms = new ArrayList<String>();
+		HashMap<String, String> posTagByTerm = parseSentenceIntoTermsWithPosTag(
+				sentence, terms);
+		// System.out.println("\t" + posTagByTerm);
+
+		StringBuilder result = new StringBuilder();
+		// String[] terms = sentence.split("(?<=\\W)");
+		/*for (String term : terms)
+		{
+			String posTag = posTagByTerm.get(term.trim());
+			if ("NN".equals(posTag))
+			{
+				term = StringUtils.capitalize(term);
+			}
+
+			result.append(term);
+		}*/
+
+		int properNounBegin = -1;
+		boolean processingNoun = false;
+		String term = null;
+		int index = 0;
+		for (; index < terms.size(); index++)
+		{
+			term = terms.get(index);
+			String posTag = posTagByTerm.get(term);
+			if ("NN".equals(posTag))
+			{
+				if (!processingNoun)
+				{
+					processingNoun = true; // begin noun
+					properNounBegin = index;
+				}
+				// else leave it along
+			}
+			else
+			// not noun term
+			{
+				if (processingNoun) // there are noun(s) pending
+				{
+					if (index - properNounBegin > 1)
+					{
+						// more than one noun together
+						for (int innerIndex = properNounBegin; innerIndex < index; innerIndex++)
+						{
+							// first try WordNet
+							String noun = wordNetReader
+									.retrieveTermInStandardCase(
+											terms.get(innerIndex), POS.NOUN);
+							// then no matter what WordNet gives back, capitalize it
+							noun = StringUtils.capitalize(noun);
+
+							result.append(noun).append(" ");
+						}
+					}
+					else if (index - properNounBegin == 1)
+					{
+						// just one noun
+						String noun = wordNetReader.retrieveTermInStandardCase(
+								terms.get(properNounBegin), POS.NOUN);
+						result.append(noun).append(" ");
+					}
+					else
+					{
+						throw new GeneralException("Can not happen! ");
+					}
+
+					processingNoun = false; // end noun
+				}
+
+				if ("POS".equals(posTag) || isPunctuation(posTag))
+				{
+					result.deleteCharAt(result.length() - 1);
+				}
+
+				result.append(term).append(" ");
+			}
+		}
+
+		// still some nouns pending
+		if (processingNoun)
+		{
+			if (index - properNounBegin > 1)
+			{
+				// more than one noun together
+				for (int innerIndex = properNounBegin; innerIndex < index; innerIndex++)
+				{
+					String noun = StringUtils.capitalize(terms.get(innerIndex));
+					result.append(noun).append(" ");
+				}
+			}
+			else if (index - properNounBegin == 1)
+			{
+				// just one noun
+				String noun = wordNetReader.retrieveTermInStandardCase(
+						terms.get(properNounBegin), POS.NOUN);
+				result.append(noun); //final noun, no need to append(" ")
+			}
+			else
+			{
+				throw new GeneralException("Can not happen! ");
+			}
+
+			// processingNoun = false; // end noun
+		}
+
+		return StringUtils.capitalize(result.toString().trim());
+
+	}
+
+	private boolean isPunctuation(String posTag)
+	{
+		return PUNCTUATIONS.contains(posTag);
+	}
+
 	public static void main(String[] args)
 	{
 		List<Statement> statements = AlternativeUnitsReader
 				.parseAllStatementsFromInputFiles();
 
 		NLPAnalyzerImpl2 analyzer = new NLPAnalyzerImpl2();
-		//		HashMap<String, String> result = analyzer
-		//				.parseSentenceIntoTermsWithPosTag("the biggest producer of tungsten is china");
-		//		System.out.println(result);
-
-		//		for (Statement statement : statements)
-		//		{
-		//			/*System.out.println(statement.getId() + "\t"
-		//					+ statement.getAllAlternativeStatements().get(0));
-		//			
-		//			analyzer.retrieveTopicTermIfSameTypeAsAU(statement);
-		//			System.out.println();*/
-		//
-		//			System.out.print(statement.getId() + "\t");
-		//			System.out.println("["
-		//					+ analyzer.retrieveTopicTermIfSameTypeAsAU(statement)
-		//					+ "]\t" + statement.getAllAlternativeStatements().get(0));
-		//		}
-
-		//		System.out.println(analyzer.retrieveTopicTermIfSameTypeAsAU(
-		//				"poseidon is known as the greek god of sea", "poseidon"));
-		//
-		//		System.out
-		//				.println(analyzer
-		//						.retrieveTopicTermIfSameTypeAsAU(
-		//								"ronald reagan is known as the first private citizen to fly in space",
-		//								"ronald reagan"));
-
-		System.out.println(analyzer.hasAlternativeUnitDoneSomething(
-				"les paul invented the electric guitar", "les paul"));
-		System.out.println(analyzer.hasAlternativeUnitDoneSomething(
-				"the electric guitar was invented by les paul", "les paul"));
+		for (Statement statement : statements)
+		{
+			System.out.print(statement.getId() + "\t");
+			/*System.out.println(analyzer.retrieveSubject(statement));*/
+			System.out.println("["
+					+ analyzer.retrieveTopicTermIfSameTypeAsAU(statement)
+					+ "]\t" + statement.getAllAlternativeStatements().get(0));
+		}
 	}
+
+	//	public static void main2(String[] args)
+	//	{
+	//		List<Statement> statements = AlternativeUnitsReader
+	//				.parseAllStatementsFromInputFiles();
+	//
+	//		NLPAnalyzerImpl2 analyzer = new NLPAnalyzerImpl2();
+	//		//		HashMap<String, String> result = analyzer
+	//		//				.parseSentenceIntoTermsWithPosTag("the biggest producer of tungsten is china");
+	//		//		System.out.println(result);
+	//
+	//		//		for (Statement statement : statements)
+	//		//		{
+	//		//			/*System.out.println(statement.getId() + "\t"
+	//		//					+ statement.getAllAlternativeStatements().get(0));
+	//		//			
+	//		//			analyzer.retrieveTopicTermIfSameTypeAsAU(statement);
+	//		//			System.out.println();*/
+	//		//
+	//		//			System.out.print(statement.getId() + "\t");
+	//		//			System.out.println("["
+	//		//					+ analyzer.retrieveTopicTermIfSameTypeAsAU(statement)
+	//		//					+ "]\t" + statement.getAllAlternativeStatements().get(0));
+	//		//		}
+	//
+	//		//		System.out.println(analyzer.retrieveTopicTermIfSameTypeAsAU(
+	//		//				"poseidon is known as the greek god of sea", "poseidon"));
+	//		//
+	//		//		System.out
+	//		//				.println(analyzer
+	//		//						.retrieveTopicTermIfSameTypeAsAU(
+	//		//								"ronald reagan is known as the first private citizen to fly in space",
+	//		//								"ronald reagan"));
+	//
+	//		System.out.println(analyzer.hasAlternativeUnitDoneSomething(
+	//				"les paul invented the electric guitar", "les paul"));
+	//		System.out.println(analyzer.hasAlternativeUnitDoneSomething(
+	//				"the electric guitar was invented by les paul", "les paul"));
+	//	}
 
 }

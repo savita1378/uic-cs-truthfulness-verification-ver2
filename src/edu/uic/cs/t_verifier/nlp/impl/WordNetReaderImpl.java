@@ -92,7 +92,7 @@ public class WordNetReaderImpl extends AbstractWordOperations implements
 	@Override
 	public String retrieveTermInStandardCase(String term, POS pos)
 	{
-		term = term.toLowerCase(Locale.US);
+		// term = term.toLowerCase(Locale.US);
 		IIndexWord idxWord = dict.getIndexWord(term, pos);
 		if (idxWord == null)
 		{
