@@ -8,7 +8,8 @@ import edu.uic.cs.t_verifier.input.data.Statement;
 
 public class TestStatementTypeIdentifierImpl extends EnhancedTestCase
 {
-	private StatementTypeIdentifierImpl identifier = new StatementTypeIdentifierImpl();
+	// private StatementTypeIdentifierImpl identifier = new StatementTypeIdentifierImpl();
+	NLPAnalyzerImpl2 analyzer = new NLPAnalyzerImpl2();
 
 	public void testRestoreWordCasesForSentence()
 	{
@@ -24,8 +25,8 @@ public class TestStatementTypeIdentifierImpl extends EnhancedTestCase
 				String sentence = allAlternativeStatements.get(index);
 				String alternativeUnit = allAlternativeUnits.get(index);
 
-				String actual = identifier.restoreWordCasesForSentence(
-						sentence, alternativeUnit);
+				String actual = analyzer.restoreWordCasesForSentence(sentence,
+						alternativeUnit);
 				System.out.println(actual);
 				assertEquals(sentence, actual.toLowerCase());
 			}
