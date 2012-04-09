@@ -40,18 +40,16 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 	private static final List<String> PUNCTUATIONS = Arrays
 			.asList(new String[] { ".", "," });
 
-	private LexicalizedParser lexicalizedParser;
-
-	private GrammaticalStructureFactory grammaticalStructureFactory;
-
-	private WordNetReader wordNetReader = new WordNetReaderImpl();
-
-	public NLPAnalyzerImpl2()
+	private static final LexicalizedParser lexicalizedParser = new LexicalizedParser(
+			GRAMMAR);
+	private static final GrammaticalStructureFactory grammaticalStructureFactory;
+	static
 	{
-		lexicalizedParser = new LexicalizedParser(GRAMMAR);
 		TreebankLanguagePack tlp = new PennTreebankLanguagePack();
 		grammaticalStructureFactory = tlp.grammaticalStructureFactory();
 	}
+
+	private WordNetReader wordNetReader = new WordNetReaderImpl();
 
 	/* (non-Javadoc)
 	 * @see edu.uic.cs.t_verifier.nlp.NLPAnalyzer#retrieveSubjectIfSameTypeAsAU(edu.uic.cs.t_verifier.input.data.Statement)
