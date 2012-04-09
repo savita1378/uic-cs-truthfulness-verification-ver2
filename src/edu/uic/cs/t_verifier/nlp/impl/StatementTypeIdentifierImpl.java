@@ -51,8 +51,8 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 	private WordNetReader wordNetReader = new WordNetReaderImpl();
 
 	private static final String SERIALIZED_CLASSIFIER_PATH = "StanfordNer_classifiers/muc.7class.distsim.crf.ser.gz";
-	@SuppressWarnings("rawtypes")
-	private AbstractSequenceClassifier classifier = CRFClassifier
+	@SuppressWarnings("unchecked")
+	private AbstractSequenceClassifier<CoreLabel> classifier = CRFClassifier
 			.getClassifierNoExceptions(SERIALIZED_CLASSIFIER_PATH);
 
 	private static final Set<String> FIRST_NAMES;
@@ -246,12 +246,11 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 
 			// System.out.println(sentence);
 
-			@SuppressWarnings("unchecked")
 			List<List<CoreLabel>> terms = classifier.classify(sentence);
 			Assert.isTrue(terms.size() == 1);
 
-			System.out.print("[" + statement.getId() + "]\t" + sentence
-					+ "\t|\t");
+//			System.out.print("[" + statement.getId() + "]\t" + sentence
+//					+ "\t|\t");
 			for (CoreLabel term : terms.get(0))
 			{
 				String termString = term.word();
@@ -261,27 +260,25 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 				if (!alternativeUnit.contains(termString.toLowerCase(Locale.US)
 						.trim()))
 				{
-					if (statementType != StatementType.OTHER)
-					{
-						System.out
-								.print(termString + "/" + statementType + " ");
-					}
+//					if (statementType != StatementType.OTHER)
+//					{
+//						System.out
+//								.print(termString + "/" + statementType + " ");
+//					}
 					continue; // not AU term
 				}
 
-				//				String typeString = term.get(AnswerAnnotation.class);
-				//				StatementType statementType = StatementType.parse(typeString);
 				if (statementType == StatementType.OTHER)
 				{
 					continue;
 				}
 
-				System.out.print("*" + termString + "/" + statementType + "* ");
+//				System.out.print("*" + termString + "/" + statementType + "* ");
 				increaseNumberOfType(numberOfType, statementType);
 
 			}
 
-			System.out.println();
+//			System.out.println();
 		}
 
 		StatementType result = StatementType.OTHER;
@@ -486,11 +483,23 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 		{
 			StatementType type = typeIdentifier.identifyType(statement);
 
-			/*System.out.println(statement.getId() + "\t[" + type + "]\t"
-					+ statement.getAllAlternativeStatements().get(0));*/
-			System.out.println("[" + type
-					+ "] ===========================================\n");
+			System.out.println(statement.getId() + "\t[" + type + "]\t"
+					+ statement.getAllAlternativeStatements().get(0));
+//			System.out.println("[" + type
+//					+ "] ===========================================\n");
 		}
+	}
+
+	@Override
+	public StatementType identifyType(String sentence, String alternativeUnit)
+	{
+		sentence = restoreWordCasesForSentence(sentence, alternativeUnit);
+
+		List<List<CoreLabel>> terms = classifier.classify(sentence);
+		Assert.isTrue(terms.size() == 1);
+		
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -28,4 +28,6 @@ public interface StatementTypeIdentifier
 	}
 
 	StatementType identifyType(Statement statement);
+
+	StatementType identifyType(String sentence, String alternativeUnit);
 }
