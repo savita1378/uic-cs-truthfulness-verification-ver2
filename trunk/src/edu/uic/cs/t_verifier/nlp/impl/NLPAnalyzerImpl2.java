@@ -555,6 +555,9 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 			System.out.println("["
 					+ analyzer.retrieveTopicTermIfSameTypeAsAU(statement)
 					+ "]\t" + statement.getAllAlternativeStatements().get(0));
+			//			System.out.println(analyzer.restoreWordCasesForSentence(statement
+			//					.getAllAlternativeStatements().get(0), statement
+			//					.getAlternativeUnits().get(0)));
 		}
 	}
 
