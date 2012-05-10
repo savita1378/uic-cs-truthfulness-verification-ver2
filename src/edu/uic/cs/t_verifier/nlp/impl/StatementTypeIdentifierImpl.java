@@ -379,9 +379,16 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 		List<Statement> statements = AlternativeUnitsReader
 				.parseAllStatementsFromInputFiles();
 		StatementTypeIdentifier typeIdentifier = new StatementTypeIdentifierImpl();
-		// StatementTypeIdentifierImpl.PRINT_DETAIL = true;
+		StatementTypeIdentifierImpl.PRINT_DETAIL = true;
+
+		NLPAnalyzerImpl2 analyzer = new NLPAnalyzerImpl2();
 		for (Statement statement : statements)
 		{
+			if (analyzer.retrieveTopicTermIfSameTypeAsAU(statement) == null)
+			{
+				continue;
+			}
+
 			StatementType type = typeIdentifier.identifyType(statement);
 
 			if (StatementTypeIdentifierImpl.PRINT_DETAIL)
