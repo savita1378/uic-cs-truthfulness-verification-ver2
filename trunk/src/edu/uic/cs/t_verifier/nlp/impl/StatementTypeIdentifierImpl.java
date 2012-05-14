@@ -46,7 +46,7 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 
 	private static final double MINMUM_MAX_RATIO = 0.2;
 
-	private NLPAnalyzerImpl2 nlpAnalyzer = new NLPAnalyzerImpl2();
+	private NLPAnalyzerImpl3 nlpAnalyzer = new NLPAnalyzerImpl3();
 
 	private static final String SERIALIZED_CLASSIFIER_PATH_7_CLASSES = "StanfordNer_classifiers/muc.7class.distsim.crf.ser.gz";
 	@SuppressWarnings("unchecked")
@@ -458,8 +458,8 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 	public static void main2(String[] args)
 	{
 		StatementTypeIdentifier typeIdentifier = new StatementTypeIdentifierImpl();
-		String sentence = "lou gehrig play 2130 consecutive baseball games";
-		String alternativeUnit = "2130";
+		String sentence = "harry is lead actress in the movie sleepless in seattle";
+		String alternativeUnit = "harry";
 		System.out.println(typeIdentifier.identifyType(sentence,
 				alternativeUnit));
 	}
@@ -611,18 +611,28 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 
 		StatementType alternativeUnitStatementType = StatementType.OTHER;
 		StatementType counterPartStatementType = StatementType.OTHER;
-		for (CoreLabel term : terms.get(0))
+
+		String[] alternativeUnitTerms = alternativeUnit.split(" ");
+		outter: for (CoreLabel term : terms.get(0))
 		{
 			String termString = term.word();
 			String typeString = term.get(AnswerAnnotation.class);
 			StatementType statementType = StatementType.parse(typeString);
-
-			if (StringUtils.containsIgnoreCase(alternativeUnit, termString))
+			if (statementType == StatementType.OTHER)
 			{
-				alternativeUnitStatementType = statementType;
+				continue;
 			}
-			else if (StringUtils
-					.containsIgnoreCase(counterPartOfAU, termString))
+
+			for (String auTerm : alternativeUnitTerms)
+			{
+				if (auTerm.equalsIgnoreCase(termString))
+				{
+					alternativeUnitStatementType = statementType;
+					continue outter;
+				}
+			}
+
+			if (counterPartOfAU.equalsIgnoreCase(termString))
 			{
 				counterPartStatementType = statementType;
 			}
@@ -641,5 +651,4 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 			return alternativeUnitStatementType;
 		}
 	}
-
 }
