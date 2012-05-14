@@ -2,6 +2,8 @@ package edu.uic.cs.t_verifier.nlp.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
@@ -33,6 +36,7 @@ import edu.uic.cs.t_verifier.input.data.Statement;
 import edu.uic.cs.t_verifier.misc.Assert;
 import edu.uic.cs.t_verifier.misc.Config;
 import edu.uic.cs.t_verifier.misc.GeneralException;
+import edu.uic.cs.t_verifier.nlp.CategoryMapper;
 import edu.uic.cs.t_verifier.nlp.StatementTypeIdentifier;
 
 public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
@@ -49,10 +53,15 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 	private AbstractSequenceClassifier<CoreLabel> classifier_7_classes = CRFClassifier
 			.getClassifierNoExceptions(SERIALIZED_CLASSIFIER_PATH_7_CLASSES);
 
-	/*private static final String SERIALIZED_CLASSIFIER_PATH_4_CLASSES = "StanfordNer_classifiers/conll.4class.distsim.crf.ser.gz";
+	//	private static final String SERIALIZED_CLASSIFIER_PATH_4_CLASSES = "StanfordNer_classifiers/conll.4class.distsim.crf.ser.gz";
+	//	@SuppressWarnings("unchecked")
+	//	private AbstractSequenceClassifier<CoreLabel> classifier_4_classes = CRFClassifier
+	//			.getClassifierNoExceptions(SERIALIZED_CLASSIFIER_PATH_4_CLASSES);
+
+	private static final String SERIALIZED_CLASSIFIER_PATH_3_CLASSES = "StanfordNer_classifiers/all.3class.distsim.crf.ser.gz";
 	@SuppressWarnings("unchecked")
-	private AbstractSequenceClassifier<CoreLabel> classifier_4_classes = CRFClassifier
-			.getClassifierNoExceptions(SERIALIZED_CLASSIFIER_PATH_4_CLASSES);*/
+	private AbstractSequenceClassifier<CoreLabel> classifier_3_classes = CRFClassifier
+			.getClassifierNoExceptions(SERIALIZED_CLASSIFIER_PATH_3_CLASSES);
 
 	private static final Set<String> FIRST_NAMES;
 	private static final Set<String> LAST_NAMES;
@@ -73,6 +82,8 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 	private IndexSearcher indexSearcher = null;
 
 	private StatementIndexUpdater indexUpdater = null;
+
+	private CategoryMapper categoryMapper = new FileBasedCategoryMapperImpl();
 
 	public static void setPrintDetail(boolean printDetail)
 	{
@@ -267,6 +278,23 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 
 	private boolean isTermAnOccupation(String topicTerm)
 	{
+		String[] categories = retrieveCategoryAndInsertIntoIndexIfNotExist(topicTerm);
+
+		for (String category : categories)
+		{
+			category = category.toLowerCase(Locale.US);
+			if (category.contains(CATEGORY_KEYWORD_OCCUPATION))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private String[] retrieveCategoryAndInsertIntoIndexIfNotExist(
+			String topicTerm)
+	{
 		String[] categories = retrieveCategories(topicTerm);
 		if (categories == null)
 		{
@@ -281,23 +309,13 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 					.retrieveAndIndexUnitPage(topicTerm);
 			if (insertedCategories == null)
 			{
-				return false;
+				return new String[] {};
 			}
 
 			categories = insertedCategories
 					.toArray(new String[insertedCategories.size()]);
 		}
-
-		for (String category : categories)
-		{
-			category = category.toLowerCase(Locale.US);
-			if (category.contains(CATEGORY_KEYWORD_OCCUPATION))
-			{
-				return true;
-			}
-		}
-
-		return false;
+		return categories;
 	}
 
 	private String[] retrieveCategories(String unitString)
@@ -374,6 +392,36 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 		}
 	}
 
+	//	public static void main3(String[] args)
+	//	{
+	//		List<Statement> statements = AlternativeUnitsReader
+	//				.parseAllStatementsFromInputFiles();
+	//		StatementTypeIdentifier typeIdentifier = new StatementTypeIdentifierImpl();
+	//		StatementTypeIdentifierImpl.PRINT_DETAIL = true;
+	//
+	//		NLPAnalyzerImpl2 analyzer = new NLPAnalyzerImpl2();
+	//		for (Statement statement : statements)
+	//		{
+	//			if (analyzer.retrieveTopicTermIfSameTypeAsAU(statement) == null)
+	//			{
+	//				continue;
+	//			}
+	//
+	//			StatementType type = typeIdentifier.identifyType(statement);
+	//
+	//			if (StatementTypeIdentifierImpl.PRINT_DETAIL)
+	//			{
+	//				System.out.println("[" + type
+	//						+ "] ===========================================\n");
+	//			}
+	//			else
+	//			{
+	//				System.out.println(statement.getId() + "\t[" + type + "]\t"
+	//						+ statement.getAllAlternativeStatements().get(0));
+	//			}
+	//		}
+	//	}
+
 	public static void main(String[] args)
 	{
 		List<Statement> statements = AlternativeUnitsReader
@@ -381,40 +429,217 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 		StatementTypeIdentifier typeIdentifier = new StatementTypeIdentifierImpl();
 		StatementTypeIdentifierImpl.PRINT_DETAIL = true;
 
-		NLPAnalyzerImpl2 analyzer = new NLPAnalyzerImpl2();
 		for (Statement statement : statements)
 		{
-			if (analyzer.retrieveTopicTermIfSameTypeAsAU(statement) == null)
+			List<String> allAlternativeUnits = statement.getAlternativeUnits();
+			List<String> allAlternativeStatements = statement
+					.getAllAlternativeStatements();
+
+			for (int index = 0; index < allAlternativeStatements.size(); index++)
 			{
-				continue;
+				String alternativeUnit = allAlternativeUnits.get(index);
+				String sentence = allAlternativeStatements.get(index);
+
+				StatementType statementType = typeIdentifier.identifyType(
+						sentence, alternativeUnit);
+
+				System.out.println("["
+						+ statement.getId()
+						+ "] "
+						+ sentence.replace(alternativeUnit, "["
+								+ alternativeUnit + "]") + "\t["
+						+ statementType + "]");
 			}
 
-			StatementType type = typeIdentifier.identifyType(statement);
-
-			if (StatementTypeIdentifierImpl.PRINT_DETAIL)
-			{
-				System.out.println("[" + type
-						+ "] ===========================================\n");
-			}
-			else
-			{
-				System.out.println(statement.getId() + "\t[" + type + "]\t"
-						+ statement.getAllAlternativeStatements().get(0));
-			}
+			System.out.println();
 		}
 	}
 
-	@Override
-	public StatementType identifyType(String sentence, String alternativeUnit)
+	public static void main2(String[] args)
 	{
-		sentence = nlpAnalyzer.restoreWordCasesForSentence(sentence,
-				alternativeUnit);
+		StatementTypeIdentifier typeIdentifier = new StatementTypeIdentifierImpl();
+		String sentence = "lou gehrig play 2130 consecutive baseball games";
+		String alternativeUnit = "2130";
+		System.out.println(typeIdentifier.identifyType(sentence,
+				alternativeUnit));
+	}
 
-		List<List<CoreLabel>> terms = classifier_7_classes.classify(sentence);
+	@Override
+	public StatementType identifyType(String originalSentence,
+			String alternativeUnit)
+	{
+		StatementType result = StatementType.OTHER;
+
+		String counterPartOfAU = nlpAnalyzer.retrieveTopicTermIfSameTypeAsAU(
+				originalSentence, alternativeUnit); // this method will restore cases
+
+		if (counterPartOfAU != null)
+		{
+			result = identifyTypeByTopic(classifier_7_classes,
+					originalSentence, alternativeUnit, counterPartOfAU);
+			if (result == StatementType.OTHER) // try 3 class classifier
+			{
+				result = identifyTypeByTopic(classifier_3_classes,
+						originalSentence, alternativeUnit, counterPartOfAU);
+			}
+
+			if (result == StatementType.OTHER)
+			{
+				result = identifyTypeByCategory(counterPartOfAU);
+			}
+		}
+
+		if (result == StatementType.OTHER)
+		{
+			result = identifyTypeByNER(classifier_7_classes, originalSentence,
+					alternativeUnit);
+			if (result == StatementType.OTHER) // try 3 class classifier
+			{
+				result = identifyTypeByNER(classifier_3_classes,
+						originalSentence, alternativeUnit);
+			}
+		}
+
+		if (result == StatementType.OTHER)
+		{
+			if (isNumber(alternativeUnit)) // Number?
+			{
+				return StatementType.NUMBER;
+			}
+			else if (isPerson(originalSentence, alternativeUnit))
+			{
+				return StatementType.PERSON;
+			}
+		}
+
+		return result;
+	}
+
+	private boolean isPerson(String originalSentence, String alternativeUnit)
+	{
+		String[] parts = alternativeUnit.toLowerCase().trim().split(" ");
+		int matchCount = 0;
+		for (String part : parts)
+		{
+			if (FIRST_NAMES.contains(part) || LAST_NAMES.contains(part))
+			{
+				matchCount++;
+			}
+		}
+
+		return parts.length == matchCount // it is a name of person
+				&& (nlpAnalyzer.hasAlternativeUnitDoneSomething(
+						originalSentence, alternativeUnit) || hasOccupation(
+						originalSentence, alternativeUnit));
+	}
+
+	private boolean hasOccupation(String originalSentence,
+			String alternativeUnit)
+	{
+		String topicTerm = nlpAnalyzer.retrieveTopicTermIfSameTypeAsAU(
+				originalSentence, alternativeUnit);
+		if (topicTerm == null)
+		{
+			return false;
+		}
+
+		return isTermAnOccupation(topicTerm);
+	}
+
+	private boolean isNumber(String alternativeUnit)
+	{
+		try
+		{
+			Double.parseDouble(alternativeUnit);
+			return true;
+		}
+		catch (NumberFormatException e)
+		{
+			return false;
+		}
+	}
+
+	private StatementType identifyTypeByNER(
+			AbstractSequenceClassifier<CoreLabel> classifier,
+			String originalSentence, String alternativeUnit)
+	{
+		StatementType result = StatementType.OTHER;
+
+		String restoredSentence = nlpAnalyzer.restoreWordCasesForSentence(
+				originalSentence, alternativeUnit);
+
+		List<List<CoreLabel>> terms = classifier.classify(restoredSentence);
+		Assert.isTrue(terms.size() == 1);
+		for (CoreLabel term : terms.get(0))
+		{
+			String termString = term.word();
+			if (StringUtils.containsIgnoreCase(alternativeUnit, termString))
+			{
+				String typeString = term.get(AnswerAnnotation.class);
+				result = StatementType.parse(typeString);
+				if (result != StatementType.OTHER)
+				{
+					break;
+				}
+			}
+		}
+
+		return result;
+	}
+
+	private StatementType identifyTypeByCategory(String counterPartOfAU)
+	{
+		// System.out.println("counterPartOfAU: " + counterPartOfAU);
+		String[] categories = retrieveCategoryAndInsertIntoIndexIfNotExist(counterPartOfAU);
+		List<String> categoryList = new ArrayList<String>();
+		categoryList.add(counterPartOfAU);
+		categoryList.addAll(Arrays.asList(categories));
+
+		return categoryMapper.mapCategoriesIntoStatementType(categoryList);
+	}
+
+	private StatementType identifyTypeByTopic(
+			AbstractSequenceClassifier<CoreLabel> classifier,
+			String originalSentence, String alternativeUnit,
+			String counterPartOfAU)
+	{
+		String restoredSentence = nlpAnalyzer.restoreWordCasesForSentence(
+				originalSentence, alternativeUnit);
+
+		List<List<CoreLabel>> terms = classifier.classify(restoredSentence);
 		Assert.isTrue(terms.size() == 1);
 
-		// TODO Auto-generated method stub
-		return null;
+		StatementType alternativeUnitStatementType = StatementType.OTHER;
+		StatementType counterPartStatementType = StatementType.OTHER;
+		for (CoreLabel term : terms.get(0))
+		{
+			String termString = term.word();
+			String typeString = term.get(AnswerAnnotation.class);
+			StatementType statementType = StatementType.parse(typeString);
+
+			if (StringUtils.containsIgnoreCase(alternativeUnit, termString))
+			{
+				alternativeUnitStatementType = statementType;
+			}
+			else if (StringUtils
+					.containsIgnoreCase(counterPartOfAU, termString))
+			{
+				counterPartStatementType = statementType;
+			}
+		}
+
+		if (alternativeUnitStatementType == counterPartStatementType)
+		{
+			return alternativeUnitStatementType;
+		}
+		else if (counterPartStatementType != StatementType.OTHER)
+		{
+			return counterPartStatementType;
+		}
+		else
+		{
+			return alternativeUnitStatementType;
+		}
 	}
 
 }

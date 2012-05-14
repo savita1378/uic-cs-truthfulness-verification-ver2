@@ -197,4 +197,18 @@ public class NLPAnalyzerImpl extends AbstractWordOperations implements
 	{
 		throw new UnsupportedOperationException();
 	}
+
+	@Override
+	public boolean hasAlternativeUnitDoneSomething(String sentence,
+			String alternativeUint)
+	{
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public String retrieveTopicTermIfSameTypeAsAU(String sentence,
+			String alternativeUnit)
+	{
+		throw new UnsupportedOperationException();
+	}
 }
