@@ -65,19 +65,8 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 			String sentence = allAlternativeStatements.get(index);
 			String alternativeUnit = allAlternativeUnits.get(index);
 
-			boolean doubleCheckSubject = true;
-			if (alternativeUnit.contains(" ")) // if AU contains more than one term, use "AU" instead. 
-			{
-				sentence = sentence.replace(alternativeUnit, AU_SUBSTITUTE);
-				alternativeUnit = AU_SUBSTITUTE;
-				doubleCheckSubject = false;
-			}
-
-			sentence = restoreWordCasesForSentence(sentence, alternativeUnit);
-			alternativeUnit = StringUtils.capitalize(alternativeUnit);
-
-			String topicTerm = retrieveTopicTermIfSameTypeAsAUInternal(
-					sentence, alternativeUnit, doubleCheckSubject);
+			String topicTerm = retrieveTopicTermIfSameTypeAsAU(sentence,
+					alternativeUnit);
 			if (topicTerm != null)
 			{
 				return topicTerm;
@@ -85,6 +74,28 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 		}
 
 		return null;
+	}
+
+	@Override
+	public String retrieveTopicTermIfSameTypeAsAU(String sentence,
+			String alternativeUnit)
+	{
+		boolean doubleCheckSubject = true;
+		if (alternativeUnit.contains(" ")) // if AU contains more than one term, use "AU" instead. 
+		{
+			sentence = sentence.replace(alternativeUnit, AU_SUBSTITUTE);
+			alternativeUnit = AU_SUBSTITUTE;
+			doubleCheckSubject = false;
+		}
+
+		sentence = restoreWordCasesForSentence(sentence, alternativeUnit);
+		// System.out.println("\t" + sentence); 
+		alternativeUnit = StringUtils.capitalize(alternativeUnit);
+
+		String topicTerm = retrieveTopicTermIfSameTypeAsAUInternal(sentence,
+				alternativeUnit, doubleCheckSubject);
+
+		return topicTerm;
 	}
 
 	private String retrieveTopicTermIfSameTypeAsAUInternal(String sentence,
@@ -262,11 +273,11 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 				String govValue = gov.toString("value")/*.toLowerCase(Locale.US)*/;
 				String depValue = dep.toString("value")/*.toLowerCase(Locale.US)*/;
 
-				if (alternativeUint.equals(govValue))
+				if (alternativeUint.equalsIgnoreCase(govValue))
 				{
 					result = new TreeGraphNode[] { gov, dep };
 				}
-				else if (alternativeUint.equals(depValue))
+				else if (alternativeUint.equalsIgnoreCase(depValue))
 				{
 					result = new TreeGraphNode[] { dep, gov };
 				}
@@ -347,7 +358,8 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 		return hasAlternativeUnitDoneSomething(sentence, alternativeUint);
 	}
 
-	private boolean hasAlternativeUnitDoneSomething(String sentence,
+	@Override
+	public boolean hasAlternativeUnitDoneSomething(String sentence,
 			String alternativeUint)
 	{
 		if (alternativeUint.contains(" ")) // if AU contains more than one term, use "AU" instead. 
@@ -542,7 +554,7 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 		return PUNCTUATIONS.contains(posTag);
 	}
 
-	public static void main(String[] args)
+	public static void main2(String[] args)
 	{
 		List<Statement> statements = AlternativeUnitsReader
 				.parseAllStatementsFromInputFiles();
@@ -558,6 +570,42 @@ public class NLPAnalyzerImpl2 implements NLPAnalyzer
 			//			System.out.println(analyzer.restoreWordCasesForSentence(statement
 			//					.getAllAlternativeStatements().get(0), statement
 			//					.getAlternativeUnits().get(0)));
+		}
+	}
+
+	public static void main(String[] args)
+	{
+		List<Statement> statements = AlternativeUnitsReader
+				.parseAllStatementsFromInputFiles();
+		NLPAnalyzerImpl2 analyzer = new NLPAnalyzerImpl2();
+
+		for (Statement statement : statements)
+		{
+			List<String> allAlternativeUnits = statement.getAlternativeUnits();
+			List<String> allAlternativeStatements = statement
+					.getAllAlternativeStatements();
+
+			for (int index = 0; index < allAlternativeStatements.size(); index++)
+			{
+				String alternativeUnit = allAlternativeUnits.get(index);
+				String sentence = allAlternativeStatements.get(index);
+
+				int alternativeUnitStartIndex = sentence
+						.indexOf(alternativeUnit);
+				String restoredSentence = analyzer.restoreWordCasesForSentence(
+						sentence, alternativeUnit);
+				String restoredAlternativeUnit = restoredSentence.substring(
+						alternativeUnitStartIndex, alternativeUnitStartIndex
+								+ alternativeUnit.length());
+
+				System.out.println("["
+						+ statement.getId()
+						+ "] "
+						+ restoredSentence.replace(restoredAlternativeUnit, "["
+								+ restoredAlternativeUnit + "]"));
+			}
+
+			System.out.println();
 		}
 	}
 
