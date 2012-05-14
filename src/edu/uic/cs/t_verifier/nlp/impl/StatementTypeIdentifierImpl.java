@@ -12,7 +12,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
@@ -563,28 +562,36 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 			AbstractSequenceClassifier<CoreLabel> classifier,
 			String originalSentence, String alternativeUnit)
 	{
-		StatementType result = StatementType.OTHER;
-
 		String restoredSentence = nlpAnalyzer.restoreWordCasesForSentence(
 				originalSentence, alternativeUnit);
 
 		List<List<CoreLabel>> terms = classifier.classify(restoredSentence);
 		Assert.isTrue(terms.size() == 1);
-		for (CoreLabel term : terms.get(0))
+
+		StatementType alternativeUnitStatementType = StatementType.OTHER;
+		String[] alternativeUnitTerms = alternativeUnit.split(" ");
+		outter: for (CoreLabel term : terms.get(0))
 		{
 			String termString = term.word();
-			if (StringUtils.containsIgnoreCase(alternativeUnit, termString))
+			String typeString = term.get(AnswerAnnotation.class);
+			StatementType statementType = StatementType.parse(typeString);
+			if (statementType == StatementType.OTHER)
 			{
-				String typeString = term.get(AnswerAnnotation.class);
-				result = StatementType.parse(typeString);
-				if (result != StatementType.OTHER)
+				continue;
+			}
+
+			for (String auTerm : alternativeUnitTerms)
+			{
+				if (auTerm.equalsIgnoreCase(termString))
 				{
-					break;
+					alternativeUnitStatementType = statementType;
+					break outter;
 				}
 			}
+
 		}
 
-		return result;
+		return alternativeUnitStatementType;
 	}
 
 	private StatementType identifyTypeByCategory(String counterPartOfAU)
