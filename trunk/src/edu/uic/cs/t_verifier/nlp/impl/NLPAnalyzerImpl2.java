@@ -31,6 +31,7 @@ import edu.uic.cs.t_verifier.misc.GeneralException;
 import edu.uic.cs.t_verifier.nlp.NLPAnalyzer;
 import edu.uic.cs.t_verifier.nlp.WordNetReader;
 
+@Deprecated
 public class NLPAnalyzerImpl2 implements NLPAnalyzer
 {
 	private static final String GRAMMAR = "englishPCFG.ser.gz";
