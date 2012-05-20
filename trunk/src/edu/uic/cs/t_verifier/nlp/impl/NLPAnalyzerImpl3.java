@@ -475,11 +475,11 @@ public class NLPAnalyzerImpl3 implements NLPAnalyzer
 				.capitalize(alternativeUnit);
 		sentence = sentence
 				.replace(alternativeUnit, alternativeUnitCapitalized); // capitalize AU
-		sentence = capitalizeNounTerms(sentence, nounPhrases);
+		sentence = capitalizeProperNounTerms(sentence, nounPhrases);
 		return sentence;
 	}
 
-	private String capitalizeNounTerms(String sentence,
+	private String capitalizeProperNounTerms(String sentence,
 			List<List<String>> nounPhrases)
 	{
 		sentence = StringUtils.capitalize(sentence);
