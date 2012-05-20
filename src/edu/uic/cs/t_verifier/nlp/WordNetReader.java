@@ -1,8 +1,10 @@
 package edu.uic.cs.t_verifier.nlp;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import edu.mit.jwi.item.POS;
+import edu.uic.cs.t_verifier.nlp.impl.WordNetReaderImpl.HypernymSet;
 
 public interface WordNetReader
 {
@@ -15,4 +17,6 @@ public interface WordNetReader
 	 * @return
 	 */
 	String retrieveTermInStandardCase(String term, POS pos);
+
+	LinkedHashSet<HypernymSet> retrieveHypernyms(String term, POS pos);
 }

@@ -591,7 +591,7 @@ public class NLPAnalyzerImpl3 implements NLPAnalyzer
 				String noun = wordNetReader.retrieveTermInStandardCase(
 						terms.get(properNounBegin), POS.NOUN);
 				result.append(noun); //final noun, no need to append(" ")
-				
+
 				nounPhrases.add(Collections.singletonList(noun));
 			}
 			else
@@ -611,7 +611,7 @@ public class NLPAnalyzerImpl3 implements NLPAnalyzer
 		return PUNCTUATIONS.contains(posTag);
 	}
 
-	public static void main2(String[] args)
+	public static void main(String[] args)
 	{
 		List<Statement> statements = AlternativeUnitsReader
 				.parseAllStatementsFromInputFiles();
@@ -619,18 +619,24 @@ public class NLPAnalyzerImpl3 implements NLPAnalyzer
 		NLPAnalyzerImpl3 analyzer = new NLPAnalyzerImpl3();
 		for (Statement statement : statements)
 		{
+			String counterpartOfAU = analyzer
+					.retrieveTopicTermIfSameTypeAsAU(statement);
+			if (counterpartOfAU == null)
+			{
+				continue;
+			}
+
 			System.out.print(statement.getId() + "\t");
 			/*System.out.println(analyzer.retrieveSubject(statement));*/
-			System.out.println("["
-					+ analyzer.retrieveTopicTermIfSameTypeAsAU(statement)
-					+ "]\t" + statement.getAllAlternativeStatements().get(0));
+			System.out.println("[" + counterpartOfAU + "]\t"
+					+ statement.getAllAlternativeStatements().get(0));
 			//			System.out.println(analyzer.restoreWordCasesForSentence(statement
 			//					.getAllAlternativeStatements().get(0), statement
 			//					.getAlternativeUnits().get(0)));
 		}
 	}
 
-	public static void main(String[] args)
+	public static void main2(String[] args)
 	{
 		List<Statement> statements = AlternativeUnitsReader
 				.parseAllStatementsFromInputFiles();
