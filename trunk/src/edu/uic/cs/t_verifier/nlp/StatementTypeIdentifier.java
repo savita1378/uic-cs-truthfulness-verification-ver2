@@ -27,6 +27,7 @@ public interface StatementTypeIdentifier
 		}
 	}
 
+	@Deprecated
 	StatementType identifyType(Statement statement);
 
 	StatementType identifyType(String sentence, String alternativeUnit);

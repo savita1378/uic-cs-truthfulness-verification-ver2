@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
@@ -24,6 +25,7 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
+import edu.mit.jwi.item.POS;
 import edu.stanford.nlp.ie.AbstractSequenceClassifier;
 import edu.stanford.nlp.ie.crf.CRFClassifier;
 import edu.stanford.nlp.ling.CoreAnnotations.AnswerAnnotation;
@@ -37,10 +39,15 @@ import edu.uic.cs.t_verifier.misc.Config;
 import edu.uic.cs.t_verifier.misc.GeneralException;
 import edu.uic.cs.t_verifier.nlp.CategoryMapper;
 import edu.uic.cs.t_verifier.nlp.StatementTypeIdentifier;
+import edu.uic.cs.t_verifier.nlp.WordNetReader;
+import edu.uic.cs.t_verifier.nlp.impl.WordNetReaderImpl.HypernymSet;
 
 public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 		IndexConstants
 {
+	private static final String WORDNET_HYPERNYM_PERSON = "person";
+	private static final String WORDNET_HYPERNYM_CELESTIAL_BODY = "celestial body";
+
 	private static boolean PRINT_DETAIL = false;
 
 	private static final double MINMUM_MAX_RATIO = 0.2;
@@ -65,6 +72,8 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 	private static final Set<String> FIRST_NAMES;
 	private static final Set<String> LAST_NAMES;
 
+	private static final Set<String> STAR_NAMES;
+
 	private static final String CATEGORY_KEYWORD_OCCUPATION = "occupation";
 	static
 	{
@@ -75,6 +84,10 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 
 		LAST_NAMES = loadNames(ClassLoader.getSystemResource(
 				"personNames/NameList.Census.LastName").getPath());
+
+		// http://www.astro.wisc.edu/~dolan/constellations/starname_list.html
+		STAR_NAMES = loadNames(ClassLoader.getSystemResource(
+				"starNames/starNames").getPath());
 	}
 
 	private IndexReader indexReader = null;
@@ -83,6 +96,7 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 	private StatementIndexUpdater indexUpdater = null;
 
 	private CategoryMapper categoryMapper = new FileBasedCategoryMapperImpl();
+	private WordNetReader wordNetReader = new WordNetReaderImpl();
 
 	public static void setPrintDetail(boolean printDetail)
 	{
@@ -122,6 +136,7 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 	}
 
 	@Override
+	@Deprecated
 	public StatementType identifyType(Statement statement)
 	{
 		StatementType result = identifyTypeByNER(statement,
@@ -472,20 +487,45 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 		String counterPartOfAU = nlpAnalyzer.retrieveTopicTermIfSameTypeAsAU(
 				originalSentence, alternativeUnit); // this method will restore cases
 
-		if (counterPartOfAU != null)
+		if (counterPartOfAU != null) // AA is BB
 		{
-			result = identifyTypeByTopic(classifier_7_classes,
-					originalSentence, alternativeUnit, counterPartOfAU);
-			if (result == StatementType.OTHER) // try 3 class classifier
+			StatementType statementTypeIdentifiedByHypernyms = identifyTypeByHypernym(counterPartOfAU);
+			if (statementTypeIdentifiedByHypernyms == StatementType.PERSON
+					&& isPersonName(alternativeUnit)) // person
 			{
-				result = identifyTypeByTopic(classifier_3_classes,
+				result = StatementType.PERSON;
+			}
+			else if (statementTypeIdentifiedByHypernyms == StatementType.LOCATION
+					&& isStarName(alternativeUnit)) // star
+			{
+				result = StatementType.LOCATION;
+			}
+
+			if (result == StatementType.OTHER)
+			{
+				result = identifyTypeByTopic(classifier_7_classes,
 						originalSentence, alternativeUnit, counterPartOfAU);
+				if (result == StatementType.OTHER) // try 3 class classifier
+				{
+					result = identifyTypeByTopic(classifier_3_classes,
+							originalSentence, alternativeUnit, counterPartOfAU);
+				}
 			}
 
 			if (result == StatementType.OTHER)
 			{
 				result = identifyTypeByCategory(counterPartOfAU);
 			}
+
+			//			else if (result == StatementType.ORGANIZATION
+			//					|| result == StatementType.DATE
+			//					|| result == StatementType.LOCATION)
+			//			{
+			//				if (identifyTypeByHypernym(counterPartOfAU) == StatementType.PERSON)
+			//				{
+			//					result = StatementType.PERSON;
+			//				}
+			//			}
 		}
 
 		if (result == StatementType.OTHER)
@@ -514,7 +554,49 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 		return result;
 	}
 
-	private boolean isPerson(String originalSentence, String alternativeUnit)
+	private boolean isStarName(String alternativeUnit)
+	{
+		return STAR_NAMES.contains(alternativeUnit.toLowerCase().trim());
+	}
+
+	private StatementType identifyTypeByHypernym(String counterPartOfAU)
+	{
+		LinkedHashSet<HypernymSet> hypernyms = wordNetReader.retrieveHypernyms(
+				counterPartOfAU, POS.NOUN);
+		if (recursiveFindHypernym(hypernyms, WORDNET_HYPERNYM_PERSON))
+		{
+			return StatementType.PERSON;
+		}
+		else if (recursiveFindHypernym(hypernyms,
+				WORDNET_HYPERNYM_CELESTIAL_BODY))
+		{
+			return StatementType.LOCATION;
+		}
+
+		return StatementType.OTHER;
+	}
+
+	private boolean recursiveFindHypernym(LinkedHashSet<HypernymSet> hypernyms,
+			String hypernymToFind)
+	{
+		for (HypernymSet hypernym : hypernyms)
+		{
+			if (hypernym.getTerms().contains(hypernymToFind))
+			{
+				return true;
+			}
+
+			if (recursiveFindHypernym(hypernym.getHyperHypernyms(),
+					hypernymToFind))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean isPersonName(String alternativeUnit)
 	{
 		String[] parts = alternativeUnit.toLowerCase().trim().split(" ");
 		int matchCount = 0;
@@ -526,7 +608,12 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 			}
 		}
 
-		return parts.length == matchCount // it is a name of person
+		return parts.length == matchCount;// it is a name of person
+	}
+
+	private boolean isPerson(String originalSentence, String alternativeUnit)
+	{
+		return isPersonName(alternativeUnit)
 				&& (nlpAnalyzer.hasAlternativeUnitDoneSomething(
 						originalSentence, alternativeUnit) || hasOccupation(
 						originalSentence, alternativeUnit));
