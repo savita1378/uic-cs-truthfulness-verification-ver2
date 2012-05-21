@@ -42,7 +42,7 @@ public class NLPAnalyzerImpl3 implements NLPAnalyzer
 	private static final List<String> PUNCTUATIONS = Arrays
 			.asList(new String[] { ".", "," });
 
-	private static final LexicalizedParser lexicalizedParser = new LexicalizedParser(
+	protected static final LexicalizedParser lexicalizedParser = new LexicalizedParser(
 			GRAMMAR);
 	private static final GrammaticalStructureFactory grammaticalStructureFactory;
 	static
@@ -324,7 +324,7 @@ public class NLPAnalyzerImpl3 implements NLPAnalyzer
 		return false;
 	}
 
-	private String mapPosTagToBasicForm(String posTag)
+	protected String mapPosTagToBasicForm(String posTag)
 	{
 		if ("JJR".equals(posTag) || "JJS".equals(posTag))
 		{
@@ -479,7 +479,7 @@ public class NLPAnalyzerImpl3 implements NLPAnalyzer
 		return sentence;
 	}
 
-	private String capitalizeProperNounTerms(String sentence,
+	protected String capitalizeProperNounTerms(String sentence,
 			List<List<String>> nounPhrases)
 	{
 		sentence = StringUtils.capitalize(sentence);
@@ -606,12 +606,24 @@ public class NLPAnalyzerImpl3 implements NLPAnalyzer
 
 	}
 
-	private boolean isPunctuation(String posTag)
+	protected boolean isPunctuation(String posTag)
 	{
 		return PUNCTUATIONS.contains(posTag);
 	}
 
 	public static void main(String[] args)
+	{
+		NLPAnalyzerImpl3 analyzer = new NLPAnalyzerImpl3();
+		String sentence = "this is the largest festival in united states";
+		System.out.println(analyzer.capitalizeProperNounTerms(sentence,
+				new ArrayList<List<String>>()));
+
+		sentence = "belize located in central america";
+		System.out.println(analyzer.capitalizeProperNounTerms(sentence,
+				new ArrayList<List<String>>()));
+	}
+
+	public static void main3(String[] args)
 	{
 		List<Statement> statements = AlternativeUnitsReader
 				.parseAllStatementsFromInputFiles();
