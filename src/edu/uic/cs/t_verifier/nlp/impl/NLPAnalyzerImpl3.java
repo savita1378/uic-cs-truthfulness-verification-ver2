@@ -51,7 +51,7 @@ public class NLPAnalyzerImpl3 implements NLPAnalyzer
 		grammaticalStructureFactory = tlp.grammaticalStructureFactory();
 	}
 
-	private WordNetReader wordNetReader = new WordNetReaderImpl();
+	protected WordNetReader wordNetReader = new WordNetReaderImpl();
 
 	/* (non-Javadoc)
 	 * @see edu.uic.cs.t_verifier.nlp.NLPAnalyzer#retrieveSubjectIfSameTypeAsAU(edu.uic.cs.t_verifier.input.data.Statement)
