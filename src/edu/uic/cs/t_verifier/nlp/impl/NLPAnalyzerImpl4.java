@@ -20,6 +20,7 @@ import edu.uic.cs.t_verifier.input.AlternativeUnitsReader;
 import edu.uic.cs.t_verifier.input.data.Statement;
 import edu.uic.cs.t_verifier.misc.ClassFactory;
 import edu.uic.cs.t_verifier.misc.Config;
+import edu.uic.cs.t_verifier.nlp.PersonNameMatcher;
 
 public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 {
@@ -28,6 +29,8 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 	private WikipediaContentExtractor wikipediaContentExtractor = ClassFactory
 			.getInstance(Config.WIKIPEDIACONTENTEXTRACTOR_CLASS_NAME);
+
+	private PersonNameMatcher personNameMatcher = new PersonNameMatcherImpl();
 
 	//	private WikipediaContentExtractor wikipediaContentExtractor = new WikipediaContentExtractor() // for test
 	//	{
@@ -47,8 +50,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 	//							|| "F G".equals(queryWords);*/
 	//					/*return "A B C".equals(queryWords)
 	//							|| "E F G".equals(queryWords);*/
-	//					return "F G H".equals(queryWords)
-	//							|| "G H".equals(queryWords);
+	//					return "B C".equals(queryWords) || "H".equals(queryWords);
 	//				}
 	//			};
 	//		}
@@ -65,7 +67,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 	//	{
 	//		NLPAnalyzerImpl4 impl = new NLPAnalyzerImpl4();
 	//
-	//		String sentence = "A B C D E F G H I";
+	//		String sentence = "A B C D E F G H";
 	//		impl.capitalizeProperNounTerms(sentence, null);
 	//	}
 
@@ -77,8 +79,9 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 		// String sentence = "microsoft's corporate headquarters locates in redmond";
 		// String sentence = "alan shepard is the first american in space";
-
-		// impl.capitalizeProperNounTerms(sentence, null);
+		//		String sentence = "the brightest star visible from earth is sirius";
+		//
+		//		impl.capitalizeProperNounTerms(sentence, null);
 
 		for (Statement statement : statements)
 		{
@@ -129,27 +132,66 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 		List<List<Entry<String, String>>> posTagsByTermOfSubSentences = splitByPunctuations(posTagsByTerm);
 
 		// Find the proper noun in Wikiepdia
-		List<Entry<List<Entry<String, String>>, String>> capitalizationsByOriginalCaseFromWiki = findProperNounsInWikipedia(
-				sentence, posTagsByTermOfSubSentences);
-		System.out.println(">>>>>\t" + capitalizationsByOriginalCaseFromWiki);
+		// sequence
+		List<Entry<List<Entry<String, String>>, String>> capitalizationsByOriginalCaseFromWiki = new ArrayList<Entry<List<Entry<String, String>>, String>>();
+		// single term
+		List<Entry<Entry<String, String>, String>> possibleCapitalizationsBySingleNounTermFromWiki = new ArrayList<Entry<Entry<String, String>, String>>();
+		findProperNounsInWikipedia(sentence, posTagsByTermOfSubSentences,
+				capitalizationsByOriginalCaseFromWiki,
+				possibleCapitalizationsBySingleNounTermFromWiki);
+		System.out.println(">>>>> ProperNoun_wiki_sequence\t\t*"
+				+ capitalizationsByOriginalCaseFromWiki);
+		System.out.println(">>>>> Candidate_ProperNoun_wiki_single\t"
+				+ possibleCapitalizationsBySingleNounTermFromWiki);
+
+		// single noun from wikipedia is not reliable, 
+		// for example, "Fastest" is considered as a movie name which is capitalized; also "Become", "MCG", "Descendents"
+		List<Entry<Entry<String, String>, String>> capitalizationsBySingleNounTermFromWiki = filterOutNonProperSingleNounByWordNet(possibleCapitalizationsBySingleNounTermFromWiki);
+		System.out.println(">>>>> ProperNoun_wiki_single\t\t*"
+				+ capitalizationsBySingleNounTermFromWiki);
 
 		// Get all noun sequences
 		List<List<Entry<String, String>>> nounSequences = findNounSequences(posTagsByTermOfSubSentences);
-		System.out.println(">>>>>\t" + nounSequences);
+		System.out.println(">>>>> Noun_from_parser\t\t\t" + nounSequences);
 
 		// Find those noun(sequence)s which have not been identified by Wikipedia
 		List<List<Entry<String, String>>> nounSequenceNotIdentifiedByWiki = filterOutNounSequencesIdentifiedByWiki(
-				nounSequences, capitalizationsByOriginalCaseFromWiki);
-		System.out.println(">>>>>\t" + nounSequenceNotIdentifiedByWiki);
+				nounSequences, capitalizationsByOriginalCaseFromWiki,
+				capitalizationsBySingleNounTermFromWiki);
+		System.out.println(">>>>> Noun_notInWiki\t\t\t"
+				+ nounSequenceNotIdentifiedByWiki);
 
 		// Find the proper noun in WordNet
 		List<Entry<List<Entry<String, String>>, String>> capitalizationsByOriginalCaseFromWordNet = findProperNounsInWordNet(nounSequenceNotIdentifiedByWiki);
-		System.out
-				.println(">>>>>\t" + capitalizationsByOriginalCaseFromWordNet);
+		System.out.println(">>>>> ProperNoun_notInWiki_inWN\t\t*"
+				+ capitalizationsByOriginalCaseFromWordNet);
 
+		for (List<Entry<String, String>> posTagByTerm : posTagsByTermOfSubSentences)
+		{
+
+		}
+		// FIXME may need Name-list for this example: [30] [frances folsom] is president grover cleveland's wife
 		// FIXME nounPhrases needs to be filled
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	private List<Entry<Entry<String, String>, String>> filterOutNonProperSingleNounByWordNet(
+			List<Entry<Entry<String, String>, String>> possibleCapitalizationsBySingleNounTermFromWiki)
+	{
+		List<Entry<Entry<String, String>, String>> result = new ArrayList<Entry<Entry<String, String>, String>>();
+		for (Entry<Entry<String, String>, String> entry : possibleCapitalizationsBySingleNounTermFromWiki)
+		{
+			String term = entry.getValue();
+			String termInWordNet = wordNetReader.retrieveTermInStandardCase(
+					term.toLowerCase(), POS.NOUN); // use lowercase to search if capitalized return
+			if (termInWordNet != null && term.equals(termInWordNet)) // same case
+			{
+				result.add(entry);
+			}
+		}
+
+		return result;
 	}
 
 	private List<Entry<List<Entry<String, String>>, String>> findProperNounsInWordNet(
@@ -198,8 +240,19 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 	private List<List<Entry<String, String>>> filterOutNounSequencesIdentifiedByWiki(
 			List<List<Entry<String, String>>> nounSequences,
-			List<Entry<List<Entry<String, String>>, String>> capitalizationsByOriginalCaseFromWiki)
+			List<Entry<List<Entry<String, String>>, String>> capitalizationsByOriginalCaseFromWiki,
+			List<Entry<Entry<String, String>, String>> capitalizationsBySingleNounTermFromWiki)
 	{
+		// combine noun-sequence and single-noun
+		for (Entry<Entry<String, String>, String> entry : capitalizationsBySingleNounTermFromWiki)
+		{
+			capitalizationsByOriginalCaseFromWiki
+					.add(new SimpleEntry<List<Entry<String, String>>, String>(
+							Collections.singletonList(entry.getKey()), entry
+									.getValue()));
+		}
+
+		////////////////////////////////////////////////////////////////////////
 		if (capitalizationsByOriginalCaseFromWiki.isEmpty()) // wikiepda has not identified any 
 		{
 			return nounSequences;
@@ -279,27 +332,27 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 	}
 
 	/**
+	 * @param capitalizationsBySingleNounTermFromWiki 
+	 * @param capitalizationsByOriginalCaseFromWiki 
 	 * @return <originalCase, capitalization>
 	 */
-	private List<Entry<List<Entry<String, String>>, String>> findProperNounsInWikipedia(
+	private void findProperNounsInWikipedia(
 			String sentence,
-			List<List<Entry<String, String>>> posTagsByTermOfSubSentences)
+			List<List<Entry<String, String>>> posTagsByTermOfSubSentences,
+			List<Entry<List<Entry<String, String>>, String>> capitalizationsByOriginalCaseFromWiki,
+			List<Entry<Entry<String, String>, String>> capitalizationsBySingleNounTermFromWiki)
 	{
 		List<Entry<List<Entry<String, String>>, MatchedQueryKey>> matchedSequenceInfo = new ArrayList<Entry<List<Entry<String, String>>, MatchedQueryKey>>();
+		List<Entry<Entry<String, String>, MatchedQueryKey>> matchedSingleInfo = new ArrayList<Entry<Entry<String, String>, MatchedQueryKey>>();
 		for (List<Entry<String, String>> posTagsByTermOfSubSentence : posTagsByTermOfSubSentences)
 		{
 			recursiveMatchWikipediaArticleTitle(
 					Collections.singletonList(posTagsByTermOfSubSentence),
-					matchedSequenceInfo);
-		}
-
-		if (matchedSequenceInfo.isEmpty())
-		{
-			return Collections.emptyList();
+					matchedSequenceInfo, matchedSingleInfo);
 		}
 
 		//		System.out.println();
-		List<Entry<List<Entry<String, String>>, String>> result = new ArrayList<Entry<List<Entry<String, String>>, String>>();
+		// noun sequences
 		for (Entry<List<Entry<String, String>>, MatchedQueryKey> entry : matchedSequenceInfo)
 		{
 			List<Entry<String, String>> posTagsByMatchedTerm = entry.getKey();
@@ -312,31 +365,65 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			{
 				continue;
 			}
-			result.add(properNounByOriginalCase);
+			capitalizationsByOriginalCaseFromWiki.add(properNounByOriginalCase);
 		}
 
-		return result;
+		// single noun
+		for (Entry<Entry<String, String>, MatchedQueryKey> entry : matchedSingleInfo)
+		{
+			Entry<String, String> posTagByTerm = entry.getKey();
+			MatchedQueryKey matchedQueryKey = entry.getValue();
+
+			Entry<Entry<String, String>, String> properSingleNounByOriginalCase = checkWhetherProperNoun(
+					posTagByTerm, matchedQueryKey);
+			if (properSingleNounByOriginalCase == null)
+			{
+				continue;
+			}
+			capitalizationsBySingleNounTermFromWiki
+					.add(properSingleNounByOriginalCase);
+
+			//			capitalizationsByOriginalCaseFromWiki
+			//					.add(new SimpleEntry<List<Entry<String, String>>, String>(
+			//							Collections
+			//									.singletonList(properSingleNounByOriginalCase
+			//											.getKey()),
+			//							properSingleNounByOriginalCase.getValue()));
+		}
+
+	}
+
+	private Entry<Entry<String, String>, String> checkWhetherProperNoun(
+			Entry<String, String> posTagByTerm, MatchedQueryKey matchedQueryKey)
+	{
+		String content = extractContentFromWikiPage(matchedQueryKey);
+		if (content == null)
+		{
+			return null;
+		}
+
+		String term = posTagByTerm.getKey();
+
+		if (StringUtils.containsIgnoreCase(content, term + " ")
+				&& !content.contains(term + " "))
+		{
+			String properNoun = extractProperNoun(content, term);
+			return new SimpleEntry<Entry<String, String>, String>(posTagByTerm,
+					properNoun);
+		}
+
+		return null;
 	}
 
 	private Entry<List<Entry<String, String>>, String> checkWhetherProperNoun(
 			List<Entry<String, String>> posTagsByMatchedTerm,
 			MatchedQueryKey matchedQueryKey)
 	{
-		UrlWithDescription urlWithDescription = new UrlWithDescription(
-				matchedQueryKey.getCertainPageUrl(), null,
-				matchedQueryKey.getCategories());
-
-		List<Segment> segments = wikipediaContentExtractor
-				.extractSegmentsFromWikipedia(urlWithDescription, true);
-		if (segments == null || segments.isEmpty())
+		String content = extractContentFromWikiPage(matchedQueryKey);
+		if (content == null)
 		{
 			return null;
 		}
-
-		Segment firstSegment = segments.get(0);
-		// replace the punctuation
-		String content = firstSegment.toString().replace(", ", " ")
-				.replace(". ", " ");
 
 		String matchedTerms = concatenateTerms(posTagsByMatchedTerm, false)
 				.toLowerCase();
@@ -363,6 +450,27 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 		}
 
 		return null;
+	}
+
+	private String extractContentFromWikiPage(MatchedQueryKey matchedQueryKey)
+	{
+		UrlWithDescription urlWithDescription = new UrlWithDescription(
+				matchedQueryKey.getCertainPageUrl(), null,
+				matchedQueryKey.getCategories());
+
+		List<Segment> segments = wikipediaContentExtractor
+				.extractSegmentsFromWikipedia(urlWithDescription, true);
+		if (segments == null || segments.isEmpty())
+		{
+			return null;
+		}
+
+		Segment firstSegment = segments.get(0);
+		// replace the punctuation
+		String content = firstSegment.toString().replace(", ", " ")
+				.replace(". ", " ");
+
+		return content;
 	}
 
 	private String extractProperNoun(String content, String matchedTerms)
@@ -419,7 +527,8 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 	private void recursiveMatchWikipediaArticleTitle(
 			List<List<Entry<String, String>>> currentLevelPosTagByTermList,
-			List<Entry<List<Entry<String, String>>, MatchedQueryKey>> matchedSequenceInfo)
+			List<Entry<List<Entry<String, String>>, MatchedQueryKey>> matchedSequenceInfo,
+			List<Entry<Entry<String, String>, MatchedQueryKey>> matchedSingleInfo)
 	{
 		int currentLevelSize = currentLevelPosTagByTermList.size();
 
@@ -429,9 +538,37 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 					.get(index);
 
 			int currentLevelSequenceLength = currentLevelPosTagsByTerm.size();
-			if (currentLevelSequenceLength <= 1)
+			if (currentLevelSequenceLength < 1)
 			{
-				return; // there's only one term in current level, ignore it, since we want phrase
+				return;
+			}
+
+			//			System.out.println(currentLevelSequenceLength + " "
+			//					+ concatenateTerms(currentLevelPosTagsByTerm));
+			if (currentLevelSequenceLength == 1)
+			{
+				Entry<String, String> posTagByTerm = currentLevelPosTagsByTerm
+						.get(0);
+				String term = posTagByTerm.getKey();
+
+				String posTag = posTagByTerm.getValue();
+				if (!isPunctuation(posTag)
+						&& !POSTAG_POSSESSIVE.equals(posTag)
+						&& !StopAnalyzer.ENGLISH_STOP_WORDS_SET.contains(term
+								.toLowerCase()))
+				{
+					MatchedQueryKey matchedQueryKey = wikipediaContentExtractor
+							.matchQueryKey(term);
+					if (matchedQueryKey != null
+							&& matchedQueryKey.isCertainly())
+					{
+						matchedSingleInfo
+								.add(new SimpleEntry<Entry<String, String>, MatchedQueryKey>(
+										posTagByTerm, matchedQueryKey));
+					}
+				}
+
+				continue; // there's only one term in current level
 			}
 
 			if (isEitherSideStopWord(currentLevelPosTagsByTerm))
@@ -440,8 +577,6 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			}
 
 			String concatenatedTerms = concatenateTerms(currentLevelPosTagsByTerm);
-			//			System.out.println(currentLevelSequenceLength + " "
-			//					+ concatenatedTerms);
 
 			MatchedQueryKey matchedQueryKey = wikipediaContentExtractor
 					.matchQueryKey(concatenatedTerms);
@@ -479,7 +614,8 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 					// recursively invoke next level
 					recursiveMatchWikipediaArticleTitle(
-							nextLevelAheadPosTagByTermList, matchedSequenceInfo);
+							nextLevelAheadPosTagByTermList,
+							matchedSequenceInfo, matchedSingleInfo);
 				}
 				else
 				{
@@ -490,7 +626,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 					recursiveMatchWikipediaArticleTitle(
 							Collections
 									.singletonList(nextLevelAheadPosTagsByTerm),
-							matchedSequenceInfo);
+							matchedSequenceInfo, matchedSingleInfo);
 				}
 
 				// after remains
@@ -508,7 +644,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 					recursiveMatchWikipediaArticleTitle(
 							currentLevelRemainingPosTagByTermList,
-							matchedSequenceInfo);
+							matchedSequenceInfo, matchedSingleInfo);
 				}
 				else
 				// next (or next next...) level
@@ -525,7 +661,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 					recursiveMatchWikipediaArticleTitle(
 							Collections
 									.singletonList(nextLevelRemainingPosTagsByTerm),
-							matchedSequenceInfo);
+							matchedSequenceInfo, matchedSingleInfo);
 				}
 
 				return;
@@ -554,7 +690,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 		// recursively invoke next level
 		recursiveMatchWikipediaArticleTitle(nextLevelPosTagByTermList,
-				matchedSequenceInfo);
+				matchedSequenceInfo, matchedSingleInfo);
 	}
 
 	private boolean isEitherSideStopWord(
