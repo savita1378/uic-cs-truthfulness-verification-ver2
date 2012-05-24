@@ -69,22 +69,11 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 	private AbstractSequenceClassifier<CoreLabel> classifier_3_classes = CRFClassifier
 			.getClassifierNoExceptions(SERIALIZED_CLASSIFIER_PATH_3_CLASSES);
 
-	private static final Set<String> FIRST_NAMES;
-	private static final Set<String> LAST_NAMES;
-
 	private static final Set<String> STAR_NAMES;
 
 	private static final String CATEGORY_KEYWORD_OCCUPATION = "occupation";
 	static
 	{
-		FIRST_NAMES = loadNames(ClassLoader.getSystemResource(
-				"personNames/NameList.Census.FirstName.Male").getPath());
-		FIRST_NAMES.addAll(loadNames(ClassLoader.getSystemResource(
-				"personNames/NameList.Census.FirstName.Female").getPath()));
-
-		LAST_NAMES = loadNames(ClassLoader.getSystemResource(
-				"personNames/NameList.Census.LastName").getPath());
-
 		// http://www.astro.wisc.edu/~dolan/constellations/starname_list.html
 		STAR_NAMES = loadNames(ClassLoader.getSystemResource(
 				"starNames/starNames").getPath());
