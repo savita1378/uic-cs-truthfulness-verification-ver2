@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
+import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.StopAnalyzer;
 
 import edu.mit.jwi.item.POS;
@@ -18,19 +20,64 @@ import edu.uic.cs.t_verifier.index.data.Segment;
 import edu.uic.cs.t_verifier.index.data.UrlWithDescription;
 import edu.uic.cs.t_verifier.input.AlternativeUnitsReader;
 import edu.uic.cs.t_verifier.input.data.Statement;
+import edu.uic.cs.t_verifier.misc.Assert;
 import edu.uic.cs.t_verifier.misc.ClassFactory;
 import edu.uic.cs.t_verifier.misc.Config;
-import edu.uic.cs.t_verifier.nlp.PersonNameMatcher;
+import edu.uic.cs.t_verifier.misc.LogHelper;
 
 public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 {
+	private static final Logger LOGGER = LogHelper
+			.getLogger(NLPAnalyzerImpl4.class);
+
 	private static final String POSTAG_POSSESSIVE = "POS";
 	private static final String POSTAG_NOUN = "NN";
 
 	private WikipediaContentExtractor wikipediaContentExtractor = ClassFactory
 			.getInstance(Config.WIKIPEDIACONTENTEXTRACTOR_CLASS_NAME);
 
-	private PersonNameMatcher personNameMatcher = new PersonNameMatcherImpl();
+	public static interface RecursiveMatcher<T>
+	{
+		// boolean isMatched(String term);
+		boolean isMatched(
+				List<Entry<String, String>> currentLevelPosTagsByTermSequence);
+
+		T getMatchedInfo();
+	}
+
+	private RecursiveMatcher<MatchedQueryKey> wikipediaKeyWordsMatcher = new RecursiveMatcher<MatchedQueryKey>()
+	{
+		private MatchedQueryKey matchedQueryKey;
+
+		@Override
+		public boolean isMatched(
+				List<Entry<String, String>> currentLevelPosTagsByTermSequence)
+		{
+			matchedQueryKey = null;
+
+			String term = concatenateTerms(currentLevelPosTagsByTermSequence);
+
+			matchedQueryKey = wikipediaContentExtractor.matchQueryKey(term);
+			if (matchedQueryKey != null && matchedQueryKey.isCertainly())
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		@Override
+		public MatchedQueryKey getMatchedInfo()
+		{
+			Assert.notNull(matchedQueryKey);
+			return matchedQueryKey;
+		}
+	};
+
+	private PersonNameMatcherImpl trigramPersonNameMatcher = new PersonNameMatcherImpl(
+			3);
+
+	private SentenceCache sentenceCache = new SentenceCache();
 
 	//	private WikipediaContentExtractor wikipediaContentExtractor = new WikipediaContentExtractor() // for test
 	//	{
@@ -89,34 +136,41 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			List<String> allAlternativeStatements = statement
 					.getAllAlternativeStatements();
 
-			String alternativeUnit = allAlternativeUnits.get(0);
-			String sentence = allAlternativeStatements.get(0);
-
-			System.out.println("["
-					+ statement.getId()
-					+ "] "
-					+ sentence.replace(alternativeUnit, "[" + alternativeUnit
-							+ "]"));
-
-			impl.capitalizeProperNounTerms(sentence, null);
-
-			//			for (int index = 0; index < allAlternativeStatements.size(); index++)
-			//			{
-			//				String alternativeUnit = allAlternativeUnits.get(index);
-			//				String sentence = allAlternativeStatements.get(index);
+			//			String alternativeUnit = allAlternativeUnits.get(0);
+			//			String sentence = allAlternativeStatements.get(0);
 			//
-			//				System.out.println("["
-			//						+ statement.getId()
-			//						+ "] "
-			//						+ sentence.replace(alternativeUnit, "["
-			//								+ alternativeUnit + "]"));
+			//			System.out.println("["
+			//					+ statement.getId()
+			//					+ "] "
+			//					+ sentence.replace(alternativeUnit, "[" + alternativeUnit
+			//							+ "]"));
 			//
-			//				impl.capitalizeProperNounTerms(sentence, null);
-			//
-			//			}
+			//			String capitalizedSentence = impl.capitalizeProperNounTerms(
+			//					sentence, null);
 
-			System.out.println();
+			for (int index = 0; index < allAlternativeStatements.size(); index++)
+			{
+				String alternativeUnit = allAlternativeUnits.get(index);
+				String sentence = allAlternativeStatements.get(index);
+
+				String originalSentence = "["
+						+ statement.getId()
+						+ "] "
+						+ sentence.replace(alternativeUnit, "["
+								+ alternativeUnit + "]");
+				System.out.println(originalSentence);
+				LOGGER.info(originalSentence);
+
+				String capitalizedSentence = impl.capitalizeProperNounTerms(
+						sentence, null);
+				System.out.println("> " + capitalizedSentence);
+				System.out.println();
+				LOGGER.info("");
+			}
+
 		}
+
+		impl.sentenceCache.writeCache(); // DO NOT forget this!
 
 	}
 
@@ -139,41 +193,111 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 		findProperNounsInWikipedia(sentence, posTagsByTermOfSubSentences,
 				capitalizationsByOriginalCaseFromWiki,
 				possibleCapitalizationsBySingleNounTermFromWiki);
-		System.out.println(">>>>> ProperNoun_wiki_sequence\t\t*"
+		LOGGER.info(">>>>> ProperNoun_wiki_sequence\t\t*"
 				+ capitalizationsByOriginalCaseFromWiki);
-		System.out.println(">>>>> Candidate_ProperNoun_wiki_single\t"
+		LOGGER.info(">>>>> Candidate_ProperNoun_wiki_single\t"
 				+ possibleCapitalizationsBySingleNounTermFromWiki);
 
 		// single noun from wikipedia is not reliable, 
 		// for example, "Fastest" is considered as a movie name which is capitalized; also "Become", "MCG", "Descendents"
 		List<Entry<Entry<String, String>, String>> capitalizationsBySingleNounTermFromWiki = filterOutNonProperSingleNounByWordNet(possibleCapitalizationsBySingleNounTermFromWiki);
-		System.out.println(">>>>> ProperNoun_wiki_single\t\t*"
+		LOGGER.info(">>>>> ProperNoun_wiki_single\t\t*"
 				+ capitalizationsBySingleNounTermFromWiki);
 
 		// Get all noun sequences
 		List<List<Entry<String, String>>> nounSequences = findNounSequences(posTagsByTermOfSubSentences);
-		System.out.println(">>>>> Noun_from_parser\t\t\t" + nounSequences);
+		LOGGER.info(">>>>> Noun_from_parser\t\t\t" + nounSequences);
 
 		// Find those noun(sequence)s which have not been identified by Wikipedia
 		List<List<Entry<String, String>>> nounSequenceNotIdentifiedByWiki = filterOutNounSequencesIdentifiedByWiki(
 				nounSequences, capitalizationsByOriginalCaseFromWiki,
 				capitalizationsBySingleNounTermFromWiki);
-		System.out.println(">>>>> Noun_notInWiki\t\t\t"
+		LOGGER.info(">>>>> Noun_notInWiki\t\t\t"
 				+ nounSequenceNotIdentifiedByWiki);
 
 		// Find the proper noun in WordNet
 		List<Entry<List<Entry<String, String>>, String>> capitalizationsByOriginalCaseFromWordNet = findProperNounsInWordNet(nounSequenceNotIdentifiedByWiki);
-		System.out.println(">>>>> ProperNoun_notInWiki_inWN\t\t*"
+		LOGGER.info(">>>>> ProperNoun_notInWiki_inWN\t\t*"
 				+ capitalizationsByOriginalCaseFromWordNet);
 
+		// match names within name-list
+		List<Entry<List<Entry<String, String>>, String>> matchedNames = new ArrayList<Entry<List<Entry<String, String>>, String>>();
 		for (List<Entry<String, String>> posTagByTerm : posTagsByTermOfSubSentences)
 		{
-
+			recursiveMatchTerms(trigramPersonNameMatcher,
+					Collections.singletonList(posTagByTerm), matchedNames, null);
 		}
-		// FIXME may need Name-list for this example: [30] [frances folsom] is president grover cleveland's wife
+		LOGGER.info(">>>>> MatchedPersonName\t\t\t" + matchedNames);
+
+		// find those names only identified by name-list
+		List<List<Entry<String, String>>> matchedNamesIdentifiedByNameListOnly = filterOutNamesByWIkiAndWordNet(
+				matchedNames, capitalizationsByOriginalCaseFromWiki,
+				capitalizationsBySingleNounTermFromWiki,
+				capitalizationsByOriginalCaseFromWordNet);
+
+		LOGGER.info(">>>>> PersonName_notInWiki_notInWN\t*"
+				+ matchedNamesIdentifiedByNameListOnly);
+
+		////////////////////////////////////////////////////////////////////////
+		for (Entry<List<Entry<String, String>>, String> entry : capitalizationsByOriginalCaseFromWiki)
+		{
+			String target = concatenateTerms(entry.getKey());
+			sentence = sentence.replace(target, entry.getValue());
+		}
+
+		for (Entry<Entry<String, String>, String> entry : capitalizationsBySingleNounTermFromWiki)
+		{
+			sentence = sentence.replace(entry.getKey().getKey(),
+					entry.getValue());
+		}
+
+		for (Entry<List<Entry<String, String>>, String> entry : capitalizationsByOriginalCaseFromWordNet)
+		{
+			String target = concatenateTerms(entry.getKey());
+			sentence = sentence.replace(target, entry.getValue());
+		}
+
+		for (List<Entry<String, String>> entry : matchedNamesIdentifiedByNameListOnly)
+		{
+			String target = concatenateTerms(entry);
+			String replacement = WordUtils.capitalize(target);
+			sentence = sentence.replace(target, replacement);
+		}
+
 		// FIXME nounPhrases needs to be filled
-		// TODO Auto-generated method stub
-		return null;
+		return StringUtils.capitalize(sentence);
+	}
+
+	private List<List<Entry<String, String>>> filterOutNamesByWIkiAndWordNet(
+			List<Entry<List<Entry<String, String>>, String>> matchedNames,
+			List<Entry<List<Entry<String, String>>, String>> capitalizationsByOriginalCaseFromWiki,
+			List<Entry<Entry<String, String>, String>> capitalizationsBySingleNounTermFromWiki,
+			List<Entry<List<Entry<String, String>>, String>> capitalizationsByOriginalCaseFromWordNet)
+	{
+		capitalizationsByOriginalCaseFromWiki = (List<Entry<List<Entry<String, String>>, String>>) ((ArrayList<Entry<List<Entry<String, String>>, String>>) capitalizationsByOriginalCaseFromWiki)
+				.clone();
+		// combine noun-sequence and single-noun
+		for (Entry<Entry<String, String>, String> entry : capitalizationsBySingleNounTermFromWiki)
+		{
+			capitalizationsByOriginalCaseFromWiki
+					.add(new SimpleEntry<List<Entry<String, String>>, String>(
+							Collections.singletonList(entry.getKey()), entry
+									.getValue()));
+		}
+
+		capitalizationsByOriginalCaseFromWiki
+				.addAll(capitalizationsByOriginalCaseFromWordNet);
+
+		List<List<Entry<String, String>>> squencesFromNameList = new ArrayList<List<Entry<String, String>>>(
+				matchedNames.size());
+		for (Entry<List<Entry<String, String>>, String> entry : matchedNames)
+		{
+			squencesFromNameList.add(entry.getKey());
+		}
+
+		return filterOutOverlappings(squencesFromNameList,
+				capitalizationsByOriginalCaseFromWiki);
+
 	}
 
 	private List<Entry<Entry<String, String>, String>> filterOutNonProperSingleNounByWordNet(
@@ -185,7 +309,8 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			String term = entry.getValue();
 			String termInWordNet = wordNetReader.retrieveTermInStandardCase(
 					term.toLowerCase(), POS.NOUN); // use lowercase to search if capitalized return
-			if (termInWordNet != null && term.equals(termInWordNet)) // same case
+			// if the term doesn't exist in wordnet, we can NOT trust wiki (Become)
+			if (termInWordNet != null && term.equals(termInWordNet)) // same case, 
 			{
 				result.add(entry);
 			}
@@ -238,11 +363,14 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 				&& !one.equals(other);
 	}
 
+	@SuppressWarnings("unchecked")
 	private List<List<Entry<String, String>>> filterOutNounSequencesIdentifiedByWiki(
 			List<List<Entry<String, String>>> nounSequences,
 			List<Entry<List<Entry<String, String>>, String>> capitalizationsByOriginalCaseFromWiki,
 			List<Entry<Entry<String, String>, String>> capitalizationsBySingleNounTermFromWiki)
 	{
+		capitalizationsByOriginalCaseFromWiki = (List<Entry<List<Entry<String, String>>, String>>) ((ArrayList<Entry<List<Entry<String, String>>, String>>) capitalizationsByOriginalCaseFromWiki)
+				.clone();
 		// combine noun-sequence and single-noun
 		for (Entry<Entry<String, String>, String> entry : capitalizationsBySingleNounTermFromWiki)
 		{
@@ -253,14 +381,22 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 		}
 
 		////////////////////////////////////////////////////////////////////////
-		if (capitalizationsByOriginalCaseFromWiki.isEmpty()) // wikiepda has not identified any 
+		return filterOutOverlappings(nounSequences,
+				capitalizationsByOriginalCaseFromWiki);
+	}
+
+	private List<List<Entry<String, String>>> filterOutOverlappings(
+			List<List<Entry<String, String>>> nounSequences,
+			List<Entry<List<Entry<String, String>>, String>> capitalizationsByOriginalCaseBase)
+	{
+		if (capitalizationsByOriginalCaseBase.isEmpty()) // wikiepda has not identified any 
 		{
 			return nounSequences;
 		}
 
 		List<List<Entry<String, String>>> squencesFromWiki = new ArrayList<List<Entry<String, String>>>(
-				capitalizationsByOriginalCaseFromWiki.size());
-		for (Entry<List<Entry<String, String>>, String> entry : capitalizationsByOriginalCaseFromWiki)
+				capitalizationsByOriginalCaseBase.size());
+		for (Entry<List<Entry<String, String>>, String> entry : capitalizationsByOriginalCaseBase)
 		{
 			squencesFromWiki.add(entry.getKey());
 		}
@@ -342,13 +478,29 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			List<Entry<List<Entry<String, String>>, String>> capitalizationsByOriginalCaseFromWiki,
 			List<Entry<Entry<String, String>, String>> capitalizationsBySingleNounTermFromWiki)
 	{
-		List<Entry<List<Entry<String, String>>, MatchedQueryKey>> matchedSequenceInfo = new ArrayList<Entry<List<Entry<String, String>>, MatchedQueryKey>>();
-		List<Entry<Entry<String, String>, MatchedQueryKey>> matchedSingleInfo = new ArrayList<Entry<Entry<String, String>, MatchedQueryKey>>();
-		for (List<Entry<String, String>> posTagsByTermOfSubSentence : posTagsByTermOfSubSentences)
+		List<Entry<List<Entry<String, String>>, MatchedQueryKey>> matchedSequenceInfo = null;
+		List<Entry<Entry<String, String>, MatchedQueryKey>> matchedSingleInfo = null;
+
+		Entry<List<Entry<List<Entry<String, String>>, MatchedQueryKey>>, List<Entry<Entry<String, String>, MatchedQueryKey>>> pair = sentenceCache
+				.retrieveWikipeidaSentenceCache(sentence);
+		if (pair != null)
 		{
-			recursiveMatchWikipediaArticleTitle(
-					Collections.singletonList(posTagsByTermOfSubSentence),
-					matchedSequenceInfo, matchedSingleInfo);
+			matchedSequenceInfo = pair.getKey();
+			matchedSingleInfo = pair.getValue();
+		}
+		else
+		{
+			matchedSequenceInfo = new ArrayList<Entry<List<Entry<String, String>>, MatchedQueryKey>>();
+			matchedSingleInfo = new ArrayList<Entry<Entry<String, String>, MatchedQueryKey>>();
+			for (List<Entry<String, String>> posTagsByTermOfSubSentence : posTagsByTermOfSubSentences)
+			{
+				recursiveMatchTerms(wikipediaKeyWordsMatcher,
+						Collections.singletonList(posTagsByTermOfSubSentence),
+						matchedSequenceInfo, matchedSingleInfo);
+			}
+
+			sentenceCache.addToCache(sentence, matchedSequenceInfo,
+					matchedSingleInfo);
 		}
 
 		//		System.out.println();
@@ -525,10 +677,10 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 		return result;
 	}
 
-	private void recursiveMatchWikipediaArticleTitle(
+	private <T> void recursiveMatchTerms(RecursiveMatcher<T> matcher,
 			List<List<Entry<String, String>>> currentLevelPosTagByTermList,
-			List<Entry<List<Entry<String, String>>, MatchedQueryKey>> matchedSequenceInfo,
-			List<Entry<Entry<String, String>, MatchedQueryKey>> matchedSingleInfo)
+			List<Entry<List<Entry<String, String>>, T>> matchedSequenceInfo,
+			List<Entry<Entry<String, String>, T>> matchedSingleInfo)
 	{
 		int currentLevelSize = currentLevelPosTagByTermList.size();
 
@@ -557,15 +709,13 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 						&& !StopAnalyzer.ENGLISH_STOP_WORDS_SET.contains(term
 								.toLowerCase()))
 				{
-					MatchedQueryKey matchedQueryKey = wikipediaContentExtractor
-							.matchQueryKey(term);
-					if (matchedQueryKey != null
-							&& matchedQueryKey.isCertainly())
+					if (matcher.isMatched(currentLevelPosTagsByTerm))
 					{
 						matchedSingleInfo
-								.add(new SimpleEntry<Entry<String, String>, MatchedQueryKey>(
-										posTagByTerm, matchedQueryKey));
+								.add(new SimpleEntry<Entry<String, String>, T>(
+										posTagByTerm, matcher.getMatchedInfo()));
 					}
+
 				}
 
 				continue; // there's only one term in current level
@@ -576,16 +726,13 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 				continue;
 			}
 
-			String concatenatedTerms = concatenateTerms(currentLevelPosTagsByTerm);
-
-			MatchedQueryKey matchedQueryKey = wikipediaContentExtractor
-					.matchQueryKey(concatenatedTerms);
-			if (matchedQueryKey != null && matchedQueryKey.isCertainly()) // TODO here, we ignore the overlapping situation
+			if (matcher.isMatched(currentLevelPosTagsByTerm))
 			{
 				// matched!
 				matchedSequenceInfo
-						.add(new SimpleEntry<List<Entry<String, String>>, MatchedQueryKey>(
-								currentLevelPosTagsByTerm, matchedQueryKey));
+						.add(new SimpleEntry<List<Entry<String, String>>, T>(
+								currentLevelPosTagsByTerm, matcher
+										.getMatchedInfo()));
 
 				// ahead remains
 				int currentLevelAheadSize = index - currentLevelSequenceLength
@@ -600,20 +747,21 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 					{
 						currentLevelAheadSequence = currentLevelPosTagByTermList
 								.get(i);
-						nextLevelAheadSequence = currentLevelAheadSequence
-								.subList(0,
-										currentLevelAheadSequence.size() - 1);
+						nextLevelAheadSequence = new ArrayList<Entry<String, String>>(
+								currentLevelAheadSequence.subList(0,
+										currentLevelAheadSequence.size() - 1));
 
 						nextLevelAheadPosTagByTermList
 								.add(nextLevelAheadSequence);
 					}
 
-					nextLevelAheadSequence = currentLevelAheadSequence.subList(
-							1, currentLevelAheadSequence.size());
+					nextLevelAheadSequence = new ArrayList<Entry<String, String>>(
+							currentLevelAheadSequence.subList(1,
+									currentLevelAheadSequence.size()));
 					nextLevelAheadPosTagByTermList.add(nextLevelAheadSequence);
 
 					// recursively invoke next level
-					recursiveMatchWikipediaArticleTitle(
+					recursiveMatchTerms(matcher,
 							nextLevelAheadPosTagByTermList,
 							matchedSequenceInfo, matchedSingleInfo);
 				}
@@ -621,9 +769,10 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 				{
 					List<Entry<String, String>> firstInCurrentLevel = currentLevelPosTagByTermList
 							.get(0);
-					List<Entry<String, String>> nextLevelAheadPosTagsByTerm = firstInCurrentLevel
-							.subList(0, index);
-					recursiveMatchWikipediaArticleTitle(
+					List<Entry<String, String>> nextLevelAheadPosTagsByTerm = new ArrayList<Entry<String, String>>(
+							firstInCurrentLevel.subList(0, index));
+					recursiveMatchTerms(
+							matcher,
 							Collections
 									.singletonList(nextLevelAheadPosTagsByTerm),
 							matchedSequenceInfo, matchedSingleInfo);
@@ -642,7 +791,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 								.add(currentLevelPosTagByTermList.get(i));
 					}
 
-					recursiveMatchWikipediaArticleTitle(
+					recursiveMatchTerms(matcher,
 							currentLevelRemainingPosTagByTermList,
 							matchedSequenceInfo, matchedSingleInfo);
 				}
@@ -655,10 +804,12 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 							- (lastIndexInCurrentLevel - index);
 					List<Entry<String, String>> lastInCurrentLevel = currentLevelPosTagByTermList
 							.get(lastIndexInCurrentLevel);
-					List<Entry<String, String>> nextLevelRemainingPosTagsByTerm = lastInCurrentLevel
-							.subList(startIndex, lastInCurrentLevel.size());
+					List<Entry<String, String>> nextLevelRemainingPosTagsByTerm = new ArrayList<Entry<String, String>>(
+							lastInCurrentLevel.subList(startIndex,
+									lastInCurrentLevel.size()));
 
-					recursiveMatchWikipediaArticleTitle(
+					recursiveMatchTerms(
+							matcher,
 							Collections
 									.singletonList(nextLevelRemainingPosTagsByTerm),
 							matchedSequenceInfo, matchedSingleInfo);
@@ -678,18 +829,19 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 		for (int index = 0; index < currentLevelSize; index++)
 		{
 			currentLevelSequence = currentLevelPosTagByTermList.get(index);
-			nextLevelSequence = currentLevelSequence.subList(0,
-					currentLevelSequence.size() - 1);
+			nextLevelSequence = new ArrayList<Entry<String, String>>(
+					currentLevelSequence.subList(0,
+							currentLevelSequence.size() - 1));
 
 			nextLevelPosTagByTermList.add(nextLevelSequence);
 		}
 
-		nextLevelSequence = currentLevelSequence.subList(1,
-				currentLevelSequence.size());
+		nextLevelSequence = new ArrayList<Entry<String, String>>(
+				currentLevelSequence.subList(1, currentLevelSequence.size()));
 		nextLevelPosTagByTermList.add(nextLevelSequence);
 
 		// recursively invoke next level
-		recursiveMatchWikipediaArticleTitle(nextLevelPosTagByTermList,
+		recursiveMatchTerms(matcher, nextLevelPosTagByTermList,
 				matchedSequenceInfo, matchedSingleInfo);
 	}
 

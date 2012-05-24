@@ -101,7 +101,7 @@ public class WordNetReaderImpl extends AbstractWordOperations implements
 		IIndexWord idxWord = dict.getIndexWord(term, pos);
 		if (idxWord == null)
 		{
-			return term;
+			return null;
 		}
 
 		int minAcceptFrequency = minAcceptFrequency(idxWord);

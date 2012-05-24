@@ -479,6 +479,7 @@ public class NLPAnalyzerImpl3 implements NLPAnalyzer
 		return sentence;
 	}
 
+	@Deprecated
 	protected String capitalizeProperNounTerms(String sentence,
 			List<List<String>> nounPhrases)
 	{
