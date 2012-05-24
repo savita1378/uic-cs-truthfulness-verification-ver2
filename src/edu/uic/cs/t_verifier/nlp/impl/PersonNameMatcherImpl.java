@@ -32,12 +32,12 @@ public class PersonNameMatcherImpl implements PersonNameMatcher,
 				"personNames/NameList.Census.LastName").getPath());
 	}
 
-	private int gramLength;
-
-	public PersonNameMatcherImpl(int gramLength)
-	{
-		this.gramLength = gramLength;
-	}
+	//private int gramLength;
+	//
+	//	public PersonNameMatcherImpl(int gramLength)
+	//	{
+	//		this.gramLength = gramLength;
+	//	}
 
 	private static Set<String> loadNames(String fileName)
 	{
@@ -71,6 +71,12 @@ public class PersonNameMatcherImpl implements PersonNameMatcher,
 						.contains(middleName));
 	}
 
+	@Override
+	public boolean isName(String name)
+	{
+		return FIRST_NAMES.contains(name) || LAST_NAMES.contains(name);
+	}
+
 	private String matchedName = null;
 
 	@Override
@@ -80,10 +86,10 @@ public class PersonNameMatcherImpl implements PersonNameMatcher,
 		matchedName = null;
 
 		int length = currentLevelPosTagsByTermSequence.size();
-		if (gramLength < length)
-		{
-			return false;
-		}
+		//		if (gramLength < length)
+		//		{
+		//			return false;
+		//		}
 
 		if (length == 2)
 		{

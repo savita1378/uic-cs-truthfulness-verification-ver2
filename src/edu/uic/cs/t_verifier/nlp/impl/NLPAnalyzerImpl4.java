@@ -74,8 +74,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 		}
 	};
 
-	private PersonNameMatcherImpl trigramPersonNameMatcher = new PersonNameMatcherImpl(
-			3);
+	private PersonNameMatcherImpl trigramPersonNameMatcher = new PersonNameMatcherImpl();
 
 	private SentenceCache sentenceCache = new SentenceCache();
 
@@ -161,8 +160,9 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 				System.out.println(originalSentence);
 				LOGGER.info(originalSentence);
 
+				List<List<String>> nounSequences = new ArrayList<List<String>>();
 				String capitalizedSentence = impl.capitalizeProperNounTerms(
-						sentence, null);
+						sentence, nounSequences);
 				System.out.println("> " + capitalizedSentence);
 				System.out.println();
 				LOGGER.info("");
@@ -175,8 +175,15 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 	}
 
 	@Override
+	protected String restoreWordCasesForSentence(String sentence,
+			String alternativeUnit, List<List<String>> nounPhrases)
+	{
+		return capitalizeProperNounTerms(sentence, nounPhrases);
+	}
+
+	@Override
 	protected String capitalizeProperNounTerms(String sentence,
-			List<List<String>> nounPhrases)
+			List<List<String>> possibleNounPhrases)
 	{
 		sentence = sentence.trim();
 		// sentence = StringUtils.capitalize(sentence);
@@ -206,6 +213,23 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 		// Get all noun sequences
 		List<List<Entry<String, String>>> nounSequences = findNounSequences(posTagsByTermOfSubSentences);
+		// fill the parameter nounPhrases with nounSequences
+		if (possibleNounPhrases != null)
+		{
+			// TODO more sophisticated method may be needed, 
+			// but now is is OK, since the AU matching is using the same parser for nouns
+			for (List<Entry<String, String>> sequence : nounSequences)
+			{
+				List<String> nounSequence = new ArrayList<String>(
+						sequence.size());
+				possibleNounPhrases.add(nounSequence);
+				for (Entry<String, String> entry : sequence)
+				{
+					nounSequence.add(entry.getKey());
+				}
+			}
+		}
+
 		LOGGER.info(">>>>> Noun_from_parser\t\t\t" + nounSequences);
 
 		// Find those noun(sequence)s which have not been identified by Wikipedia
@@ -264,10 +288,10 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			sentence = sentence.replace(target, replacement);
 		}
 
-		// FIXME nounPhrases needs to be filled
 		return StringUtils.capitalize(sentence);
 	}
 
+	@SuppressWarnings("unchecked")
 	private List<List<Entry<String, String>>> filterOutNamesByWIkiAndWordNet(
 			List<Entry<List<Entry<String, String>>, String>> matchedNames,
 			List<Entry<List<Entry<String, String>>, String>> capitalizationsByOriginalCaseFromWiki,

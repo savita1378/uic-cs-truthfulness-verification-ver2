@@ -35,7 +35,7 @@ public class SentenceCache
 	{
 		setializeCacheIfNotExists();
 
-		return WIKIPEDIA_SENTENCE_CACHE.get(sentence);
+		return WIKIPEDIA_SENTENCE_CACHE.get(sentence.toLowerCase());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -80,7 +80,7 @@ public class SentenceCache
 				matchedSequenceInfo, matchedSingleInfo);
 
 		setializeCacheIfNotExists();
-		WIKIPEDIA_SENTENCE_CACHE.put(sentence, pair);
+		WIKIPEDIA_SENTENCE_CACHE.put(sentence.toLowerCase(), pair);
 
 		modified = true;
 	}

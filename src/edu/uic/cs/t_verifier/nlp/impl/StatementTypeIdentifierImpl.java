@@ -38,6 +38,7 @@ import edu.uic.cs.t_verifier.misc.Assert;
 import edu.uic.cs.t_verifier.misc.Config;
 import edu.uic.cs.t_verifier.misc.GeneralException;
 import edu.uic.cs.t_verifier.nlp.CategoryMapper;
+import edu.uic.cs.t_verifier.nlp.PersonNameMatcher;
 import edu.uic.cs.t_verifier.nlp.StatementTypeIdentifier;
 import edu.uic.cs.t_verifier.nlp.WordNetReader;
 import edu.uic.cs.t_verifier.nlp.impl.WordNetReaderImpl.HypernymSet;
@@ -52,7 +53,7 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 
 	private static final double MINMUM_MAX_RATIO = 0.2;
 
-	private NLPAnalyzerImpl3 nlpAnalyzer = new NLPAnalyzerImpl3();
+	private NLPAnalyzerImpl4 nlpAnalyzer = new NLPAnalyzerImpl4();
 
 	private static final String SERIALIZED_CLASSIFIER_PATH_7_CLASSES = "StanfordNer_classifiers/muc.7class.distsim.crf.ser.gz";
 	@SuppressWarnings("unchecked")
@@ -68,6 +69,8 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 	@SuppressWarnings("unchecked")
 	private AbstractSequenceClassifier<CoreLabel> classifier_3_classes = CRFClassifier
 			.getClassifierNoExceptions(SERIALIZED_CLASSIFIER_PATH_3_CLASSES);
+
+	private PersonNameMatcher personNameMatcher = new PersonNameMatcherImpl();
 
 	private static final Set<String> STAR_NAMES;
 
@@ -235,6 +238,7 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 		return result;
 	}
 
+	@SuppressWarnings("deprecation")
 	private boolean isPerson(Statement statement)
 	{
 		List<String> allAlternativeUnits = statement.getAlternativeUnits();
@@ -244,19 +248,26 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 			if (alternativeUnit.contains(" "))
 			{
 				String[] parts = alternativeUnit.split(" ");
-				for (String part : parts)
+
+				if (parts.length == 2
+						&& personNameMatcher.isName(parts[0], parts[1]))
 				{
-					if (FIRST_NAMES.contains(part) || LAST_NAMES.contains(part))
-					{
-						count++;
-						break;
-					}
+					count++;
+				}
+				else if (parts.length == 3
+						&& personNameMatcher.isName(parts[0], parts[1],
+								parts[2]))
+				{
+					count++;
+				}
+				else if (parts.length > 3)
+				{
+					continue;
 				}
 			}
 			else
 			{
-				if (FIRST_NAMES.contains(alternativeUnit)
-						|| LAST_NAMES.contains(alternativeUnit))
+				if (personNameMatcher.isName(alternativeUnit))
 				{
 					count++;
 				}
@@ -585,19 +596,21 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 		return false;
 	}
 
+	@SuppressWarnings("deprecation")
 	private boolean isPersonName(String alternativeUnit)
 	{
 		String[] parts = alternativeUnit.toLowerCase().trim().split(" ");
-		int matchCount = 0;
-		for (String part : parts)
+
+		if ((parts.length == 1 && personNameMatcher.isName(parts[0]))
+				|| (parts.length == 2 && personNameMatcher.isName(parts[0],
+						parts[1]))
+				|| (parts.length == 3 && personNameMatcher.isName(parts[0],
+						parts[1], parts[2])))
 		{
-			if (FIRST_NAMES.contains(part) || LAST_NAMES.contains(part))
-			{
-				matchCount++;
-			}
+			return true;
 		}
 
-		return parts.length == matchCount;// it is a name of person
+		return false;
 	}
 
 	private boolean isPerson(String originalSentence, String alternativeUnit)
