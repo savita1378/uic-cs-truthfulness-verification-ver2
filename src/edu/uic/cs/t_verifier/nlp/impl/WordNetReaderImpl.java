@@ -271,6 +271,10 @@ public class WordNetReaderImpl extends AbstractWordOperations implements
 			ISynset synset = word.getSynset();
 			List<ISynsetID> hypernyms = synset
 					.getRelatedSynsets(Pointer.HYPERNYM);
+			if (hypernyms == null)
+			{
+				continue;
+			}
 			for (ISynsetID sid : hypernyms)
 			{
 				result.add(new HypernymSet(sid));
