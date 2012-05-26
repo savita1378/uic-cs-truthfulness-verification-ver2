@@ -288,6 +288,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			sentence = sentence.replace(target, replacement);
 		}
 
+		// return sentence;
 		return StringUtils.capitalize(sentence);
 	}
 
