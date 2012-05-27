@@ -94,7 +94,7 @@ public class NLPAnalyzerImpl3 implements NLPAnalyzer
 		sentence = restoreWordCasesForSentence(sentence, alternativeUnit,
 				nounPhrases);
 		// System.out.println("\t" + sentence); 
-		alternativeUnit = StringUtils.capitalize(alternativeUnit);
+		alternativeUnit = StringUtils.capitalize(alternativeUnit); // TODO ?? is it ok?
 
 		String topicTerm = retrieveTopicTermIfSameTypeAsAUInternal(sentence,
 				alternativeUnit, doubleCheckSubject, nounPhrases);

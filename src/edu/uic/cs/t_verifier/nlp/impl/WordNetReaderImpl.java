@@ -2,6 +2,7 @@ package edu.uic.cs.t_verifier.nlp.impl;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -207,6 +208,12 @@ public class WordNetReaderImpl extends AbstractWordOperations implements
 			return terms;
 		}
 
+		@Override
+		public String toString()
+		{
+			return terms.toString();
+		}
+
 		public LinkedHashSet<HypernymSet> getHyperHypernyms()
 		{
 			if (hyperHypernyms == null)
@@ -296,32 +303,74 @@ public class WordNetReaderImpl extends AbstractWordOperations implements
 	{
 		WordNetReaderImpl wordNetReaderImpl = new WordNetReaderImpl();
 		LinkedHashSet<HypernymSet> hypernyms = wordNetReaderImpl
-				.retrieveHypernyms("designer", POS.NOUN);
+				.retrieveHypernyms("american", POS.NOUN);
 
 		recursivePrintHypernyms(hypernyms, 0);
 		System.out.println("==========================");
-		System.out.println(recursiveFindHypernym(hypernyms, "person"));
+		System.out.println(recursiveFindHypernym(hypernyms, "person", true));
 	}
 
+	//	private static boolean recursiveFindHypernym(
+	//			LinkedHashSet<HypernymSet> hypernyms, String hypernymToFind)
+	//	{
+	//		for (HypernymSet hypernym : hypernyms)
+	//		{
+	//			System.out.println(hypernym.getTerms());
+	//			if (hypernym.getTerms().contains(hypernymToFind))
+	//			{
+	//				return true;
+	//			}
+	//
+	//			if (recursiveFindHypernym(hypernym.getHyperHypernyms(),
+	//					hypernymToFind))
+	//			{
+	//				return true;
+	//			}
+	//		}
+	//
+	//		return false;
+	//	}
+
 	private static boolean recursiveFindHypernym(
-			LinkedHashSet<HypernymSet> hypernyms, String hypernymToFind)
+			LinkedHashSet<HypernymSet> hypernyms, String hypernymToFind,
+			boolean requireAllHypernymsMatched)
 	{
 		for (HypernymSet hypernym : hypernyms)
 		{
 			System.out.println(hypernym.getTerms());
-			if (hypernym.getTerms().contains(hypernymToFind))
-			{
-				return true;
-			}
 
-			if (recursiveFindHypernym(hypernym.getHyperHypernyms(),
-					hypernymToFind))
+			if (requireAllHypernymsMatched)
 			{
-				return true;
+				if (hypernym.getTerms().contains(hypernymToFind))
+				{
+					continue;
+				}
+
+				LinkedHashSet<HypernymSet> childHypernyms = hypernym
+						.getHyperHypernyms();
+				if (childHypernyms.isEmpty()
+						|| !recursiveFindHypernym(childHypernyms,
+								hypernymToFind, requireAllHypernymsMatched))
+				{
+					return false;
+				}
+			}
+			else
+			{
+				if (hypernym.getTerms().contains(hypernymToFind))
+				{
+					return true;
+				}
+
+				if (recursiveFindHypernym(hypernym.getHyperHypernyms(),
+						hypernymToFind, requireAllHypernymsMatched))
+				{
+					return true;
+				}
 			}
 		}
 
-		return false;
+		return requireAllHypernymsMatched;
 	}
 
 	private static void recursivePrintHypernyms(
@@ -338,6 +387,36 @@ public class WordNetReaderImpl extends AbstractWordOperations implements
 			recursivePrintHypernyms(hypernym.getHyperHypernyms(),
 					indentCount + 1);
 		}
+	}
+
+	@Override
+	public List<String> retrieveGlosses(String term, POS pos)
+	{
+		List<String> result = new ArrayList<String>();
+
+		IIndexWord idxWord = dict.getIndexWord(term, pos);
+		if (idxWord == null)
+		{
+			return null;
+		}
+
+		int minAcceptFrequency = minAcceptFrequency(idxWord);
+		for (IWordID wordID : idxWord.getWordIDs())
+		{
+			IWord word = dict.getWord(wordID);
+			int frequency = dict.getSenseEntry(word.getSenseKey())
+					.getTagCount();
+			ISynset synset = word.getSynset();
+			if (frequency < minAcceptFrequency)
+			{
+				// ignore those synset with too low frequency
+				continue;
+			}
+
+			result.add(synset.getGloss());
+		}
+
+		return result;
 	}
 
 }

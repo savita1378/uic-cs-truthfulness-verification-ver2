@@ -75,13 +75,18 @@ public abstract class WikipediaContentExtractor extends CategoriesExtractor
 
 	public MatchedQueryKey matchQueryKey(String queryWords)
 	{
+		return matchQueryKey(queryWords, true);
+	}
+
+	public MatchedQueryKey matchQueryKey(String queryWords, boolean printResult)
+	{
 		if (LOGGER.isDebugEnabled())
 		{
 			LOGGER.debug(LogHelper.LOG_LAYER_ONE_BEGIN + "Trying key word["
 					+ queryWords + "]. ");
 		}
 
-		MatchedQueryKey result = matchQueryKeyInternal(queryWords);
+		MatchedQueryKey result = matchQueryKeyInternal(queryWords, printResult);
 
 		if (LOGGER.isDebugEnabled())
 		{
@@ -107,20 +112,27 @@ public abstract class WikipediaContentExtractor extends CategoriesExtractor
 		}.matchQueryKey("frances folsom");
 	}*/
 
-	private MatchedQueryKey matchQueryKeyInternal(String queryWords)
+	private MatchedQueryKey matchQueryKeyInternal(String queryWords,
+			boolean printResult)
 	{
 		String url = WIKI_SEARCH_URL_PREFIX
 				+ queryWords.trim().replace(' ', '_');
 
 		try
 		{
-			System.out.print(url);
+			if (printResult)
+			{
+				System.out.print(url);
+			}
 			parser.setResource(url);
 
 			// this means the input query words can't exactly match a page 
 			if (url.equals(parser.getURL()))
 			{
-				System.out.println(" ×");
+				if (printResult)
+				{
+					System.out.println(" ×");
+				}
 				return null;
 			}
 
@@ -176,13 +188,16 @@ public abstract class WikipediaContentExtractor extends CategoriesExtractor
 			MatchedQueryKey result = new MatchedQueryKey(
 					titleString.replaceAll(" ", "_"), disambiguationEntries,
 					categories);
-			if (result.isCertainly())
+			if (printResult)
 			{
-				System.out.println(" √");
-			}
-			else
-			{
-				System.out.println(" ?");
+				if (result.isCertainly())
+				{
+					System.out.println(" √");
+				}
+				else
+				{
+					System.out.println(" ?");
+				}
 			}
 
 			return result;

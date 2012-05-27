@@ -3,6 +3,7 @@ package edu.uic.cs.t_verifier.nlp.impl;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -66,16 +67,23 @@ public class FileBasedCategoryMapperImpl extends AbstractWordOperations
 	@Override
 	public StatementType mapCategoryIntoStatementType(String category)
 	{
-		String stemmedCategory = stem(category.trim().toLowerCase());
-		if (CATEGORY_KEYWORDS_LOCATION.contains(stemmedCategory))
+		List<String> categoryTerms = standardAnalyzeUsingDefaultStopWords(category);
+		HashSet<String> stemmedTerms = new HashSet<String>();
+		for (String term : categoryTerms)
+		{
+			stemmedTerms.add(stem(term));
+		}
+
+		if (!Collections.disjoint(CATEGORY_KEYWORDS_LOCATION, stemmedTerms))
 		{
 			return StatementType.LOCATION;
 		}
-		else if (CATEGORY_KEYWORDS_PERSON.contains(stemmedCategory))
+		else if (!Collections.disjoint(CATEGORY_KEYWORDS_PERSON, stemmedTerms))
 		{
 			return StatementType.PERSON;
 		}
-		else if (CATEGORY_KEYWORDS_ORGANIZATION.contains(stemmedCategory))
+		else if (!Collections.disjoint(CATEGORY_KEYWORDS_ORGANIZATION,
+				stemmedTerms))
 		{
 			return StatementType.ORGANIZATION;
 		}

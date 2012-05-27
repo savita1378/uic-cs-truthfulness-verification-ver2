@@ -76,7 +76,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 	private PersonNameMatcherImpl trigramPersonNameMatcher = new PersonNameMatcherImpl();
 
-	private SentenceCache sentenceCache = new SentenceCache();
+	private SentenceCache sentenceCache = SentenceCache.getInstance();
 
 	//	private WikipediaContentExtractor wikipediaContentExtractor = new WikipediaContentExtractor() // for test
 	//	{
@@ -186,7 +186,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			List<List<String>> possibleNounPhrases)
 	{
 		sentence = sentence.trim();
-		// sentence = StringUtils.capitalize(sentence);
+		sentence = StringUtils.capitalize(sentence);
 
 		List<Entry<String, String>> posTagsByTerm = parseIntoPosTagByTerms(sentence);
 		// split by the punctuation
@@ -213,23 +213,6 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 		// Get all noun sequences
 		List<List<Entry<String, String>>> nounSequences = findNounSequences(posTagsByTermOfSubSentences);
-		// fill the parameter nounPhrases with nounSequences
-		if (possibleNounPhrases != null)
-		{
-			// TODO more sophisticated method may be needed, 
-			// but now is is OK, since the AU matching is using the same parser for nouns
-			for (List<Entry<String, String>> sequence : nounSequences)
-			{
-				List<String> nounSequence = new ArrayList<String>(
-						sequence.size());
-				possibleNounPhrases.add(nounSequence);
-				for (Entry<String, String> entry : sequence)
-				{
-					nounSequence.add(entry.getKey());
-				}
-			}
-		}
-
 		LOGGER.info(">>>>> Noun_from_parser\t\t\t" + nounSequences);
 
 		// Find those noun(sequence)s which have not been identified by Wikipedia
@@ -286,6 +269,30 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			String target = concatenateTerms(entry);
 			String replacement = WordUtils.capitalize(target);
 			sentence = sentence.replace(target, replacement);
+		}
+
+		// re-parse it /////////////////////////////////////////////////////////
+		posTagsByTerm = parseIntoPosTagByTerms(sentence);
+		// split by the punctuation
+		posTagsByTermOfSubSentences = splitByPunctuations(posTagsByTerm);
+		nounSequences = findNounSequences(posTagsByTermOfSubSentences);
+		LOGGER.info(">>>>> Re-parsed_Noun_from_parser\t\t" + nounSequences);
+
+		// fill the parameter nounPhrases with nounSequences
+		if (possibleNounPhrases != null)
+		{
+			// TODO more sophisticated method may be needed, 
+			// but now is is OK, since the AU matching is using the same parser for nouns
+			for (List<Entry<String, String>> sequence : nounSequences)
+			{
+				List<String> nounSequence = new ArrayList<String>(
+						sequence.size());
+				possibleNounPhrases.add(nounSequence);
+				for (Entry<String, String> entry : sequence)
+				{
+					nounSequence.add(entry.getKey());
+				}
+			}
 		}
 
 		// return sentence;

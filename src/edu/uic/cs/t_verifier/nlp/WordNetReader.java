@@ -1,6 +1,7 @@
 package edu.uic.cs.t_verifier.nlp;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import edu.mit.jwi.item.POS;
@@ -19,4 +20,6 @@ public interface WordNetReader
 	String retrieveTermInStandardCase(String term, POS pos);
 
 	LinkedHashSet<HypernymSet> retrieveHypernyms(String term, POS pos);
+
+	List<String> retrieveGlosses(String term, POS pos);
 }
