@@ -483,8 +483,8 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 	public static void main2(String[] args)
 	{
 		StatementTypeIdentifier typeIdentifier = new StatementTypeIdentifierImpl();
-		String sentence = "sam is lead actress in the movie sleepless in seattle";
-		String alternativeUnit = "sam";
+		String sentence = "apollo is the first spacecraft on the moon";
+		String alternativeUnit = "apollo";
 		System.out.println(typeIdentifier.identifyType(sentence,
 				alternativeUnit));
 	}
