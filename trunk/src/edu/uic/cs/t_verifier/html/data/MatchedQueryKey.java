@@ -1,8 +1,9 @@
 package edu.uic.cs.t_verifier.html.data;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class MatchedQueryKey
+public class MatchedQueryKey implements Serializable
 {
 	private static final long serialVersionUID = 1L;
 
@@ -14,8 +15,10 @@ public class MatchedQueryKey
 	private List<DisambiguationEntry> disambiguationEntries = null;
 	private List<String> categories = null;
 
-	public static class DisambiguationEntry
+	public static class DisambiguationEntry implements Serializable
 	{
+		private static final long serialVersionUID = 1L;
+
 		private String keyWord = null;
 		private String description = null;
 

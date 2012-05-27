@@ -24,7 +24,7 @@ public class SentenceCache
 	//	List<Entry<List<Entry<String, String>>, MatchedQueryKey>> matchedSequenceInfo = new ArrayList<Entry<List<Entry<String, String>>, MatchedQueryKey>>();
 	//	List<Entry<Entry<String, String>, MatchedQueryKey>> matchedSingleInfo = new ArrayList<Entry<Entry<String, String>, MatchedQueryKey>>();
 
-	private static boolean modified = false;
+	private static boolean MODIFIED = false;
 
 	private static final String WIKIPEDIA_CACHE_FILE_NAME = "cache/wikipedia.cache";
 
@@ -36,6 +36,17 @@ public class SentenceCache
 		setializeCacheIfNotExists();
 
 		return WIKIPEDIA_SENTENCE_CACHE.get(sentence.toLowerCase());
+	}
+
+	private static final SentenceCache INSTANCE = new SentenceCache();
+
+	private SentenceCache()
+	{
+	}
+
+	public static SentenceCache getInstance()
+	{
+		return INSTANCE;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -82,12 +93,12 @@ public class SentenceCache
 		setializeCacheIfNotExists();
 		WIKIPEDIA_SENTENCE_CACHE.put(sentence.toLowerCase(), pair);
 
-		modified = true;
+		MODIFIED = true;
 	}
 
 	public void writeCache()
 	{
-		if (!modified)
+		if (!MODIFIED)
 		{
 			return;
 		}

@@ -3,7 +3,6 @@ package edu.uic.cs.t_verifier.nlp.impl;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -30,11 +29,14 @@ import edu.stanford.nlp.ie.AbstractSequenceClassifier;
 import edu.stanford.nlp.ie.crf.CRFClassifier;
 import edu.stanford.nlp.ling.CoreAnnotations.AnswerAnnotation;
 import edu.stanford.nlp.ling.CoreLabel;
+import edu.uic.cs.t_verifier.html.WikipediaContentExtractor;
+import edu.uic.cs.t_verifier.html.data.MatchedQueryKey;
 import edu.uic.cs.t_verifier.index.IndexConstants;
 import edu.uic.cs.t_verifier.index.StatementIndexUpdater;
 import edu.uic.cs.t_verifier.input.AlternativeUnitsReader;
 import edu.uic.cs.t_verifier.input.data.Statement;
 import edu.uic.cs.t_verifier.misc.Assert;
+import edu.uic.cs.t_verifier.misc.ClassFactory;
 import edu.uic.cs.t_verifier.misc.Config;
 import edu.uic.cs.t_verifier.misc.GeneralException;
 import edu.uic.cs.t_verifier.nlp.CategoryMapper;
@@ -48,6 +50,10 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 {
 	private static final String WORDNET_HYPERNYM_PERSON = "person";
 	private static final String WORDNET_HYPERNYM_CELESTIAL_BODY = "celestial body";
+
+	//	private static final Set<String> WORDNET_GLOSS_KEY_WORDS_COUNTRY_CITY = new HashSet<String>(
+	//			Arrays.asList(new String[] { "country", "city", "state", "nation",
+	//					"republic" }));
 
 	private static boolean PRINT_DETAIL = false;
 
@@ -89,6 +95,9 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 
 	private CategoryMapper categoryMapper = new FileBasedCategoryMapperImpl();
 	private WordNetReader wordNetReader = new WordNetReaderImpl();
+
+	private WikipediaContentExtractor wikipediaContentExtractor = ClassFactory
+			.getInstance(Config.WIKIPEDIACONTENTEXTRACTOR_CLASS_NAME);
 
 	public static void setPrintDetail(boolean printDetail)
 	{
@@ -467,13 +476,15 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 
 			System.out.println();
 		}
+
+		SentenceCache.getInstance().writeCache();
 	}
 
 	public static void main2(String[] args)
 	{
 		StatementTypeIdentifier typeIdentifier = new StatementTypeIdentifierImpl();
-		String sentence = "harry is lead actress in the movie sleepless in seattle";
-		String alternativeUnit = "harry";
+		String sentence = "sam is lead actress in the movie sleepless in seattle";
+		String alternativeUnit = "sam";
 		System.out.println(typeIdentifier.identifyType(sentence,
 				alternativeUnit));
 	}
@@ -482,6 +493,8 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 	public StatementType identifyType(String originalSentence,
 			String alternativeUnit)
 	{
+		alternativeUnit = alternativeUnit.trim();
+
 		StatementType result = StatementType.OTHER;
 
 		String counterPartOfAU = nlpAnalyzer.retrieveTopicTermIfSameTypeAsAU(
@@ -489,17 +502,44 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 
 		if (counterPartOfAU != null) // AA is BB
 		{
-			StatementType statementTypeIdentifiedByHypernyms = identifyTypeByHypernym(counterPartOfAU);
-			if (statementTypeIdentifiedByHypernyms == StatementType.PERSON
-					&& isPersonName(alternativeUnit)) // person
+			if (isPersonName(alternativeUnit)) // maybe person name
 			{
-				result = StatementType.PERSON;
+				boolean moreThanOneTerms = alternativeUnit.contains(" ");
+				if (identifyTypeByHypernym(counterPartOfAU,
+						WORDNET_HYPERNYM_PERSON, /*!moreThanOneTerms*/false))
+				{
+					if (!moreThanOneTerms
+							&& isCountryOrCityName(alternativeUnit))
+					{
+						result = StatementType.LOCATION;
+					}
+					else
+					{
+						result = StatementType.PERSON;
+					}
+				}
 			}
-			else if (statementTypeIdentifiedByHypernyms == StatementType.LOCATION
-					&& isStarName(alternativeUnit)) // star
+
+			// stars
+			if (result == StatementType.OTHER
+					&& identifyTypeByHypernym(counterPartOfAU,
+							WORDNET_HYPERNYM_CELESTIAL_BODY, false)
+					&& isStarName(alternativeUnit))
 			{
 				result = StatementType.LOCATION;
 			}
+
+			//			StatementType statementTypeIdentifiedByHypernyms = identifyTypeByHypernym(counterPartOfAU);
+			//			if (statementTypeIdentifiedByHypernyms == StatementType.PERSON
+			//					&& isPersonName(alternativeUnit)) // person
+			//			{
+			//				result = StatementType.PERSON;
+			//			}
+			//			else if (statementTypeIdentifiedByHypernyms == StatementType.LOCATION
+			//					&& isStarName(alternativeUnit)) // star
+			//			{
+			//				result = StatementType.LOCATION;
+			//			}
 
 			if (result == StatementType.OTHER)
 			{
@@ -554,46 +594,106 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 		return result;
 	}
 
+	//	private boolean isCountryOrCityName(String alternativeUnit)
+	//	{
+	//		List<String> glosses = wordNetReader.retrieveGlosses(alternativeUnit,
+	//				POS.NOUN);
+	//		if (glosses == null)
+	//		{
+	//			return false;
+	//		}
+	//
+	//		for (String gloss : glosses)
+	//		{
+	//			for (String keyword : WORDNET_GLOSS_KEY_WORDS_COUNTRY_CITY)
+	//			{
+	//				if (StringUtils.containsIgnoreCase(gloss, keyword))
+	//				{
+	//					return true;
+	//				}
+	//			}
+	//		}
+	//
+	//		return false;
+	//	}
+
+	private boolean isCountryOrCityName(String alternativeUnit)
+	{
+		return identifyTypeByCategory(alternativeUnit) == StatementType.LOCATION;
+	}
+
 	private boolean isStarName(String alternativeUnit)
 	{
 		return STAR_NAMES.contains(alternativeUnit.toLowerCase().trim());
 	}
 
-	private StatementType identifyTypeByHypernym(String counterPartOfAU)
+	//	private StatementType identifyTypeByHypernym(String counterPartOfAU)
+	//	{
+	//		LinkedHashSet<HypernymSet> hypernyms = wordNetReader.retrieveHypernyms(
+	//				counterPartOfAU, POS.NOUN);
+	//		if (recursiveFindHypernym(hypernyms, WORDNET_HYPERNYM_PERSON, true)) // all hypernyms must be person
+	//		{
+	//			return StatementType.PERSON;
+	//		}
+	//		else if (recursiveFindHypernym(hypernyms,
+	//				WORDNET_HYPERNYM_CELESTIAL_BODY, false))
+	//		{
+	//			return StatementType.LOCATION;
+	//		}
+	//
+	//		return StatementType.OTHER;
+	//	}
+
+	private boolean identifyTypeByHypernym(String counterPartOfAU,
+			String typeHypernymKeyWord, boolean requireAllHypernymsMatched)
 	{
 		LinkedHashSet<HypernymSet> hypernyms = wordNetReader.retrieveHypernyms(
 				counterPartOfAU, POS.NOUN);
-		if (recursiveFindHypernym(hypernyms, WORDNET_HYPERNYM_PERSON))
-		{
-			return StatementType.PERSON;
-		}
-		else if (recursiveFindHypernym(hypernyms,
-				WORDNET_HYPERNYM_CELESTIAL_BODY))
-		{
-			return StatementType.LOCATION;
-		}
 
-		return StatementType.OTHER;
+		return recursiveFindHypernym(hypernyms, typeHypernymKeyWord,
+				requireAllHypernymsMatched);
 	}
 
-	private boolean recursiveFindHypernym(LinkedHashSet<HypernymSet> hypernyms,
-			String hypernymToFind)
+	private static boolean recursiveFindHypernym(
+			LinkedHashSet<HypernymSet> hypernyms, String hypernymToFind,
+			boolean requireAllHypernymsMatched)
 	{
 		for (HypernymSet hypernym : hypernyms)
 		{
-			if (hypernym.getTerms().contains(hypernymToFind))
-			{
-				return true;
-			}
+			//			System.out.println(hypernym.getTerms());
 
-			if (recursiveFindHypernym(hypernym.getHyperHypernyms(),
-					hypernymToFind))
+			if (requireAllHypernymsMatched)
 			{
-				return true;
+				if (hypernym.getTerms().contains(hypernymToFind))
+				{
+					continue;
+				}
+
+				LinkedHashSet<HypernymSet> childHypernyms = hypernym
+						.getHyperHypernyms();
+				if (childHypernyms.isEmpty()
+						|| !recursiveFindHypernym(childHypernyms,
+								hypernymToFind, requireAllHypernymsMatched))
+				{
+					return false;
+				}
+			}
+			else
+			{
+				if (hypernym.getTerms().contains(hypernymToFind))
+				{
+					return true;
+				}
+
+				if (recursiveFindHypernym(hypernym.getHyperHypernyms(),
+						hypernymToFind, requireAllHypernymsMatched))
+				{
+					return true;
+				}
 			}
 		}
 
-		return false;
+		return requireAllHypernymsMatched;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -683,13 +783,24 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 		return alternativeUnitStatementType;
 	}
 
-	private StatementType identifyTypeByCategory(String counterPartOfAU)
+	private StatementType identifyTypeByCategory(String term)
 	{
 		// System.out.println("counterPartOfAU: " + counterPartOfAU);
-		String[] categories = retrieveCategoryAndInsertIntoIndexIfNotExist(counterPartOfAU);
+		//		String[] categories = retrieveCategoryAndInsertIntoIndexIfNotExist(term);
+
+		// here we need use the categories for un-disambiguated term
+		MatchedQueryKey matchedQueryKey = wikipediaContentExtractor
+				.matchQueryKey(term, false);
+		if (matchedQueryKey == null || !matchedQueryKey.isCertainly())
+		{
+			return StatementType.OTHER;
+		}
+
+		List<String> categories = matchedQueryKey.getCategories();
+
 		List<String> categoryList = new ArrayList<String>();
-		categoryList.add(counterPartOfAU);
-		categoryList.addAll(Arrays.asList(categories));
+		categoryList.add(term);
+		categoryList.addAll(categories);
 
 		return categoryMapper.mapCategoriesIntoStatementType(categoryList);
 	}
