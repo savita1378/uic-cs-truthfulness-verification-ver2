@@ -4,7 +4,9 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
@@ -157,16 +159,17 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 						+ "] "
 						+ sentence.replace(alternativeUnit, "["
 								+ alternativeUnit + "]");
-				System.out.println(originalSentence);
+				// System.out.println(originalSentence);
 				LOGGER.info(originalSentence);
 
 				List<List<String>> nounSequences = new ArrayList<List<String>>();
 				String capitalizedSentence = impl.capitalizeProperNounTerms(
 						sentence, nounSequences);
-				System.out.println("> " + capitalizedSentence);
-				System.out.println();
+				System.out.println(/*"> " + */capitalizedSentence);
+
 				LOGGER.info("");
 			}
+			System.out.println();
 
 		}
 
@@ -174,11 +177,40 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 	}
 
-	@Override
+	private static Map<String, Entry<String, List<List<String>>>> RESTORED_SENTENCE_CACHE = new ConcurrentHashMap<String, Entry<String, List<List<String>>>>();
+
+	//	@Override
+	//	protected String restoreWordCasesForSentence(String sentence,
+	//			String alternativeUnit, List<List<String>> nounPhrases)
+	//	{
+	//		return capitalizeProperNounTerms(sentence, nounPhrases);
+	//	}
+
 	protected String restoreWordCasesForSentence(String sentence,
 			String alternativeUnit, List<List<String>> nounPhrases)
 	{
-		return capitalizeProperNounTerms(sentence, nounPhrases);
+		Entry<String, List<List<String>>> restoredSentenceAndNPs = RESTORED_SENTENCE_CACHE
+				.get(sentence);
+		if (restoredSentenceAndNPs == null)
+		{
+			synchronized (RESTORED_SENTENCE_CACHE)
+			{
+				restoredSentenceAndNPs = RESTORED_SENTENCE_CACHE.get(sentence);
+				if (restoredSentenceAndNPs == null)
+				{
+					List<List<String>> nounPhrasesToStore = new ArrayList<List<String>>();
+					String resultSentence = capitalizeProperNounTerms(sentence,
+							nounPhrasesToStore);
+
+					RESTORED_SENTENCE_CACHE.put(sentence,
+							new SimpleEntry<String, List<List<String>>>(
+									resultSentence, nounPhrasesToStore));
+				}
+			}
+		}
+
+		nounPhrases.addAll(restoredSentenceAndNPs.getValue());
+		return restoredSentenceAndNPs.getKey();
 	}
 
 	@Override
