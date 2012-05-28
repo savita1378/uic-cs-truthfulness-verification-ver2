@@ -202,9 +202,10 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 					String resultSentence = capitalizeProperNounTerms(sentence,
 							nounPhrasesToStore);
 
+					restoredSentenceAndNPs = new SimpleEntry<String, List<List<String>>>(
+							resultSentence, nounPhrasesToStore);
 					RESTORED_SENTENCE_CACHE.put(sentence,
-							new SimpleEntry<String, List<List<String>>>(
-									resultSentence, nounPhrasesToStore));
+							restoredSentenceAndNPs);
 				}
 			}
 		}
