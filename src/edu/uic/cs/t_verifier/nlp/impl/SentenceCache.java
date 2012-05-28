@@ -35,7 +35,7 @@ public class SentenceCache
 	{
 		setializeCacheIfNotExists();
 
-		return WIKIPEDIA_SENTENCE_CACHE.get(sentence.toLowerCase());
+		return WIKIPEDIA_SENTENCE_CACHE.get(sentence);
 	}
 
 	private static final SentenceCache INSTANCE = new SentenceCache();
@@ -91,7 +91,7 @@ public class SentenceCache
 				matchedSequenceInfo, matchedSingleInfo);
 
 		setializeCacheIfNotExists();
-		WIKIPEDIA_SENTENCE_CACHE.put(sentence.toLowerCase(), pair);
+		WIKIPEDIA_SENTENCE_CACHE.put(sentence, pair);
 
 		MODIFIED = true;
 	}

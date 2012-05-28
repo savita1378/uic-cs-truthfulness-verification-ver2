@@ -122,4 +122,28 @@ public class AlternativeUnitsReader
 		int end = line.lastIndexOf(AU_RIGHT_SYMBOL);
 		return line.substring(begin + AU_LEFT_SYMBOL_LENGTH, end);
 	}
+
+	public static void main(String[] args)
+	{
+		List<Statement> statements = AlternativeUnitsReader
+				.parseAllStatementsFromInputFiles();
+		for (Statement statement : statements)
+		{
+			List<String> allAlternativeUnits = statement.getAlternativeUnits();
+			List<String> allAlternativeStatements = statement
+					.getAllAlternativeStatements();
+
+			for (int index = 0; index < allAlternativeStatements.size(); index++)
+			{
+				String alternativeUnit = allAlternativeUnits.get(index);
+				String sentence = allAlternativeStatements.get(index);
+
+				String originalSentence = +statement.getId()
+						+ "\t"
+						+ sentence.replace(alternativeUnit, "["
+								+ alternativeUnit + "]");
+				System.out.println(originalSentence);
+			}
+		}
+	}
 }

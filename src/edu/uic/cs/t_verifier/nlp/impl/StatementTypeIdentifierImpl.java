@@ -483,8 +483,8 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 	public static void main2(String[] args)
 	{
 		StatementTypeIdentifier typeIdentifier = new StatementTypeIdentifierImpl();
-		String sentence = "apollo is the first spacecraft on the moon";
-		String alternativeUnit = "apollo";
+		String sentence = "burgh island hotel was used for a setting of the agatha christie novel, and then there were none";
+		String alternativeUnit = "burgh island hotel";
 		System.out.println(typeIdentifier.identifyType(sentence,
 				alternativeUnit));
 	}
