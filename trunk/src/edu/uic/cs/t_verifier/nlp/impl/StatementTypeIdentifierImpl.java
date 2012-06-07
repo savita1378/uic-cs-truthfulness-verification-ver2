@@ -717,22 +717,22 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 	{
 		return isPersonName(alternativeUnit)
 				&& (nlpAnalyzer.hasAlternativeUnitDoneSomething(
-						originalSentence, alternativeUnit) || hasOccupation(
-						originalSentence, alternativeUnit));
+						originalSentence, alternativeUnit)
+				/*|| hasOccupation(originalSentence, alternativeUnit)*/);
 	}
 
-	private boolean hasOccupation(String originalSentence,
-			String alternativeUnit)
-	{
-		String topicTerm = nlpAnalyzer.retrieveTopicTermIfSameTypeAsAU(
-				originalSentence, alternativeUnit);
-		if (topicTerm == null)
-		{
-			return false;
-		}
-
-		return isTermAnOccupation(topicTerm);
-	}
+	//	private boolean hasOccupation(String originalSentence,
+	//			String alternativeUnit)
+	//	{
+	//		String topicTerm = nlpAnalyzer.retrieveTopicTermIfSameTypeAsAU(
+	//				originalSentence, alternativeUnit);
+	//		if (topicTerm == null)
+	//		{
+	//			return false;
+	//		}
+	//
+	//		return isTermAnOccupation(topicTerm);
+	//	}
 
 	private boolean isNumber(String alternativeUnit)
 	{
