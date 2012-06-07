@@ -119,6 +119,36 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 	//		impl.capitalizeProperNounTerms(sentence, null);
 	//	}
 
+	public static void main2(String[] args)
+	{
+		List<Statement> statements = AlternativeUnitsReader
+				.parseAllStatementsFromInputFiles();
+		NLPAnalyzerImpl4 nlpAnalyzer = new NLPAnalyzerImpl4();
+
+		for (Statement statement : statements)
+		{
+			List<String> allAlternativeUnits = statement.getAlternativeUnits();
+			List<String> allAlternativeStatements = statement
+					.getAllAlternativeStatements();
+
+			for (int index = 0; index < allAlternativeStatements.size(); index++)
+			{
+				String alternativeUnit = allAlternativeUnits.get(index);
+				String sentence = allAlternativeStatements.get(index);
+				String counterPartOfAU = nlpAnalyzer
+						.retrieveTopicTermIfSameTypeAsAU(sentence,
+								alternativeUnit); // this method will restore cases
+
+				if (counterPartOfAU != null)
+				{
+					System.out.println(sentence);
+					System.out.println(counterPartOfAU + "\t-\t"
+							+ alternativeUnit);
+				}
+			}
+		}
+	}
+
 	public static void main(String[] args)
 	{
 		List<Statement> statements = AlternativeUnitsReader
