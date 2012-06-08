@@ -106,7 +106,6 @@ public abstract class WikipediaContentExtractor extends CategoriesExtractor
 					UrlWithDescription urlWithDescription,
 					boolean isBulletinPage)
 			{
-				// TODO Auto-generated method stub
 				return null;
 			}
 		}.matchQueryKey("ibm");
