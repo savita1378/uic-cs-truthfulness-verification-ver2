@@ -19,6 +19,7 @@ import edu.stanford.nlp.ling.TaggedWord;
 import edu.stanford.nlp.trees.Tree;
 import edu.uic.cs.t_verifier.html.WikipediaContentExtractor;
 import edu.uic.cs.t_verifier.html.data.MatchedQueryKey;
+import edu.uic.cs.t_verifier.index.data.Paragraph;
 import edu.uic.cs.t_verifier.index.data.Segment;
 import edu.uic.cs.t_verifier.index.data.UrlWithDescription;
 import edu.uic.cs.t_verifier.input.AlternativeUnitsReader;
@@ -159,7 +160,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 		//		//		 String sentence = "microsoft's corporate headquarters locates in redmond";
 		//		//		 String sentence = "alan shepard is the first american in space";
-		//		String sentence = "the valley of the kings is africa";
+		//		String sentence = "microsoft's corporate headquarters locates in new jersey";
 		//
 		//		System.out.println(impl.capitalizeProperNounTerms(sentence, null));
 
@@ -825,9 +826,28 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 		// replace the punctuation
 		//		String content = firstSegment.toString().replace(", ", " ")
 		//				.replace(". ", " ");
-		String content = firstSegment.toString();
 
-		return content;
+		// 		String content = firstSegment.toString(); 
+		//		return content;
+		// NO TABLE!
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(matchedQueryKey.getKeyWord().replaceAll("_", " "))
+				.append("\n");
+
+		if (firstSegment.getHeading() != null)
+		{
+			stringBuilder.append(firstSegment.getHeading()).append("\n");
+		}
+
+		if (firstSegment.getParagraphs() != null)
+		{
+			for (Paragraph paragraph : firstSegment.getParagraphs())
+			{
+				stringBuilder.append(paragraph).append("\n");
+			}
+		}
+
+		return stringBuilder.toString();
 	}
 
 	//	private String extractProperNoun(String content, String matchedTerms)
