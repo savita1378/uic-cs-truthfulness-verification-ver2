@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
@@ -33,6 +34,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			.getLogger(NLPAnalyzerImpl4.class);
 
 	private static final String POSTAG_POSSESSIVE = "POS";
+	private static final String POSTAG_DETERMINATOR = "DT";
 	private static final String POSTAG_NOUN = "NN";
 
 	private WikipediaContentExtractor wikipediaContentExtractor = ClassFactory
@@ -155,11 +157,11 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 				.parseAllStatementsFromInputFiles();
 		NLPAnalyzerImpl4 impl = new NLPAnalyzerImpl4();
 
-		// String sentence = "microsoft's corporate headquarters locates in redmond";
-		// String sentence = "alan shepard is the first american in space";
-		//		String sentence = "the brightest star visible from earth is sirius";
+		//		//		 String sentence = "microsoft's corporate headquarters locates in redmond";
+		//		//		 String sentence = "alan shepard is the first american in space";
+		//		String sentence = "the valley of the kings is africa";
 		//
-		//		impl.capitalizeProperNounTerms(sentence, null);
+		//		System.out.println(impl.capitalizeProperNounTerms(sentence, null));
 
 		for (Statement statement : statements)
 		{
@@ -621,14 +623,18 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			Entry<String, String> posTagByTerm = entry.getKey();
 			MatchedQueryKey matchedQueryKey = entry.getValue();
 
-			Entry<Entry<String, String>, String> properSingleNounByOriginalCase = checkWhetherProperNoun(
-					posTagByTerm, matchedQueryKey);
+			Entry<List<Entry<String, String>>, String> properSingleNounByOriginalCase = checkWhetherProperNoun(
+					Collections.singletonList(posTagByTerm), matchedQueryKey);
 			if (properSingleNounByOriginalCase == null)
 			{
 				continue;
 			}
+
+			Assert.isTrue(properSingleNounByOriginalCase.getKey().size() == 1);
 			capitalizationsBySingleNounTermFromWiki
-					.add(properSingleNounByOriginalCase);
+					.add(new SimpleEntry<Entry<String, String>, String>(
+							posTagByTerm, properSingleNounByOriginalCase
+									.getValue()));
 
 			//			capitalizationsByOriginalCaseFromWiki
 			//					.add(new SimpleEntry<List<Entry<String, String>>, String>(
@@ -640,28 +646,68 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 	}
 
-	private Entry<Entry<String, String>, String> checkWhetherProperNoun(
-			Entry<String, String> posTagByTerm, MatchedQueryKey matchedQueryKey)
-	{
-		String content = extractContentFromWikiPage(matchedQueryKey);
-		if (content == null)
-		{
-			return null;
-		}
+	//	// single term
+	//	private Entry<Entry<String, String>, String> checkWhetherProperNoun(
+	//			Entry<String, String> posTagByTerm, MatchedQueryKey matchedQueryKey)
+	//	{
+	//		String content = extractContentFromWikiPage(matchedQueryKey);
+	//		if (content == null)
+	//		{
+	//			return null;
+	//		}
+	//
+	//		String term = posTagByTerm.getKey();
+	//
+	//		if (StringUtils.containsIgnoreCase(content, term + " ")
+	//				&& !content.contains(term + " "))
+	//		{
+	//			String properNoun = extractProperNoun(content, term);
+	//			return new SimpleEntry<Entry<String, String>, String>(posTagByTerm,
+	//					properNoun);
+	//		}
+	//
+	//		return null;
+	//	}
+	//
+	//	// term sequence
+	//	private Entry<List<Entry<String, String>>, String> checkWhetherProperNoun(
+	//			List<Entry<String, String>> posTagsByMatchedTerm,
+	//			MatchedQueryKey matchedQueryKey)
+	//	{
+	//		String content = extractContentFromWikiPage(matchedQueryKey);
+	//		if (content == null)
+	//		{
+	//			return null;
+	//		}
+	//
+	//		String matchedTerms = concatenateTerms(posTagsByMatchedTerm, false)
+	//				.toLowerCase();
+	//		String matchedTermsWithoutPossessiveCase = concatenateTerms(
+	//				posTagsByMatchedTerm, true).toLowerCase();
+	//
+	//		if (StringUtils.containsIgnoreCase(content, matchedTerms + " ")
+	//				&& !content.contains(matchedTerms + " "))
+	//		{
+	//			String properNoun = extractProperNoun(content, matchedTerms);
+	//			return new SimpleEntry<List<Entry<String, String>>, String>(
+	//					posTagsByMatchedTerm, properNoun);
+	//		}
+	//		// be aware of the POSSESSIVE symbol
+	//		else if (!matchedTerms.equals(matchedTermsWithoutPossessiveCase)
+	//				&& StringUtils.containsIgnoreCase(content,
+	//						matchedTermsWithoutPossessiveCase + " ")
+	//				&& !content.contains(matchedTermsWithoutPossessiveCase + " "))
+	//		{
+	//			String properNoun = extractProperNoun(content,
+	//					matchedTermsWithoutPossessiveCase);
+	//			return new SimpleEntry<List<Entry<String, String>>, String>(
+	//					posTagsByMatchedTerm, properNoun);
+	//		}
+	//
+	//		return null;
+	//	}
 
-		String term = posTagByTerm.getKey();
-
-		if (StringUtils.containsIgnoreCase(content, term + " ")
-				&& !content.contains(term + " "))
-		{
-			String properNoun = extractProperNoun(content, term);
-			return new SimpleEntry<Entry<String, String>, String>(posTagByTerm,
-					properNoun);
-		}
-
-		return null;
-	}
-
+	// term sequence
 	private Entry<List<Entry<String, String>>, String> checkWhetherProperNoun(
 			List<Entry<String, String>> posTagsByMatchedTerm,
 			MatchedQueryKey matchedQueryKey)
@@ -672,31 +718,94 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			return null;
 		}
 
-		String matchedTerms = concatenateTerms(posTagsByMatchedTerm, false)
-				.toLowerCase();
-		String matchedTermsWithoutPossessiveCase = concatenateTerms(
-				posTagsByMatchedTerm, true).toLowerCase();
+		String matchedTerms = matchedQueryKey.getKeyWord().replaceAll("_", " ")
+				.trim();
+		boolean isSingleTerm = (matchedTerms.indexOf(" ") == -1);
 
-		if (StringUtils.containsIgnoreCase(content, matchedTerms + " ")
-				&& !content.contains(matchedTerms + " "))
+		// actually it should already been capitalized since it is the title of wiki page
+		boolean shouldCapitalized = shouldCapitalized(matchedTerms);
+		if (!isSingleTerm && !shouldCapitalized)
 		{
-			String properNoun = extractProperNoun(content, matchedTerms);
-			return new SimpleEntry<List<Entry<String, String>>, String>(
-					posTagsByMatchedTerm, properNoun);
+			return null;
 		}
-		// be aware of the POSSESSIVE symbol
-		else if (!matchedTerms.equals(matchedTermsWithoutPossessiveCase)
-				&& StringUtils.containsIgnoreCase(content,
-						matchedTermsWithoutPossessiveCase + " ")
-				&& !content.contains(matchedTermsWithoutPossessiveCase + " "))
+
+		int lastIndexOf = content.lastIndexOf(matchedTerms/* + " "*/);
+		// if there's one capitalized
+		//		if ((isSingleTerm && lastIndexOf > 0) // single term cannot be the first one
+		//				|| (!isSingleTerm  && lastIndexOf > 0) // not not capitalized can not be the first 
+		//				|| (!isSingleTerm && allCapitalized && lastIndexOf > -1)) // more than one all capitalized term can be the first
+
+		String lowerCasedMatchedTerms = matchedTerms.toLowerCase();
+		if (!Pattern.compile("\\b" + lowerCasedMatchedTerms + "\\b")
+				.matcher(content).find() // doesn't contain all lower case form
+				&& ((isSingleTerm && lastIndexOf > 0) // single term cannot be the first one
+				|| (!isSingleTerm && lastIndexOf > -1))) // more than one all capitalized term can be the first
 		{
-			String properNoun = extractProperNoun(content,
-					matchedTermsWithoutPossessiveCase);
+			StringBuilder properNoun = new StringBuilder();
+			for (int index = 0; index < posTagsByMatchedTerm.size(); index++)
+			{
+				String originalTerm = posTagsByMatchedTerm.get(index).getKey()
+						.toLowerCase();
+				String posTag = posTagsByMatchedTerm.get(index).getValue();
+
+				int beginIndex = lowerCasedMatchedTerms.indexOf(originalTerm);
+
+				String captializedMatchedTerm = null;
+				if (POSTAG_DETERMINATOR.equals(posTag))
+				{
+					captializedMatchedTerm = originalTerm;
+				}
+				else if (beginIndex != -1) // if they are in the same literal form
+				{
+					// accept the form in Wikipedia page since it could be acronym like IBM
+					// which is not just capitalize the first character
+					captializedMatchedTerm = matchedTerms.substring(beginIndex,
+							beginIndex + originalTerm.length());
+				}
+				else
+				{ // else if the original term is different with the term in Wikipedia
+					int lastIndexOfUnMatchedTerm = content.toLowerCase()
+							.lastIndexOf(originalTerm);
+					if (lastIndexOfUnMatchedTerm != -1)
+					{
+						captializedMatchedTerm = content.substring(
+								lastIndexOfUnMatchedTerm,
+								lastIndexOfUnMatchedTerm
+										+ originalTerm.length());
+					}
+					else
+					{
+						captializedMatchedTerm = originalTerm;
+					}
+				}
+
+				if (index > 0 && !POSTAG_POSSESSIVE.equals(posTag)) // POS tag is not POSSESSIVE
+				{
+					properNoun.append(" ");
+				}
+				properNoun.append(captializedMatchedTerm);
+			}
+
 			return new SimpleEntry<List<Entry<String, String>>, String>(
-					posTagsByMatchedTerm, properNoun);
+					posTagsByMatchedTerm, properNoun.toString());
+
 		}
 
 		return null;
+	}
+
+	private boolean shouldCapitalized(String matchedTerms)
+	{
+		String[] terms = matchedTerms.split(" ");
+		for (int index = 1; index < terms.length; index++)
+		{
+			if (Character.isUpperCase(terms[index].charAt(0)))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private String extractContentFromWikiPage(MatchedQueryKey matchedQueryKey)
@@ -714,18 +823,19 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 		Segment firstSegment = segments.get(0);
 		// replace the punctuation
-		String content = firstSegment.toString().replace(", ", " ")
-				.replace(". ", " ");
+		//		String content = firstSegment.toString().replace(", ", " ")
+		//				.replace(". ", " ");
+		String content = firstSegment.toString();
 
 		return content;
 	}
 
-	private String extractProperNoun(String content, String matchedTerms)
-	{
-		int index = content.toLowerCase().lastIndexOf(
-				matchedTerms.toLowerCase() + " ");
-		return content.substring(index, index + matchedTerms.length());
-	}
+	//	private String extractProperNoun(String content, String matchedTerms)
+	//	{
+	//		int index = content.toLowerCase().lastIndexOf(
+	//				matchedTerms.toLowerCase() + " ");
+	//		return content.substring(index, index + matchedTerms.length());
+	//	}
 
 	private List<List<Entry<String, String>>> splitByPunctuations(
 			List<Entry<String, String>> posTagsByTerm)
