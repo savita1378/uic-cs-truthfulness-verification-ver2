@@ -97,7 +97,7 @@ public abstract class WikipediaContentExtractor extends CategoriesExtractor
 		return result;
 	}
 
-	/*public static void main(String[] args)
+	public static void main(String[] args)
 	{
 		MatchedQueryKey key = new WikipediaContentExtractor()
 		{
@@ -109,8 +109,9 @@ public abstract class WikipediaContentExtractor extends CategoriesExtractor
 				// TODO Auto-generated method stub
 				return null;
 			}
-		}.matchQueryKey("frances folsom");
-	}*/
+		}.matchQueryKey("ibm");
+		System.out.println(key.getKeyWord());
+	}
 
 	private MatchedQueryKey matchQueryKeyInternal(String queryWords,
 			boolean printResult)
