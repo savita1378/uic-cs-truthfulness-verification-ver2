@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.StopAnalyzer;
@@ -35,7 +34,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			.getLogger(NLPAnalyzerImpl4.class);
 
 	private static final String POSTAG_POSSESSIVE = "POS";
-	private static final String POSTAG_DETERMINATOR = "DT";
+	private static final String POSTAG_DETERMINER = "DT";
 	private static final String POSTAG_NOUN = "NN";
 
 	private WikipediaContentExtractor wikipediaContentExtractor = ClassFactory
@@ -163,50 +162,55 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 		//		String sentence = "microsoft's corporate headquarters locates in new jersey";
 		//
 		//		System.out.println(impl.capitalizeProperNounTerms(sentence, null));
-
-		for (Statement statement : statements)
+		try
 		{
-			List<String> allAlternativeUnits = statement.getAlternativeUnits();
-			List<String> allAlternativeStatements = statement
-					.getAllAlternativeStatements();
-
-			//			String alternativeUnit = allAlternativeUnits.get(0);
-			//			String sentence = allAlternativeStatements.get(0);
-			//
-			//			System.out.println("["
-			//					+ statement.getId()
-			//					+ "] "
-			//					+ sentence.replace(alternativeUnit, "[" + alternativeUnit
-			//							+ "]"));
-			//
-			//			String capitalizedSentence = impl.capitalizeProperNounTerms(
-			//					sentence, null);
-
-			for (int index = 0; index < allAlternativeStatements.size(); index++)
+			for (Statement statement : statements)
 			{
-				String alternativeUnit = allAlternativeUnits.get(index);
-				String sentence = allAlternativeStatements.get(index);
+				List<String> allAlternativeUnits = statement
+						.getAlternativeUnits();
+				List<String> allAlternativeStatements = statement
+						.getAllAlternativeStatements();
 
-				String originalSentence = "["
-						+ statement.getId()
-						+ "] "
-						+ sentence.replace(alternativeUnit, "["
-								+ alternativeUnit + "]");
-				// System.out.println(originalSentence);
-				LOGGER.info(originalSentence);
+				//			String alternativeUnit = allAlternativeUnits.get(0);
+				//			String sentence = allAlternativeStatements.get(0);
+				//
+				//			System.out.println("["
+				//					+ statement.getId()
+				//					+ "] "
+				//					+ sentence.replace(alternativeUnit, "[" + alternativeUnit
+				//							+ "]"));
+				//
+				//			String capitalizedSentence = impl.capitalizeProperNounTerms(
+				//					sentence, null);
 
-				List<List<String>> nounSequences = new ArrayList<List<String>>();
-				String capitalizedSentence = impl.capitalizeProperNounTerms(
-						sentence, nounSequences);
-				System.out.println(/*"> " + */capitalizedSentence);
+				for (int index = 0; index < allAlternativeStatements.size(); index++)
+				{
+					String alternativeUnit = allAlternativeUnits.get(index);
+					String sentence = allAlternativeStatements.get(index);
 
-				LOGGER.info("");
+					String originalSentence = "["
+							+ statement.getId()
+							+ "] "
+							+ sentence.replace(alternativeUnit, "["
+									+ alternativeUnit + "]");
+					// System.out.println(originalSentence);
+					LOGGER.info(originalSentence);
+
+					List<List<String>> nounSequences = new ArrayList<List<String>>();
+					String capitalizedSentence = impl
+							.capitalizeProperNounTerms(sentence, nounSequences);
+					System.out.println(/*"> " + */capitalizedSentence);
+
+					LOGGER.info("");
+				}
+				System.out.println();
+
 			}
-			System.out.println();
-
 		}
-
-		impl.sentenceCache.writeCache(); // DO NOT forget this!
+		finally
+		{
+			impl.sentenceCache.writeCache(); // DO NOT forget this!
+		}
 
 	}
 
@@ -252,7 +256,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			List<List<String>> possibleNounPhrases)
 	{
 		sentence = sentence.trim();
-		sentence = StringUtils.capitalize(sentence);
+		// sentence = StringUtils.capitalize(sentence);
 
 		List<Entry<String, String>> posTagsByTerm = parseIntoPosTagByTerms(sentence);
 		// split by the punctuation
@@ -294,17 +298,23 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 				+ capitalizationsByOriginalCaseFromWordNet);
 
 		// match names within name-list
-		List<Entry<List<Entry<String, String>>, String>> matchedNames = new ArrayList<Entry<List<Entry<String, String>>, String>>();
+		List<Entry<List<Entry<String, String>>, String>> matchedFullNames = new ArrayList<Entry<List<Entry<String, String>>, String>>();
+		List<Entry<Entry<String, String>, String>> matchedSingleNames = new ArrayList<Map.Entry<Entry<String, String>, String>>();
 		for (List<Entry<String, String>> posTagByTerm : posTagsByTermOfSubSentences)
 		{
 			recursiveMatchTerms(trigramPersonNameMatcher,
-					Collections.singletonList(posTagByTerm), matchedNames, null);
+					Collections.singletonList(posTagByTerm), matchedFullNames,
+					matchedSingleNames);
 		}
-		LOGGER.info(">>>>> MatchedPersonName\t\t\t" + matchedNames);
+		LOGGER.info(">>>>> MatchedPersonName_full\t\t\t" + matchedFullNames);
+		// TODO this matched single name is not used now, 
+		// since it may match terms like “long”, “longest”, “kings”, “big”, “from”, “games”, “late”, “states”
+		// maybe introducing the frequency of each name term may do some help, but we haven't decided it yet.
+		LOGGER.info(">>>>> MatchedPersonName_single\t\t\t" + matchedSingleNames);
 
 		// find those names only identified by name-list
 		List<List<Entry<String, String>>> matchedNamesIdentifiedByNameListOnly = filterOutNamesByWIkiAndWordNet(
-				matchedNames, capitalizationsByOriginalCaseFromWiki,
+				matchedFullNames, capitalizationsByOriginalCaseFromWiki,
 				capitalizationsBySingleNounTermFromWiki,
 				capitalizationsByOriginalCaseFromWordNet);
 
@@ -361,8 +371,8 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			}
 		}
 
-		// return sentence;
-		return StringUtils.capitalize(sentence);
+		return sentence;
+		//return StringUtils.capitalize(sentence);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -752,7 +762,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 				int beginIndex = lowerCasedMatchedTerms.indexOf(originalTerm);
 
 				String captializedMatchedTerm = null;
-				if (POSTAG_DETERMINATOR.equals(posTag))
+				if (POSTAG_DETERMINER.equals(posTag))
 				{
 					captializedMatchedTerm = originalTerm;
 				}
