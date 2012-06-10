@@ -87,7 +87,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 				}
 				else
 				{
-					LOGGER.info("Disambiguation for '" + term + "'"
+					LOGGER.info("Disambiguation for '" + term + "' "
 							+ matchedQueryKey);
 					return true;
 				}
