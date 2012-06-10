@@ -18,6 +18,7 @@ import edu.stanford.nlp.ling.TaggedWord;
 import edu.stanford.nlp.trees.Tree;
 import edu.uic.cs.t_verifier.html.WikipediaContentExtractor;
 import edu.uic.cs.t_verifier.html.data.MatchedQueryKey;
+import edu.uic.cs.t_verifier.html.data.MatchedQueryKey.DisambiguationEntry;
 import edu.uic.cs.t_verifier.index.data.Paragraph;
 import edu.uic.cs.t_verifier.index.data.Segment;
 import edu.uic.cs.t_verifier.index.data.UrlWithDescription;
@@ -42,16 +43,18 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 	public static interface RecursiveMatcher<T>
 	{
-		// boolean isMatched(String term);
 		boolean isMatched(
 				List<Entry<String, String>> currentLevelPosTagsByTermSequence);
 
 		T getMatchedInfo();
 	}
 
-	private RecursiveMatcher<MatchedQueryKey> wikipediaKeyWordsMatcher = new RecursiveMatcher<MatchedQueryKey>()
+	private class WikipediaKeyWordsMatcher implements
+			RecursiveMatcher<MatchedQueryKey>
 	{
 		private MatchedQueryKey matchedQueryKey;
+
+		private String wholeSentence;
 
 		@Override
 		public boolean isMatched(
@@ -62,12 +65,73 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			String term = concatenateTerms(currentLevelPosTagsByTermSequence);
 
 			matchedQueryKey = wikipediaContentExtractor.matchQueryKey(term);
-			if (matchedQueryKey != null && matchedQueryKey.isCertainly())
+			if (matchedQueryKey == null)
+			{
+				return false;
+			}
+
+			if (matchedQueryKey.isCertainly())
 			{
 				return true;
 			}
+			else
+			// disambiguation
+			{
+				List<DisambiguationEntry> disambiguationEntryList = matchedQueryKey
+						.getDisambiguationEntries();
+				matchedQueryKey = findTheMostLikelyDisambiguationEntery(
+						disambiguationEntryList, term);
+				if (matchedQueryKey == null)
+				{
+					return false;
+				}
+				else
+				{
+					LOGGER.info("Disambiguation for '" + term + "'"
+							+ matchedQueryKey);
+					return true;
+				}
+			}
+		}
 
-			return false;
+		private MatchedQueryKey findTheMostLikelyDisambiguationEntery(
+				List<DisambiguationEntry> disambiguationEntryList,
+				String currentTerm)
+		{
+			String remainingTerms = wholeSentence.replaceAll(currentTerm, "");
+			List<String> remainingNonstopStemmedTerms = stem(standardAnalyzeUsingDefaultStopWords(remainingTerms));
+
+			MatchedQueryKey result = null;
+			int maxCount = 0;
+			for (DisambiguationEntry disambiguationEntry : disambiguationEntryList)
+			{
+				String description = disambiguationEntry.getDescription();
+				List<String> nonstopStemmedWordsInDesc = porterStemmingAnalyzeUsingDefaultStopWords(description);
+				if (nonstopStemmedWordsInDesc.isEmpty())
+				{
+					continue;
+				}
+
+				int count = 0;
+				for (String wordStemmed : remainingNonstopStemmedTerms)
+				{
+					if (nonstopStemmedWordsInDesc.contains(wordStemmed))
+					{
+						count++;
+					}
+				}
+
+				if (count > maxCount
+						&& disambiguationEntry.getKeyWord() != null) // ">" prefer the front ones if counts are equal
+				{
+					maxCount = count;
+					result = new MatchedQueryKey(
+							disambiguationEntry.getKeyWord(), null,
+							Collections.<String> emptyList()); // no categories stored since we don't use it now
+				}
+			}
+
+			return result;
 		}
 
 		@Override
@@ -76,7 +140,16 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			Assert.notNull(matchedQueryKey);
 			return matchedQueryKey;
 		}
-	};
+
+		private RecursiveMatcher<MatchedQueryKey> setWholeSentence(
+				String wholeSentence)
+		{
+			this.wholeSentence = wholeSentence;
+			return this;
+		}
+	}
+
+	private WikipediaKeyWordsMatcher wikipediaKeyWordsMatcher = new WikipediaKeyWordsMatcher();
 
 	private PersonNameMatcherImpl trigramPersonNameMatcher = new PersonNameMatcherImpl();
 
@@ -159,9 +232,10 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 		//		//		 String sentence = "microsoft's corporate headquarters locates in redmond";
 		//		//		 String sentence = "alan shepard is the first american in space";
-		//		String sentence = "microsoft's corporate headquarters locates in new jersey";
+		//		String sentence = "sam is lead actress in the movie sleepless in seattle";
 		//
 		//		System.out.println(impl.capitalizeProperNounTerms(sentence, null));
+
 		try
 		{
 			for (Statement statement : statements)
@@ -602,7 +676,8 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			matchedSingleInfo = new ArrayList<Entry<Entry<String, String>, MatchedQueryKey>>();
 			for (List<Entry<String, String>> posTagsByTermOfSubSentence : posTagsByTermOfSubSentences)
 			{
-				recursiveMatchTerms(wikipediaKeyWordsMatcher,
+				recursiveMatchTerms(
+						wikipediaKeyWordsMatcher.setWholeSentence(sentence),
 						Collections.singletonList(posTagsByTermOfSubSentence),
 						matchedSequenceInfo, matchedSingleInfo);
 			}

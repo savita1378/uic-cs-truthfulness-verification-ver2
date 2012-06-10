@@ -26,6 +26,7 @@ import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.trees.TreeGraphNode;
 import edu.stanford.nlp.trees.TreebankLanguagePack;
 import edu.stanford.nlp.trees.TypedDependency;
+import edu.uic.cs.t_verifier.common.AbstractWordOperations;
 import edu.uic.cs.t_verifier.input.AlternativeUnitsReader;
 import edu.uic.cs.t_verifier.input.data.Statement;
 import edu.uic.cs.t_verifier.misc.Assert;
@@ -33,7 +34,8 @@ import edu.uic.cs.t_verifier.misc.GeneralException;
 import edu.uic.cs.t_verifier.nlp.NLPAnalyzer;
 import edu.uic.cs.t_verifier.nlp.WordNetReader;
 
-public class NLPAnalyzerImpl3 implements NLPAnalyzer
+public class NLPAnalyzerImpl3 extends AbstractWordOperations implements
+		NLPAnalyzer
 {
 	private static final String GRAMMAR = "englishPCFG.ser.gz";
 

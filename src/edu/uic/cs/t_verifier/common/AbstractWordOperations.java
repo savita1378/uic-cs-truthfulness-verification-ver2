@@ -19,11 +19,17 @@ public abstract class AbstractWordOperations
 {
 	private PorterStemmerExporter porterStemmer = new PorterStemmerExporter();
 
+	/**
+	 * NOT been stemmed! 
+	 */
 	public List<String> standardAnalyzeUsingDefaultStopWords(String rawString)
 	{
 		return standardAnalyze(rawString, StandardAnalyzer.STOP_WORDS_SET);
 	}
 
+	/**
+	 * NOT been stemmed! 
+	 */
 	public List<String> standardAnalyzeWithoutRemovingStopWords(String rawString)
 	{
 		return standardAnalyze(rawString, null);
@@ -55,13 +61,24 @@ public abstract class AbstractWordOperations
 		return result;
 	}
 
+	public List<String> stem(List<String> termList)
+	{
+		List<String> result = new ArrayList<String>(termList.size());
+		for (String term : termList)
+		{
+			result.add(stem(term));
+		}
+
+		return result;
+	}
+
 	protected String stem(String word)
 	{
 		return porterStemmer.stem(word);
 	}
 
 	/**
-	 * NO stem! 
+	 * NOT been stemmed! 
 	 * 
 	 * StandardTokenizer -> StandardFilter -> LowerCaseFilter -> StopFilter
 	 */
