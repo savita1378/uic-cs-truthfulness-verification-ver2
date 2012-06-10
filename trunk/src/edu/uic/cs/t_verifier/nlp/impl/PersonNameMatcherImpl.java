@@ -10,9 +10,11 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 
+import edu.mit.jwi.item.POS;
 import edu.uic.cs.t_verifier.misc.Assert;
 import edu.uic.cs.t_verifier.misc.GeneralException;
 import edu.uic.cs.t_verifier.nlp.PersonNameMatcher;
+import edu.uic.cs.t_verifier.nlp.WordNetReader;
 import edu.uic.cs.t_verifier.nlp.impl.NLPAnalyzerImpl4.RecursiveMatcher;
 
 public class PersonNameMatcherImpl implements PersonNameMatcher,
@@ -54,6 +56,8 @@ public class PersonNameMatcherImpl implements PersonNameMatcher,
 		}
 	}
 
+	private WordNetReader wordNetReader = new WordNetReaderImpl();
+
 	@Override
 	public boolean isName(String firstName, String lastName)
 	{
@@ -90,8 +94,20 @@ public class PersonNameMatcherImpl implements PersonNameMatcher,
 		//		{
 		//			return false;
 		//		}
+		if (length == 1)
+		{
+			String name = currentLevelPosTagsByTermSequence.get(0).getKey()
+					.toLowerCase();
+			String termInWordNet = wordNetReader.retrieveTermInStandardCase(
+					name, POS.NOUN); // use lowercase to search if capitalized return
 
-		if (length == 2)
+			if (termInWordNet == null && isName(name)) // person name usually doesn't exist in WordNet
+			{
+				matchedName = StringUtils.capitalize(name);
+				return true;
+			}
+		}
+		else if (length == 2)
 		{
 			String firstName = currentLevelPosTagsByTermSequence.get(0)
 					.getKey();
