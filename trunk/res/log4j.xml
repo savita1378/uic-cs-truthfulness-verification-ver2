@@ -3,17 +3,17 @@
 <log4j:configuration>
 	<appender name="projectLogger_console" class="org.apache.log4j.ConsoleAppender">
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="conversionPattern" value="%d | %p | %C | [MSG]: %m%n" />
+			<param name="conversionPattern" value="%d | %p | %C | %m%n" />
 		</layout>
 	</appender>
 	<appender name="projectLogger_file" class="org.apache.log4j.RollingFileAppender">
 		<param name="file" value="output/debug.log" />
 		<param name="immediateFlush" value="true" />
-		<param name="append" value="false" />
+		<param name="append" value="true" />
 		<param name="maxFileSize" value="50MB" />
-		<param name="maxBackupIndex" value="2" />
+		<param name="maxBackupIndex" value="5" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="conversionPattern" value="%d | %p | %C{1} | [MSG]: %m%n" />
+			<param name="conversionPattern" value="%d | %p | %C{1} | %m%n" />
 		</layout>
 	</appender>
 	<appender name="score_detail_file" class="org.apache.log4j.RollingFileAppender">

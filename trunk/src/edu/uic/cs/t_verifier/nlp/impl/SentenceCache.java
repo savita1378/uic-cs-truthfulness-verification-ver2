@@ -125,4 +125,33 @@ public class SentenceCache
 		}
 	}
 
+	Entry<List<Entry<List<Entry<String, String>>, MatchedQueryKey>>, List<Entry<Entry<String, String>, MatchedQueryKey>>> removeCached(
+			String sentence)
+	{
+		setializeCacheIfNotExists();
+
+		Entry<List<Entry<List<Entry<String, String>>, MatchedQueryKey>>, List<Entry<Entry<String, String>, MatchedQueryKey>>> cached = WIKIPEDIA_SENTENCE_CACHE
+				.remove(sentence);
+		MODIFIED = (cached != null);
+
+		return cached;
+	}
+
+	public static void main(String[] args)
+	{
+		String sentence = "there has long been a call for standards in u.s. education, these calls frequently citing the superiority of foreign  school systems.  are there many countries outside the u.s. which have standards for pre-teen students?  if so, which are those countries and what standards have been set?";
+		Entry<List<Entry<List<Entry<String, String>>, MatchedQueryKey>>, List<Entry<Entry<String, String>, MatchedQueryKey>>> cachedInfo = SentenceCache
+				.getInstance().retrieveWikipeidaSentenceCache(sentence);
+		System.out.println(cachedInfo);
+
+		cachedInfo = SentenceCache.getInstance().removeCached(sentence);
+		System.out.println(cachedInfo);
+
+		cachedInfo = SentenceCache.getInstance()
+				.retrieveWikipeidaSentenceCache(sentence);
+		System.out.println(cachedInfo);
+
+		SentenceCache.getInstance().writeCache();
+	}
+
 }

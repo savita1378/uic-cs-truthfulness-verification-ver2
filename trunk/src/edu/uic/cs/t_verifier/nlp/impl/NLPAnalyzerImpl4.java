@@ -1,7 +1,9 @@
 package edu.uic.cs.t_verifier.nlp.impl;
 
+import java.text.Normalizer;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +39,9 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 	private static final String POSTAG_POSSESSIVE = "POS";
 	private static final String POSTAG_DETERMINER = "DT";
 	private static final String POSTAG_NOUN = "NN";
+
+	private static final List<String> PARENTHESES_VALUES = Arrays.asList(
+			"-lrb-", "-rrb-");
 
 	private WikipediaContentExtractor wikipediaContentExtractor = ClassFactory
 			.getInstance(Config.WIKIPEDIACONTENTEXTRACTOR_CLASS_NAME);
@@ -75,9 +80,10 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 				return true;
 			}
 			else
-			// disambiguation
+			// TODO disambiguation /////////////////////////////////////////////
 			{
-				List<DisambiguationEntry> disambiguationEntryList = matchedQueryKey
+				return false;
+				/*List<DisambiguationEntry> disambiguationEntryList = matchedQueryKey
 						.getDisambiguationEntries();
 				matchedQueryKey = findTheMostLikelyDisambiguationEntery(
 						disambiguationEntryList, term);
@@ -90,8 +96,9 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 					LOGGER.info("Disambiguation for '" + term + "' "
 							+ matchedQueryKey);
 					return true;
-				}
+				}*/
 			}
+			////////////////////////////////////////////////////////////////////
 		}
 
 		private MatchedQueryKey findTheMostLikelyDisambiguationEntery(
@@ -224,7 +231,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 		}
 	}
 
-	public static void main(String[] args)
+	public static void main3(String[] args)
 	{
 		List<Statement> statements = AlternativeUnitsReader
 				.parseAllStatementsFromInputFiles();
@@ -283,9 +290,14 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 		}
 		finally
 		{
-			impl.sentenceCache.writeCache(); // DO NOT forget this!
+			impl.commitCache(); // DO NOT forget this!
 		}
 
+	}
+
+	protected void commitCache()
+	{
+		sentenceCache.writeCache();
 	}
 
 	private static Map<String, Entry<String, List<List<String>>>> RESTORED_SENTENCE_CACHE = new ConcurrentHashMap<String, Entry<String, List<List<String>>>>();
@@ -330,6 +342,8 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			List<List<String>> possibleNounPhrases)
 	{
 		sentence = sentence.trim();
+		sentence = sentence.replaceAll("\\s{2,}", " ");
+
 		// sentence = StringUtils.capitalize(sentence);
 
 		List<Entry<String, String>> posTagsByTerm = parseIntoPosTagByTerms(sentence);
@@ -932,7 +946,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			}
 		}
 
-		return stringBuilder.toString();
+		return removeDiacritics(stringBuilder.toString());
 	}
 
 	//	private String extractProperNoun(String content, String matchedTerms)
@@ -1017,7 +1031,8 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 				if (!isPunctuation(posTag)
 						&& !POSTAG_POSSESSIVE.equals(posTag)
 						&& !StopAnalyzer.ENGLISH_STOP_WORDS_SET.contains(term
-								.toLowerCase()))
+								.toLowerCase())
+						&& !PARENTHESES_VALUES.contains(term.toLowerCase()))
 				{
 					if (matcher.isMatched(currentLevelPosTagsByTerm))
 					{
@@ -1031,7 +1046,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 				continue; // there's only one term in current level
 			}
 
-			if (isEitherSideStopWord(currentLevelPosTagsByTerm))
+			if (isEitherSideStopWordOrParentheses(currentLevelPosTagsByTerm))
 			{
 				continue;
 			}
@@ -1155,7 +1170,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 				matchedSequenceInfo, matchedSingleInfo);
 	}
 
-	private boolean isEitherSideStopWord(
+	private boolean isEitherSideStopWordOrParentheses(
 			List<Entry<String, String>> currentLevelPosTagsByTerm)
 	{
 		String leftSide = currentLevelPosTagsByTerm.get(0).getKey()
@@ -1165,7 +1180,9 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 				.toLowerCase();
 
 		return StopAnalyzer.ENGLISH_STOP_WORDS_SET.contains(leftSide)
-				|| StopAnalyzer.ENGLISH_STOP_WORDS_SET.contains(rightSide);
+				|| StopAnalyzer.ENGLISH_STOP_WORDS_SET.contains(rightSide)
+				|| PARENTHESES_VALUES.contains(leftSide)
+				|| PARENTHESES_VALUES.contains(rightSide);
 	}
 
 	private String concatenateTerms(List<Entry<String, String>> posTagsByTerm)
@@ -1176,6 +1193,11 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 	private String concatenateTerms(List<Entry<String, String>> posTagsByTerm,
 			boolean ignorePossessiveCase)
 	{
+		if (posTagsByTerm.isEmpty())
+		{
+			return "";
+		}
+
 		StringBuilder stringBuilder = new StringBuilder(posTagsByTerm.get(0)
 				.getKey());
 		for (int index = 1; index < posTagsByTerm.size(); index++)
@@ -1197,5 +1219,19 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 		}
 
 		return stringBuilder.toString();
+	}
+
+	public String removeDiacritics(String input)
+	{
+		String nrml = Normalizer.normalize(input, Normalizer.Form.NFD);
+		StringBuilder stripped = new StringBuilder();
+		for (int i = 0; i < nrml.length(); ++i)
+		{
+			if (Character.getType(nrml.charAt(i)) != Character.NON_SPACING_MARK)
+			{
+				stripped.append(nrml.charAt(i));
+			}
+		}
+		return stripped.toString();
 	}
 }
