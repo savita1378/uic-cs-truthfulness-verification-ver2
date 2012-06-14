@@ -19,6 +19,7 @@ import org.htmlparser.util.NodeList;
 import org.htmlparser.util.ParserException;
 import org.htmlparser.util.SimpleNodeIterator;
 
+import edu.stanford.nlp.util.StringUtils;
 import edu.uic.cs.t_verifier.html.data.MatchedQueryKey;
 import edu.uic.cs.t_verifier.html.data.MatchedQueryKey.DisambiguationEntry;
 import edu.uic.cs.t_verifier.index.data.Segment;
@@ -36,6 +37,7 @@ public abstract class WikipediaContentExtractor extends CategoriesExtractor
 	private static final int WIKI_URL_PREFIX_LENGTH = WIKI_URL_PREFIX.length();
 
 	private static final String HTML_TEXT_DISAMBIGUATION = " may refer to:";
+	private static final String CATEGORY_DISAMBIGUATION = "Disambiguation pages";
 
 	private static class DisambiguationTagNodeFilter implements NodeFilter
 	{
@@ -108,8 +110,9 @@ public abstract class WikipediaContentExtractor extends CategoriesExtractor
 			{
 				return null;
 			}
-		}.matchQueryKey("ibm");
+		}.matchQueryKey("under construction");
 		System.out.println(key.getKeyWord());
+		System.out.println(key.getDisambiguationEntries());
 	}
 
 	private MatchedQueryKey matchQueryKeyInternal(String queryWords,
@@ -150,8 +153,16 @@ public abstract class WikipediaContentExtractor extends CategoriesExtractor
 			// successfully retrieved title looks like this:  
 			// Sleepless in Seattle - Wikipedia, the free encyclopedia
 			String titleString = titleNode.toPlainTextString();
-			titleString = titleString
-					.substring(0, titleString.lastIndexOf('-')).trim();
+			int titleEndIndex = titleString.lastIndexOf('-');
+			if (titleEndIndex == -1) // no '-' means redirected into the main page
+			{
+				if (printResult)
+				{
+					System.err.println(" ×\tRedirected to the main page");
+				}
+				return null;
+			}
+			titleString = titleString.substring(0, titleEndIndex).trim();
 
 			/*Node bodyContentDiv = htmlNode.getChildren()
 					.extractAllNodesThatMatch(new BodyContentDivFilter(), true)
@@ -172,18 +183,23 @@ public abstract class WikipediaContentExtractor extends CategoriesExtractor
 				bodyContentDiv = contentNodeList.elementAt(0);
 			}
 
-			// there may be ambiguous key words
-			List<DisambiguationEntry> disambiguationEntries = extractDisambiguationEntries(bodyContentDiv
-					.getChildren());
+			List<String> categories = extractCategoriesFromBodyContentDiv(contentNodeList
+					.elementAt(0)); // this must use contentNodeList.elementAt(0)
 
-			List<String> categories = null;
-			if (disambiguationEntries.isEmpty())
-			// no ambiguity
+			// there may be ambiguous key words
+			List<DisambiguationEntry> disambiguationEntries = extractDisambiguationEntries(
+					bodyContentDiv.getChildren(), categories);
+			if (!disambiguationEntries.isEmpty())
 			{
-				categories = extractCategoriesFromBodyContentDiv(contentNodeList
-						.elementAt(0)); // this must use contentNodeList.elementAt(0)
+				// no categories for this page
+				categories = null;
 			}
-			// else, no cateoories for this page
+			//			if (disambiguationEntries.isEmpty())
+			//			// no ambiguity
+			//			{
+			//
+			//			}
+			//			// else, no categories for this page
 
 			MatchedQueryKey result = new MatchedQueryKey(
 					titleString.replaceAll(" ", "_"), disambiguationEntries,
@@ -210,9 +226,10 @@ public abstract class WikipediaContentExtractor extends CategoriesExtractor
 	}
 
 	private List<DisambiguationEntry> extractDisambiguationEntries(
-			NodeList nodeListInBodyContentDiv)
+			NodeList nodeListInBodyContentDiv, List<String> categories)
 	{
-		if (!isThereDisambiguationKeyWords(nodeListInBodyContentDiv))
+		if (!isThereDisambiguationKeyWords(nodeListInBodyContentDiv)
+				&& !isThereDisambiguationCategory(categories))
 		{
 			// there's no disambiguation key words
 			return Collections.emptyList();
@@ -294,6 +311,12 @@ public abstract class WikipediaContentExtractor extends CategoriesExtractor
 						true);
 
 		return ambiguityTag.size() != 0;
+	}
+
+	private boolean isThereDisambiguationCategory(List<String> categories)
+	{
+		return StringUtils.containsIgnoreCase(categories,
+				CATEGORY_DISAMBIGUATION);
 	}
 
 	abstract public List<Segment> extractSegmentsFromWikipedia(
