@@ -42,7 +42,7 @@ public class NLPAnalyzerImpl3 extends AbstractWordOperations implements
 	private static final String AU_SUBSTITUTE = "AU";
 
 	private static final List<String> PUNCTUATIONS = Arrays
-			.asList(new String[] { ".", "," });
+			.asList(new String[] { ".", ",", ":" });
 
 	protected static final LexicalizedParser lexicalizedParser = new LexicalizedParser(
 			GRAMMAR);
