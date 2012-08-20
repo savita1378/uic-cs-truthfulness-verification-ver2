@@ -2,6 +2,11 @@ package edu.uic.cs.t_verifier.nlp;
 
 public interface PersonNameMatcher
 {
+	enum NameType
+	{
+		FIRST, LAST, BOTH, NA
+	}
+
 	boolean isName(String firstName, String lastName);
 
 	boolean isName(String firstName, String middleName, String lastName);
@@ -13,4 +18,9 @@ public interface PersonNameMatcher
 	 * @return
 	 */
 	boolean isName(String name);
+
+	NameType typeOf(String name);
+
+	Double getMaxFrequency(String name);
+
 }
