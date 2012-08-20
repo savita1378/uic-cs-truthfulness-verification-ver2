@@ -326,7 +326,7 @@ public class NLPAnalyzerImpl3 extends AbstractWordOperations implements
 		return false;
 	}
 
-	protected String mapPosTagToBasicForm(String posTag)
+	public String mapPosTagToBasicForm(String posTag)
 	{
 		if ("JJR".equals(posTag) || "JJS".equals(posTag))
 		{
