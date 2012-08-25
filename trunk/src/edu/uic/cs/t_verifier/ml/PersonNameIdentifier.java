@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 public interface PersonNameIdentifier
 {
 	/**
+	 * Notice: POS tag must be in basic form
 	 * 
 	 * @param tagsByTermInNP
 	 * @param tagsByTermBeforeNP

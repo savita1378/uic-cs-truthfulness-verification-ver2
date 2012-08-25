@@ -13,6 +13,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import opennlp.tools.util.Span;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.StopAnalyzer;
@@ -31,12 +34,18 @@ import edu.uic.cs.t_verifier.misc.Assert;
 import edu.uic.cs.t_verifier.misc.ClassFactory;
 import edu.uic.cs.t_verifier.misc.Config;
 import edu.uic.cs.t_verifier.misc.LogHelper;
+import edu.uic.cs.t_verifier.ml.PersonNameIdentifier;
+import edu.uic.cs.t_verifier.ml.impl.PersonNameIdentifierImpl;
 import edu.uic.cs.t_verifier.nlp.impl.OpenNLPChunker.ChunkType;
 
 public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 {
+	// private static final String WEB_ADDRESS_REGEX = "^([a-zA-Z0-9\\-]+\\.)+(com|org|net|mil|edu|COM|ORG|NET|MIL|EDU)$";
+
 	private static final Logger LOGGER = LogHelper
 			.getLogger(NLPAnalyzerImpl4.class);
+
+	private static final int SEGMENT_NUM_FOR_MATCHING = 2;
 
 	private static final String POSTAG_POSSESSIVE = "POS";
 	private static final String POSTAG_DETERMINER = "DT";
@@ -49,6 +58,12 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 	private static final String REGEX_TERM_RIGHT_BOUND = "(\\b|\\s)";
 
 	private static final String[] CATEGORY_KEYWORDS_SONG = { "song", "album" };
+
+	private static final List<String> MONTHS_IN_LOWER_CASE = Arrays
+			.asList(new String[] { "january", "jan.", "february", "feb.",
+					"march", "mar.", "april", "apr.", "may", "june", "jun.",
+					"july", "jul.", "august", "aug.", "september", "sep.",
+					"october", "oct.", "november", "nov.", "december", "dec." });
 
 	private WikipediaContentExtractor wikipediaContentExtractor = ClassFactory
 			.getInstance(Config.WIKIPEDIACONTENTEXTRACTOR_CLASS_NAME);
@@ -165,11 +180,13 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 	private WikipediaKeyWordsMatcher wikipediaKeyWordsMatcher = new WikipediaKeyWordsMatcher();
 
-	private PersonNameMatcherImpl trigramPersonNameMatcher = new PersonNameMatcherImpl();
+	//	private PersonNameMatcherImpl trigramPersonNameMatcher = new PersonNameMatcherImpl();
 
 	private SentenceCache sentenceCache = SentenceCache.getInstance();
 
-	private OpenNLPChunker openNLPChunker = new OpenNLPChunker();
+	private OpenNLPChunker chunker = new OpenNLPChunker();
+
+	private PersonNameIdentifier personNameIdentifier = new PersonNameIdentifierImpl();
 
 	//	private WikipediaContentExtractor wikipediaContentExtractor = new WikipediaContentExtractor() // for test
 	//	{
@@ -358,6 +375,8 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 	protected String capitalizeProperNounTerms(String sentence,
 			List<List<String>> possibleNounPhrases)
 	{
+		LOGGER.info(sentence);
+
 		sentence = sentence.trim();
 		sentence = sentence.replaceAll("\\s{2,}", " ");
 
@@ -366,20 +385,56 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 		List<Entry<String, String>> posTagsByTerm = parseIntoPosTagByTerms(
 				sentence, false); // this one is not in basic form!!
 		// split by the punctuation
-		List<List<Entry<String, String>>> originalPosTagsByTermOfSubSentences = splitByPunctuations(posTagsByTerm); // for chunking
+		List<List<Entry<String, String>>> originalPosTagsByTermOfSubSentences = splitByPunctuations(posTagsByTerm); // original form for chunking
+
 		List<List<Entry<String, String>>> allNounPhrases = new ArrayList<List<Entry<String, String>>>();
+		List<List<Entry<String, String>>> posTagsByTermOfSubSentences = new ArrayList<List<Entry<String, String>>>(
+				originalPosTagsByTermOfSubSentences.size());
 
-		for (List<Entry<String, String>> tagsByTerm : originalPosTagsByTermOfSubSentences)
+		List<Entry<List<Entry<String, String>>, String>> matchedFullNames = new ArrayList<Entry<List<Entry<String, String>>, String>>();
+
+		for (List<Entry<String, String>> tagsByTermOriginalForm : originalPosTagsByTermOfSubSentences) // for each sub-sentence
 		{
-			List<List<Entry<String, String>>> nounPhrases = openNLPChunker
-					.getChunks(tagsByTerm, ChunkType.NP);
-			allNounPhrases.addAll(nounPhrases);
-		}
-		allNounPhrases = mapPosTagToBasicForm(allNounPhrases);
-		LOGGER.info(">>>>> NounPhrases_from_chucker\t\t\t" + allNounPhrases);
-		// System.out.println(allNounPhrases);
+			List<Entry<String, String>> tagsByTermBasicForm = mapPosTagToBasicForm(tagsByTermOriginalForm);
+			posTagsByTermOfSubSentences.add(tagsByTermBasicForm); // basic form
 
-		List<List<Entry<String, String>>> posTagsByTermOfSubSentences = mapPosTagToBasicForm(originalPosTagsByTermOfSubSentences);
+			List<Span> spans = chunker.getChunkSpans(tagsByTermOriginalForm,
+					ChunkType.NP);
+
+			// find names
+			for (Span span : spans)
+			{
+				List<Entry<String, String>> phraseOriginalForm = tagsByTermOriginalForm
+						.subList(span.getStart(), span.getEnd());
+				List<Entry<String, String>> phraseBasicForm = mapPosTagToBasicForm(phraseOriginalForm); // basic form
+				allNounPhrases.add(phraseBasicForm);
+
+				Entry<String, String> tagsByTermBeforeNP = (span.getStart() == 0) ? null
+						: tagsByTermOriginalForm.get(span.getStart() - 1);
+				Entry<String, String> tagsByTermAfterNP = (span.getEnd() == tagsByTermOriginalForm
+						.size()) ? null : tagsByTermOriginalForm.get(span
+						.getEnd());
+				List<Integer> indicesOfNameTerm = personNameIdentifier
+						.identifyNameTermsWithinNounPhrase(phraseBasicForm,
+								tagsByTermBeforeNP, tagsByTermAfterNP);
+				if (indicesOfNameTerm == null || indicesOfNameTerm.isEmpty())
+				{
+					continue;
+				}
+
+				List<Entry<String, String>> name = phraseBasicForm
+						.subList(indicesOfNameTerm.get(0), indicesOfNameTerm
+								.get(indicesOfNameTerm.size() - 1) + 1);
+				matchedFullNames
+						.add(new SimpleEntry<List<Entry<String, String>>, String>(
+								name, concatenateTerms(name)));
+				// System.out.println(name);
+			}
+
+		}
+		LOGGER.info(">>>>> NounPhrases_from_chucker\t\t\t" + allNounPhrases);
+		LOGGER.info(">>>>> MatchedPersonName_full\t\t\t" + matchedFullNames);
+		// System.out.println(allNounPhrases);
 
 		// Find the proper noun in Wikiepdia
 		// sequence
@@ -417,6 +472,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 		LOGGER.info(">>>>> ProperNoun_notInWiki_inWN\t\t*"
 				+ capitalizationsByOriginalCaseFromWordNet);
 
+		/*
 		// match names within name-list
 		List<Entry<List<Entry<String, String>>, String>> matchedFullNames = new ArrayList<Entry<List<Entry<String, String>>, String>>();
 		List<Entry<Entry<String, String>, String>> matchedSingleNames = new ArrayList<Map.Entry<Entry<String, String>, String>>();
@@ -431,6 +487,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 		// since it may match terms like “long”, “longest”, “kings”, “big”, “from”, “games”, “late”, “states”
 		// maybe introducing the frequency of each name term may do some help, but we haven't decided it yet.
 		LOGGER.info(">>>>> MatchedPersonName_single\t\t\t" + matchedSingleNames);
+		*/
 
 		// find those names only identified by name-list
 		List<List<Entry<String, String>>> matchedNamesIdentifiedByNameListOnly = filterOutNamesByWIkiAndWordNet(
@@ -478,7 +535,6 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 		// fill the parameter nounPhrases with nounSequences
 		if (possibleNounPhrases != null)
 		{
-			// TODO more sophisticated method may be needed, 
 			// but now it is OK, since the AU matching is using the same parser for nouns
 			for (List<Entry<String, String>> sequence : /*nounSequences*/allNounPhrases)
 			{
@@ -491,6 +547,8 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 				}
 			}
 		}
+
+		LOGGER.info("========================================================");
 
 		return sentence;
 		//return StringUtils.capitalize(sentence);
@@ -506,6 +564,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			sentence = sentence.replace(target, replacement);
 		}
 		else
+		// "R & D" ==> "R&D"
 		{
 			target = concatenateTerms(posTagsByTerm, false, "");
 			replacement = replacement.replace(" ", "");
@@ -601,12 +660,13 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			for (Entry<String, String> entry : nounSequence)
 			{
 				String posTag = entry.getValue();
-				if (!POSTAG_NOUN.equals(posTag)) // individual term MUST be noun!
+				String term = entry.getKey();
+				if (!POSTAG_NOUN.equals(posTag)
+				/*&& !wordNetHasOnlyNounEntry(term)*/) // individual term MUST be noun!
 				{
 					continue;
 				}
 
-				String term = entry.getKey();
 				String termInWordNet = wordNetReader
 						.retrieveTermInStandardCase(term, POS.NOUN);
 				if (termInWordNet != null
@@ -621,6 +681,21 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 		return result;
 	}
+
+	// this doesn't work because there are terms like "A" which is a Noun
+	/*private boolean wordNetHasOnlyNounEntry(String term)
+	{
+		boolean hasAdj = wordNetReader.retrieveTermInStandardCase(term,
+				POS.ADJECTIVE) != null;
+		boolean hasAdv = wordNetReader.retrieveTermInStandardCase(term,
+				POS.ADVERB) != null;
+		boolean hasVerb = wordNetReader.retrieveTermInStandardCase(term,
+				POS.VERB) != null;
+		boolean hasNoun = wordNetReader.retrieveTermInStandardCase(term,
+				POS.NOUN) != null;
+
+		return !hasAdj && !hasAdv && !hasVerb && hasNoun;
+	}*/
 
 	private boolean inDifferentCases(String one, String other)
 	{
@@ -770,6 +845,8 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 		}
 
 		//		System.out.println();
+		LOGGER.info(">>>>> Matched sequence in Wikipedia\t\t"
+				+ matchedSequenceInfo);
 		// noun sequences
 		for (Entry<List<Entry<String, String>>, MatchedQueryKey> entry : matchedSequenceInfo)
 		{
@@ -786,6 +863,8 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			capitalizationsByOriginalCaseFromWiki.add(properNounByOriginalCase);
 		}
 
+		LOGGER.info(">>>>> Matched single term in Wikipedia\t"
+				+ matchedSingleInfo);
 		// single noun
 		for (Entry<Entry<String, String>, MatchedQueryKey> entry : matchedSingleInfo)
 		{
@@ -962,9 +1041,201 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 	//		return null;
 	//	}
 
-	private Pattern createMatchingPattern(String lowerCasedMatchedTerms)
+	//	// term sequence
+	//	private Entry<List<Entry<String, String>>, String> checkWhetherProperNoun(
+	//			List<Entry<String, String>> posTagsByMatchedTerm,
+	//			MatchedQueryKey matchedQueryKey)
+	//	{
+	//		Assert.isTrue(
+	//				!posTagsByMatchedTerm.isEmpty(),
+	//				"There must be terms for the matched page: "
+	//						+ matchedQueryKey.getCertainPageUrl());
+	//
+	//		if (isSongName(posTagsByMatchedTerm, matchedQueryKey))
+	//		{
+	//			return null;
+	//		}
+	//
+	//		String content = extractContentFromWikiPage(matchedQueryKey);
+	//		if (content == null)
+	//		{
+	//			return null;
+	//		}
+	//		String contentInLowerCase = content.toLowerCase();
+	//
+	//		String title = matchedQueryKey.getKeyWord().replaceAll("_", " ").trim();
+	//		String titleInLowerCase = title.toLowerCase();
+	//		boolean titleContainsMultipleTerms = title.contains(" ");
+	//		boolean titleCouldCapitalized = shouldCapitalized(title);
+	//
+	//		boolean capitalized = false;
+	//		StringBuilder properNoun = new StringBuilder();
+	//		String termInResult = null;
+	//		Matcher matcher = null;
+	//
+	//		// start from second term
+	//		for (int index = 1; index < posTagsByMatchedTerm.size(); index++)
+	//		{
+	//			String posTag = posTagsByMatchedTerm.get(index).getValue();
+	//			String matchedTermInLowerCase = posTagsByMatchedTerm.get(index)
+	//					.getKey().toLowerCase();
+	//
+	//			if (POSTAG_DETERMINER.equals(posTag))
+	//			{
+	//				termInResult = matchedTermInLowerCase;
+	//			}
+	//			else
+	//			{
+	//				Pattern pattern4MatchedTermInLowerCase = createMatchingPattern(matchedTermInLowerCase);
+	//				if (titleContainsMultipleTerms //more than one terms
+	//						&& (matcher = pattern4MatchedTermInLowerCase
+	//								.matcher(titleInLowerCase)).find()) // in title 
+	//				{
+	//					if (titleCouldCapitalized) // title-terms are capitalized, and more than one terms
+	//					{
+	//						int lastStartIndex = matcher.start();
+	//						int lastEndIndex = matcher.end();
+	//
+	//						termInResult = title.substring(lastStartIndex,
+	//								lastEndIndex).trim(); // trim() is necessary, since the pattern (\\b|\\s) may match " "
+	//						capitalized = true;
+	//					}
+	//					else
+	//					// but not capitalized
+	//					{
+	//						termInResult = matchedTermInLowerCase;
+	//					}
+	//				}
+	//				else if (!pattern4MatchedTermInLowerCase.matcher(content)
+	//						.find()
+	//						&& (matcher = pattern4MatchedTermInLowerCase
+	//								.matcher(contentInLowerCase)).find()) // All appearances are capitalized
+	//				{
+	//					int lastStartIndex = -1;
+	//					int lastEndIndex = -1;
+	//					do
+	//					{
+	//						// until the last one is found
+	//						lastStartIndex = matcher.start();
+	//						lastEndIndex = matcher.end();
+	//					}
+	//					while (matcher.find());
+	//
+	//					termInResult = content.substring(lastStartIndex,
+	//							lastEndIndex).trim(); // trim() is necessary, since the pattern (\\b|\\s) may match " "
+	//					capitalized = true;
+	//				}
+	//				else
+	//				{
+	//					termInResult = matchedTermInLowerCase;
+	//				}
+	//			}
+	//
+	//			if (!POSTAG_POSSESSIVE.equals(posTag)) // POS tag is not POSSESSIVE
+	//			{
+	//				properNoun.append(" ");
+	//			}
+	//			properNoun.append(termInResult);
+	//		}
+	//
+	//		// first term
+	//		String posTag = posTagsByMatchedTerm.get(0).getValue();
+	//		String matchedTermInLowerCase = posTagsByMatchedTerm.get(0).getKey()
+	//				.toLowerCase();
+	//
+	//		if (POSTAG_DETERMINER.equals(posTag))
+	//		{
+	//			termInResult = matchedTermInLowerCase;
+	//		}
+	//		else
+	//		{
+	//			Pattern pattern4MatchedTermInLowerCase = createMatchingPattern(matchedTermInLowerCase);
+	//			if (titleContainsMultipleTerms //more than one terms
+	//					&& (matcher = pattern4MatchedTermInLowerCase
+	//							.matcher(titleInLowerCase)).find()) // in title
+	//			{
+	//				int lastStartIndex = matcher.start();
+	//				int lastEndIndex = matcher.end();
+	//
+	//				String firstTermInTitle = title.substring(lastStartIndex,
+	//						lastEndIndex).trim(); // trim() is necessary, since the pattern (\\b|\\s) may match " "
+	//
+	//				//				Pattern pattern4TitleWithFirstTermInLowerCase = createMatchingPattern(title
+	//				//						.replaceFirst(firstTermInTitle, matchedTermInLowerCase));
+	//
+	//				// in *middle* of sentence ([,;-\\\\(][ \t]*|\\w[ \t]+)\\bTerm\\b
+	//				// DO NOT use "\\s", since it contains "\n" which is not correct
+	//				Pattern pattern4TitleWithFirstTermInLowerCaseAndNotInBeginning = Pattern
+	//						.compile("([,;-\\\\(][ \t]*|\\w[ \t]+)"
+	//								+ createMatchingSequqnce(title));
+	//				if (pattern4TitleWithFirstTermInLowerCaseAndNotInBeginning
+	//						.matcher(content).find())
+	//				//				if (pattern4TitleWithFirstTermInLowerCase.matcher(content)
+	//				//						.find()) // there's title phrase which has first term in lower case
+	//				{
+	//					termInResult = matchedTermInLowerCase;
+	//				}
+	//				else
+	//				{
+	//					termInResult = firstTermInTitle;
+	//					capitalized = true;
+	//				}
+	//
+	//			}
+	//			else if (!pattern4MatchedTermInLowerCase.matcher(content).find()
+	//					&& (matcher = pattern4MatchedTermInLowerCase
+	//							.matcher(contentInLowerCase)).find()) // All appearances are capitalized
+	//			{
+	//				int lastStartIndex = -1;
+	//				int lastEndIndex = -1;
+	//				do
+	//				{
+	//					// until the last one is found
+	//					lastStartIndex = matcher.start();
+	//					lastEndIndex = matcher.end();
+	//				}
+	//				while (matcher.find());
+	//
+	//				if (!capitalized && lastStartIndex == 0)
+	//				{
+	//					// nothing capitalized so far, and the only match is the first term
+	//					// do not trust it
+	//					termInResult = matchedTermInLowerCase;
+	//				}
+	//				else
+	//				{
+	//					termInResult = content.substring(lastStartIndex,
+	//							lastEndIndex).trim(); // trim() is necessary, since the pattern (\\b|\\s) may match " "
+	//					capitalized = true;
+	//				}
+	//			}
+	//			else
+	//			{
+	//				termInResult = matchedTermInLowerCase;
+	//			}
+	//		}
+	//
+	//		String result = termInResult + properNoun.toString();
+	//		if (capitalized)
+	//		{
+	//			return new SimpleEntry<List<Entry<String, String>>, String>(
+	//					posTagsByMatchedTerm, result);
+	//		}
+	//
+	//		return null;
+	//	}
+
+	private Pattern createMatchingPattern(String matchedTerms)
 	{
-		return Pattern.compile(createMatchingSequqnce(lowerCasedMatchedTerms));
+		return Pattern.compile(createMatchingSequqnce(matchedTerms));
+	}
+
+	// in *middle* of sentence ([,;-\\\\(][ \t]*|\\w[ \t]+)\\bTerm\\b
+	// DO NOT use "\\s", since it contains "\n" which is not correct
+	private Pattern createNonSentenceBeginningMatchingPattern(String term)
+	{
+		return Pattern.compile("([,;-\\\\&\\\\(][ \t]*|\\w[ \t]+)"
+				+ createMatchingSequqnce(term));
 	}
 
 	// term sequence
@@ -972,10 +1243,9 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			List<Entry<String, String>> posTagsByMatchedTerm,
 			MatchedQueryKey matchedQueryKey)
 	{
-		Assert.isTrue(
-				!posTagsByMatchedTerm.isEmpty(),
-				"There must be terms for the matched page: "
-						+ matchedQueryKey.getCertainPageUrl());
+		Assert.isTrue(!posTagsByMatchedTerm.isEmpty());
+
+		// concatenateTerms(posTagsByTerm);
 
 		if (isSongName(posTagsByMatchedTerm, matchedQueryKey))
 		{
@@ -987,153 +1257,168 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 		{
 			return null;
 		}
-		String contentInLowerCase = content.toLowerCase();
 
+		String contentInLowerCase = content.toLowerCase();
 		String title = matchedQueryKey.getKeyWord().replaceAll("_", " ").trim();
 		String titleInLowerCase = title.toLowerCase();
-		boolean titleContainsMultipleTerms = title.contains(" ");
+
+		// boolean titleContainsMultipleTerms = title.contains(" ");
+		// if there are terms which are not the first one in the title be capitalized
 		boolean titleShouldCapitalized = shouldCapitalized(title);
 
-		boolean capitalized = false;
-		StringBuilder properNoun = new StringBuilder();
-		String termInResult = null;
-		Matcher matcher = null;
+		StringBuilder nounPhrase = new StringBuilder();
 
-		// start from second term
-		for (int index = 1; index < posTagsByMatchedTerm.size(); index++)
+		for (int index = 0; index < posTagsByMatchedTerm.size(); index++)
 		{
-			String posTag = posTagsByMatchedTerm.get(index).getValue();
-			String matchedTermInLowerCase = posTagsByMatchedTerm.get(index)
-					.getKey().toLowerCase();
+			String termInLowerCase = posTagsByMatchedTerm.get(index).getKey()
+					.toLowerCase(Locale.US);
+			String pos = posTagsByMatchedTerm.get(index).getValue();
 
-			if (POSTAG_DETERMINER.equals(posTag))
+			if (index != 0 && !POSTAG_POSSESSIVE.equals(pos)) // No space before "'s" or first term
 			{
-				termInResult = matchedTermInLowerCase;
+				nounPhrase.append(" ");
 			}
-			else
-			{
-				Pattern pattern4MatchedTermInLowerCase = createMatchingPattern(matchedTermInLowerCase);
-				if (titleContainsMultipleTerms //more than one terms
-						&& (matcher = pattern4MatchedTermInLowerCase
-								.matcher(titleInLowerCase)).find()) // in title 
-				{
-					if (titleShouldCapitalized) // title-terms are capitalized, and more than one terms
-					{
-						int lastStartIndex = matcher.start();
-						int lastEndIndex = matcher.end();
 
-						termInResult = title.substring(lastStartIndex,
-								lastEndIndex).trim(); // trim() is necessary, since the pattern (\\b|\\s) may match " "
-						capitalized = true;
+			if (POSTAG_DETERMINER.equals(pos) || POSTAG_POSSESSIVE.equals(pos))
+			{
+				nounPhrase.append(termInLowerCase);
+				continue;
+			}
+
+			if (MONTHS_IN_LOWER_CASE.contains(termInLowerCase))
+			{
+				nounPhrase.append(StringUtils.capitalize(termInLowerCase));
+				continue;
+			}
+
+			Pattern termInLowerCasePattern = createMatchingPattern(termInLowerCase);
+			Matcher lowerCaseTitleMatcher = termInLowerCasePattern
+					.matcher(titleInLowerCase);
+			if (lowerCaseTitleMatcher.find()) // exists in title
+			{
+				int startIndex = lowerCaseTitleMatcher.start();
+				int endIndex = lowerCaseTitleMatcher.end();
+				String termInTitle = title.substring(startIndex, endIndex)
+						.trim(); // trim() is necessary, since the pattern (\\b|\\s) may match " "
+
+				if (startIndex != 0) // NOT the first term in title
+				{
+					nounPhrase.append(termInTitle); // use title form directly
+				}
+				else
+				// first term in title (must be capitalized, since wiki capitalizes all titles)
+				{
+					Pattern nonBeginningTitlePattern = createNonSentenceBeginningMatchingPattern(title);
+					String[] terms = title.split(" +");
+
+					// whole title form (Xxx ...) not at the beginning of sentence
+					if (nonBeginningTitlePattern.matcher(content).find())
+					{
+						nounPhrase.append(termInTitle);
+					}
+					else if (terms.length > 1 // multi-terms in title
+							&& Character.isUpperCase(terms[1].charAt(0)) // and second term is capitalized
+							&& createNonSentenceBeginningMatchingPattern(
+									termInTitle + " " + terms[1]).matcher(
+									content).find()) // and the first two terms not at the beginning of sentence
+					{
+						nounPhrase.append(termInTitle);
+					}
+					// first term in lower case title (xxx ...) exists in content
+					else if (createMatchingPattern(
+							title.replaceFirst(termInTitle, termInLowerCase))
+							.matcher(content).find())
+					{
+						nounPhrase.append(termInLowerCase);
+					}
+					// title should be capitalized, and there are no lower case first term exists 
+					else if (titleShouldCapitalized
+							&& !termInLowerCasePattern.matcher(content).find())
+					{
+						nounPhrase.append(termInTitle);
 					}
 					else
-					// but not capitalized
 					{
-						termInResult = matchedTermInLowerCase;
+						nounPhrase.append(termInLowerCase);
 					}
-				}
-				else if (!pattern4MatchedTermInLowerCase.matcher(content)
-						.find()
-						&& (matcher = pattern4MatchedTermInLowerCase
-								.matcher(contentInLowerCase)).find()) // All appearances are capitalized
-				{
-					int lastStartIndex = -1;
-					int lastEndIndex = -1;
-					do
-					{
-						// until the last one is found
-						lastStartIndex = matcher.start();
-						lastEndIndex = matcher.end();
-					}
-					while (matcher.find());
-
-					termInResult = content.substring(lastStartIndex,
-							lastEndIndex).trim(); // trim() is necessary, since the pattern (\\b|\\s) may match " "
-					capitalized = true;
-				}
-				else
-				{
-					termInResult = matchedTermInLowerCase;
-				}
-			}
-
-			if (!POSTAG_POSSESSIVE.equals(posTag)) // POS tag is not POSSESSIVE
-			{
-				properNoun.append(" ");
-			}
-			properNoun.append(termInResult);
-		}
-
-		// first term
-		String posTag = posTagsByMatchedTerm.get(0).getValue();
-		String matchedTermInLowerCase = posTagsByMatchedTerm.get(0).getKey()
-				.toLowerCase();
-
-		if (POSTAG_DETERMINER.equals(posTag))
-		{
-			termInResult = matchedTermInLowerCase;
-		}
-		else
-		{
-			Pattern pattern4MatchedTermInLowerCase = createMatchingPattern(matchedTermInLowerCase);
-			if (titleContainsMultipleTerms //more than one terms
-					&& (matcher = pattern4MatchedTermInLowerCase
-							.matcher(titleInLowerCase)).find()
-					&& titleShouldCapitalized) // in title
-			{
-				if (titleShouldCapitalized) // title-terms are capitalized, and more than one terms
-				{
-					int lastStartIndex = matcher.start();
-					int lastEndIndex = matcher.end();
-
-					termInResult = title
-							.substring(lastStartIndex, lastEndIndex).trim(); // trim() is necessary, since the pattern (\\b|\\s) may match " "
-					capitalized = true;
-				}
-				else
-				// but not capitalized
-				{
-					termInResult = matchedTermInLowerCase;
-				}
-			}
-			else if (!pattern4MatchedTermInLowerCase.matcher(content).find()
-					&& (matcher = pattern4MatchedTermInLowerCase
-							.matcher(contentInLowerCase)).find()) // All appearances are capitalized
-			{
-				int lastStartIndex = -1;
-				int lastEndIndex = -1;
-				do
-				{
-					// until the last one is found
-					lastStartIndex = matcher.start();
-					lastEndIndex = matcher.end();
-				}
-				while (matcher.find());
-
-				if (!capitalized && lastStartIndex == 0)
-				{
-					// nothing capitalized so far, and the only match is the first term
-					// do not trust it
-					termInResult = matchedTermInLowerCase;
-				}
-				else
-				{
-					termInResult = content.substring(lastStartIndex,
-							lastEndIndex).trim(); // trim() is necessary, since the pattern (\\b|\\s) may match " "
-					capitalized = true;
 				}
 			}
 			else
+			// not exists in title
 			{
-				termInResult = matchedTermInLowerCase;
-			}
-		}
+				Matcher lowerCaseContentMatcher = termInLowerCasePattern
+						.matcher(contentInLowerCase);
+				if (lowerCaseContentMatcher.find()) // exists in content
+				{
+					int startIndex = lowerCaseContentMatcher.start();
+					int endIndex = lowerCaseContentMatcher.end();
+					String termInContent = content.substring(startIndex,
+							endIndex).trim(); // trim() is necessary, since the pattern (\\b|\\s) may match " "
 
-		String result = termInResult + properNoun.toString();
-		if (capitalized)
+					Pattern nonBeginningCapitalizedTermPattern = createNonSentenceBeginningMatchingPattern(termInContent);
+					// Pattern lowerCaseTermPattern = createMatchingPattern(termInLowerCase);
+
+					// no lower case && has non-beginning upper case ==> upper case
+					if (!termInLowerCasePattern.matcher(content).find()
+							&& nonBeginningCapitalizedTermPattern.matcher(
+									content).find())
+					{
+						nounPhrase.append(termInContent);
+					}
+					else
+					{
+						nounPhrase.append(termInLowerCase);
+					}
+				}
+				else if (termInLowerCase.contains(".")) // abbreviation
+				{
+					Pattern abbreviationInLowerCasePattern = createMatchingPattern(termInLowerCase
+							.replace(".", ""));
+					Matcher abbreviationLowerCaseContentMatcher = abbreviationInLowerCasePattern
+							.matcher(contentInLowerCase);
+					if (abbreviationLowerCaseContentMatcher.find())
+					{
+						int startIndex = abbreviationLowerCaseContentMatcher
+								.start();
+						int endIndex = abbreviationLowerCaseContentMatcher
+								.end();
+						String termInContent = content.substring(startIndex,
+								endIndex).trim(); // trim() is necessary, since the pattern (\\b|\\s) may match " "
+
+						String termRebuild = termInLowerCase;
+						for (int i = 0; i < termInContent.length(); i++)
+						{
+							char ch = termInContent.charAt(i);
+							termRebuild = termRebuild.replace(
+									Character.toLowerCase(ch), ch);
+						}
+
+						nounPhrase.append(termRebuild);
+					}
+					else
+					{
+						nounPhrase.append(termInLowerCase);
+					}
+				}
+				else
+				{
+					nounPhrase.append(termInLowerCase);
+				}
+			}
+		} // for
+
+		String nounPhraseInLowerCase = concatenateTerms(posTagsByMatchedTerm)
+				.toLowerCase(Locale.US); // in case that month-term be capitalized by Stanford parser
+		String nounPhraseInProperCase = nounPhrase.toString();
+
+		Assert.isTrue(
+				nounPhraseInLowerCase.equalsIgnoreCase(nounPhraseInProperCase),
+				"[" + nounPhraseInLowerCase + "] and ["
+						+ nounPhraseInProperCase + "] should has same terms. ");
+		if (!nounPhraseInLowerCase.equals(nounPhraseInProperCase)) // different case
 		{
 			return new SimpleEntry<List<Entry<String, String>>, String>(
-					posTagsByMatchedTerm, result);
+					posTagsByMatchedTerm, nounPhraseInProperCase);
 		}
 
 		return null;
@@ -1323,19 +1608,24 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 	//		return null;
 	//	}
 
-	private String createMatchingSequqnce(String matchedTermInLowerCase)
+	private String createMatchingSequqnce(String matchedTerm)
 	{
-		return REGEX_TERM_LEFT_BOUND
-				+ matchedTermInLowerCase.replace(".", "\\.")
+		return REGEX_TERM_LEFT_BOUND + matchedTerm.replace(".", "\\.")
 				+ REGEX_TERM_RIGHT_BOUND;
 	}
 
 	private boolean shouldCapitalized(String matchedTerms)
 	{
-		String[] terms = matchedTerms.split(" ");
+		String[] terms = matchedTerms.split(" +");
+		if (terms.length == 1)
+		{
+			return false;
+		}
+
 		for (int index = 1; index < terms.length; index++)
 		{
-			if (Character.isUpperCase(terms[index].charAt(0)))
+			if (Character.isUpperCase(terms[index].charAt(0))
+					&& !isStopWord(terms[index].toLowerCase(Locale.US)))
 			{
 				return true;
 			}
@@ -1357,32 +1647,43 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			return null;
 		}
 
-		Segment firstSegment = segments.get(0);
-		// replace the punctuation
-		//		String content = firstSegment.toString().replace(", ", " ")
-		//				.replace(". ", " ");
-
-		// 		String content = firstSegment.toString(); 
-		//		return content;
-		// NO TABLE!
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(matchedQueryKey.getKeyWord().replaceAll("_", " "))
 				.append("\n");
 
-		if (firstSegment.getHeading() != null)
+		int num = Math.min(segments.size(), SEGMENT_NUM_FOR_MATCHING);
+		for (int index = 0; index < num; index++)
 		{
-			stringBuilder.append(firstSegment.getHeading()).append("\n");
-		}
+			Segment segment = segments.get(index);
+			// replace the punctuation
+			//		String content = firstSegment.toString().replace(", ", " ")
+			//				.replace(". ", " ");
 
-		if (firstSegment.getParagraphs() != null)
-		{
-			for (Paragraph paragraph : firstSegment.getParagraphs())
+			// 		String content = firstSegment.toString(); 
+			//		return content;
+			// NO TABLE!
+
+			if (segment.getHeading() != null)
 			{
-				stringBuilder.append(paragraph).append("\n");
+				stringBuilder.append(segment.getHeading()).append("\n");
+			}
+
+			if (segment.getParagraphs() != null)
+			{
+				for (Paragraph paragraph : segment.getParagraphs())
+				{
+					stringBuilder.append(paragraph).append("\n");
+				}
 			}
 		}
 
-		return removeDiacritics(stringBuilder.toString());
+		String result = removeDiacritics(stringBuilder.toString());
+		// result = removePageURL(result);
+
+		// fix the problem: "u.s.," can not be matched by "\\bu\\.s\\.(\\b|\\s)"
+		result = result.replace(".,", ". ,");
+
+		return result;
 	}
 
 	//	private String extractProperNoun(String content, String matchedTerms)
@@ -1390,6 +1691,11 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 	//		int index = content.toLowerCase().lastIndexOf(
 	//				matchedTerms.toLowerCase() + " ");
 	//		return content.substring(index, index + matchedTerms.length());
+	//	}
+
+	//	private String removePageURL(String result)
+	//	{
+	//		return result.replaceAll(WEB_ADDRESS_REGEX, "");
 	//	}
 
 	public List<List<Entry<String, String>>> splitByPunctuations(
@@ -1421,26 +1727,33 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 		return result;
 	}
 
-	private List<List<Entry<String, String>>> mapPosTagToBasicForm(
-			List<List<Entry<String, String>>> originalPosTagsByTermOfSubSentences)
+	//	private List<List<Entry<String, String>>> mapPosTagToBasicForm(
+	//			List<List<Entry<String, String>>> originalPosTagsByTermOfSubSentences)
+	//	{
+	//		List<List<Entry<String, String>>> result = new ArrayList<List<Entry<String, String>>>(
+	//				originalPosTagsByTermOfSubSentences.size());
+	//
+	//		for (List<Entry<String, String>> originalSubSentence : originalPosTagsByTermOfSubSentences)
+	//		{
+	//			List<Entry<String, String>> resultSubSentence = mapPosTagToBasicForm2(originalSubSentence);
+	//
+	//			result.add(resultSubSentence);
+	//		}
+	//
+	//		return result;
+	//	}
+
+	private List<Entry<String, String>> mapPosTagToBasicForm(
+			List<Entry<String, String>> originalSubSentence)
 	{
-		List<List<Entry<String, String>>> result = new ArrayList<List<Entry<String, String>>>(
-				originalPosTagsByTermOfSubSentences.size());
-
-		for (List<Entry<String, String>> originalSubSentence : originalPosTagsByTermOfSubSentences)
+		List<Entry<String, String>> resultSubSentence = new ArrayList<Entry<String, String>>(
+				originalSubSentence.size());
+		for (Entry<String, String> entry : originalSubSentence)
 		{
-			List<Entry<String, String>> resultSubSentence = new ArrayList<Entry<String, String>>(
-					originalSubSentence.size());
-			for (Entry<String, String> entry : originalSubSentence)
-			{
-				resultSubSentence.add(new SimpleEntry<String, String>(entry
-						.getKey(), mapPosTagToBasicForm(entry.getValue())));
-			}
-
-			result.add(resultSubSentence);
+			resultSubSentence.add(new SimpleEntry<String, String>(entry
+					.getKey(), mapPosTagToBasicForm(entry.getValue())));
 		}
-
-		return result;
+		return resultSubSentence;
 	}
 
 	//	private List<Entry<String, String>> parseIntoPosTagByTerms(String sentence)
@@ -1670,11 +1983,12 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 		}
 
 		StringBuilder stringBuilder = new StringBuilder(posTagsByTerm.get(0)
-				.getKey());
+				.getKey().toLowerCase(Locale.US)); // in case that month-term be capitalized by Stanford parser
 		for (int index = 1; index < posTagsByTerm.size(); index++)
 		{
 			String posTag = posTagsByTerm.get(index).getValue();
-			String term = posTagsByTerm.get(index).getKey();
+			String term = posTagsByTerm.get(index).getKey()
+					.toLowerCase(Locale.US); // in case that month-term be capitalized by Stanford parser
 
 			if (POSTAG_POSSESSIVE.equals(posTag))
 			{

@@ -114,6 +114,7 @@ public class NLPAnalyzerImpl3 extends AbstractWordOperations implements
 		Collection<TypedDependency> typedDependencyList = gs
 				.typedDependencies();
 
+		System.out.println(sentence);
 		AtomicBoolean isPassive = new AtomicBoolean(false);
 		String subjectTerm = retrieveSubjectTerm(alternativeUint, parsedTree,
 				typedDependencyList, isPassive, nounPhrases);
