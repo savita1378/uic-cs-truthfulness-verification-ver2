@@ -61,7 +61,7 @@ public class PersonNameIdentifierImpl implements PersonNameIdentifier
 			"PDT", "POS", "PRP", /*"PRP$",*/"RB", /*"RBR", "RBS",*/"RP",
 			"SYM", "TO", "UH", "VB", /*"VBD", "VBG", "VBN", "VBP", "VBZ",*/
 			"WDT", "WP", /*"WP$",*/
-			"WRB", PersonNameIdentifierImpl.NA };
+			"WRB", "-LRB-", "-RRB-", "``", "''", PersonNameIdentifierImpl.NA };
 
 	private static final int ATTRIBUTES_TOTAL_NUMBER = 12 + 1; // plus 1 for target
 
@@ -208,7 +208,7 @@ public class PersonNameIdentifierImpl implements PersonNameIdentifier
 				double classLabel = classifier.classifyInstance(instance);
 				String classValue = unlabeled.classAttribute().value(
 						(int) classLabel);
-				System.out.print(classValue + " ");
+				// System.out.print(classValue + " ");
 
 				if (Boolean.parseBoolean(classValue))
 				{
@@ -221,7 +221,7 @@ public class PersonNameIdentifierImpl implements PersonNameIdentifier
 			}
 		}
 
-		System.out.println();
+		// System.out.println();
 
 		return result;
 	}
@@ -456,7 +456,10 @@ public class PersonNameIdentifierImpl implements PersonNameIdentifier
 
 				Instances dataset = createDataset();
 
-				classifier = new J48(); // J48 is better than others
+				// classifier = new J48(); 
+				// classifier = new NaiveBayesSimple();
+				classifier = new NaiveBayes(); // best for current attributes
+				// classifier = new LibSVM();
 				classifier.buildClassifier(dataset);
 
 				SerializationHelper.write(TRAINED_MODEL_NAME, classifier);
