@@ -34,8 +34,6 @@ import edu.uic.cs.t_verifier.misc.Assert;
 import edu.uic.cs.t_verifier.misc.ClassFactory;
 import edu.uic.cs.t_verifier.misc.Config;
 import edu.uic.cs.t_verifier.misc.LogHelper;
-import edu.uic.cs.t_verifier.ml.PersonNameIdentifier;
-import edu.uic.cs.t_verifier.ml.impl.PersonNameIdentifierImpl;
 import edu.uic.cs.t_verifier.nlp.impl.OpenNLPChunker.ChunkType;
 
 public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
@@ -186,7 +184,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 	private OpenNLPChunker chunker = new OpenNLPChunker();
 
-	private PersonNameIdentifier personNameIdentifier = new PersonNameIdentifierImpl();
+	//	private PersonNameIdentifier personNameIdentifier = new PersonNameIdentifierImpl();
 
 	//	private WikipediaContentExtractor wikipediaContentExtractor = new WikipediaContentExtractor() // for test
 	//	{
@@ -409,31 +407,31 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 				List<Entry<String, String>> phraseBasicForm = mapPosTagToBasicForm(phraseOriginalForm); // basic form
 				allNounPhrases.add(phraseBasicForm);
 
-				Entry<String, String> tagsByTermBeforeNP = (span.getStart() == 0) ? null
-						: tagsByTermOriginalForm.get(span.getStart() - 1);
-				Entry<String, String> tagsByTermAfterNP = (span.getEnd() == tagsByTermOriginalForm
-						.size()) ? null : tagsByTermOriginalForm.get(span
-						.getEnd());
-				List<Integer> indicesOfNameTerm = personNameIdentifier
-						.identifyNameTermsWithinNounPhrase(phraseBasicForm,
-								tagsByTermBeforeNP, tagsByTermAfterNP);
-				if (indicesOfNameTerm == null || indicesOfNameTerm.isEmpty())
-				{
-					continue;
-				}
-
-				List<Entry<String, String>> name = phraseBasicForm
-						.subList(indicesOfNameTerm.get(0), indicesOfNameTerm
-								.get(indicesOfNameTerm.size() - 1) + 1);
-				matchedFullNames
-						.add(new SimpleEntry<List<Entry<String, String>>, String>(
-								name, concatenateTerms(name)));
+				//				Entry<String, String> tagsByTermBeforeNP = (span.getStart() == 0) ? null
+				//						: tagsByTermOriginalForm.get(span.getStart() - 1);
+				//				Entry<String, String> tagsByTermAfterNP = (span.getEnd() == tagsByTermOriginalForm
+				//						.size()) ? null : tagsByTermOriginalForm.get(span
+				//						.getEnd());
+				//				List<Integer> indicesOfNameTerm = personNameIdentifier
+				//						.identifyNameTermsWithinNounPhrase(phraseBasicForm,
+				//								tagsByTermBeforeNP, tagsByTermAfterNP);
+				//				if (indicesOfNameTerm == null || indicesOfNameTerm.isEmpty())
+				//				{
+				//					continue;
+				//				}
+				//
+				//				List<Entry<String, String>> name = phraseBasicForm
+				//						.subList(indicesOfNameTerm.get(0), indicesOfNameTerm
+				//								.get(indicesOfNameTerm.size() - 1) + 1);
+				//				matchedFullNames
+				//						.add(new SimpleEntry<List<Entry<String, String>>, String>(
+				//								name, concatenateTerms(name)));
 				// System.out.println(name);
 			}
 
 		}
 		LOGGER.info(">>>>> NounPhrases_from_chucker\t\t\t" + allNounPhrases);
-		LOGGER.info(">>>>> MatchedPersonName_full\t\t\t" + matchedFullNames);
+		LOGGER.info(">>>>> MatchedPersonName_full\t\t\t" + matchedFullNames); // TODO no use now
 		// System.out.println(allNounPhrases);
 
 		// Find the proper noun in Wikiepdia

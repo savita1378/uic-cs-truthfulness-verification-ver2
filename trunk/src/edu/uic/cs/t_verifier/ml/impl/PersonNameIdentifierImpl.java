@@ -456,9 +456,9 @@ public class PersonNameIdentifierImpl implements PersonNameIdentifier
 
 				Instances dataset = createDataset();
 
-				// classifier = new J48(); 
+				classifier = new J48();
 				// classifier = new NaiveBayesSimple();
-				classifier = new NaiveBayes(); // best for current attributes
+				// classifier = new NaiveBayes();
 				// classifier = new LibSVM();
 				classifier.buildClassifier(dataset);
 
