@@ -2,9 +2,11 @@
 
 <num> Number: 1
 
+<title>
 <desc> Description:
 Who is the author of the book, "The Iron Lady: A Biography of Margaret Thatcher"?
 
+<narr>
 </top>
 
 
@@ -12,9 +14,11 @@ Who is the author of the book, "The Iron Lady: A Biography of Margaret Thatcher"
 
 <num> Number: 2
 
+<title>
 <desc> Description:
 What was the monetary value of the Nobel Peace Prize in 1989?
 
+<narr>
 </top>
 
 
@@ -22,9 +26,11 @@ What was the monetary value of the Nobel Peace Prize in 1989?
 
 <num> Number: 3 
 
+<title>
 <desc> Description:
 What does the Peugeot company manufacture?
 
+<narr>
 </top>
 
 
@@ -32,9 +38,11 @@ What does the Peugeot company manufacture?
 
 <num> Number: 4
 
+<title>
 <desc> Description:
 How much did Mercury spend on advertising in 1993?
 
+<narr>
 </top>
 
 
@@ -42,9 +50,11 @@ How much did Mercury spend on advertising in 1993?
 
 <num> Number: 5 
 
+<title>
 <desc> Description:
 What is the name of the managing director of Apricot Computer?
 
+<narr>
 </top>
 
 
@@ -52,9 +62,11 @@ What is the name of the managing director of Apricot Computer?
 
 <num> Number: 6 
 
+<title>
 <desc> Description:
 Why did David Koresh ask the FBI for a word processor?
 
+<narr>
 </top>
 
 
@@ -62,9 +74,11 @@ Why did David Koresh ask the FBI for a word processor?
 
 <num> Number: 7 
 
+<title>
 <desc> Description:
 What debts did Qintex group leave?
 
+<narr>
 </top>
 
 
@@ -72,9 +86,11 @@ What debts did Qintex group leave?
 
 <num> Number: 8 
 
+<title>
 <desc> Description:
 What is the name of the rare neurological disease with symptoms such as: involuntary movements (tics), swearing, and incoherent vocalizations (grunts, shouts, etc.)?
 
+<narr>
 </top>
 
 
@@ -82,9 +98,11 @@ What is the name of the rare neurological disease with symptoms such as: involun
 
 <num> Number: 9 
 
+<title>
 <desc> Description:
 How far is Yaroslavl from Moscow?
 
+<narr>
 </top>
 
 
@@ -92,9 +110,11 @@ How far is Yaroslavl from Moscow?
 
 <num> Number: 10
 
+<title>
 <desc> Description:
 Name the designer of the shoe that spawned millions of plastic imitations, known as "jellies".
 
+<narr>
 </top>
 
 
@@ -102,9 +122,11 @@ Name the designer of the shoe that spawned millions of plastic imitations, known
 
 <num> Number: 11
 
+<title>
 <desc> Description:
 Who was President Cleveland's wife?
 
+<narr>
 </top>
 
 
@@ -112,9 +134,11 @@ Who was President Cleveland's wife?
 
 <num> Number: 12
 
+<title>
 <desc> Description:
 How much did Manchester United spend on players in 1993?
 
+<narr>
 </top>
 
 
@@ -122,9 +146,11 @@ How much did Manchester United spend on players in 1993?
 
 <num> Number: 13
 
+<title>
 <desc> Description:
 How much could you rent a Volkswagen bug for in 1966?
 
+<narr>
 </top>
 
 
@@ -132,9 +158,11 @@ How much could you rent a Volkswagen bug for in 1966?
 
 <num> Number: 14
 
+<title>
 <desc> Description:
 What country is the biggest producer of tungsten?
 
+<narr>
 </top>
 
 
@@ -142,9 +170,11 @@ What country is the biggest producer of tungsten?
 
 <num> Number: 15
 
+<title>
 <desc> Description:
 When was London's Docklands Light Railway constructed?
 
+<narr>
 </top>
 
 
@@ -152,9 +182,11 @@ When was London's Docklands Light Railway constructed?
 
 <num> Number: 16
 
+<title>
 <desc> Description:
 What two US biochemists won the Nobel Prize in medicine in 1992?
 
+<narr>
 </top>
 
 
@@ -162,9 +194,11 @@ What two US biochemists won the Nobel Prize in medicine in 1992?
 
 <num> Number: 17
 
+<title>
 <desc> Description:
 How long did the Charles Manson murder trial last?
 
+<narr>
 </top>
 
 
@@ -172,9 +206,11 @@ How long did the Charles Manson murder trial last?
 
 <num> Number: 18
 
+<title>
 <desc> Description:
 Who was the first Taiwanese President?
 
+<narr>
 </top>
 
 
@@ -182,9 +218,11 @@ Who was the first Taiwanese President?
 
 <num> Number: 19
 
+<title>
 <desc> Description:
 Who was the leader of the Branch Davidian Cult confronted by the FBI in Waco, Texas in 1993?
 
+<narr>
 </top>
 
 
@@ -192,9 +230,11 @@ Who was the leader of the Branch Davidian Cult confronted by the FBI in Waco, Te
 
 <num> Number: 20
 
+<title>
 <desc> Description:
 Where is Inoco based?
 
+<narr>
 </top>
 
 
@@ -202,9 +242,11 @@ Where is Inoco based?
 
 <num> Number: 21
 
+<title>
 <desc> Description:
 Who was the first American in space?
 
+<narr>
 </top>
 
 
@@ -212,9 +254,11 @@ Who was the first American in space?
 
 <num> Number: 22 
 
+<title>
 <desc> Description:
 When did the Jurassic Period end?
 
+<narr>
 </top>
 
 
@@ -222,9 +266,11 @@ When did the Jurassic Period end?
 
 <num> Number: 23
 
+<title>
 <desc> Description:
 When did Spain and Korea start ambassadorial relations?
 
+<narr>
 </top>
 
 
@@ -232,9 +278,11 @@ When did Spain and Korea start ambassadorial relations?
 
 <num> Number: 24
 
+<title>
 <desc> Description:
 When did Nixon visit China?
 
+<narr>
 </top>
 
 
@@ -242,9 +290,11 @@ When did Nixon visit China?
 
 <num> Number: 25
 
+<title>
 <desc> Description:
 Who was the lead actress in the movie "Sleepless in Seattle"?
 
+<narr>
 </top>
 
 
@@ -252,9 +302,11 @@ Who was the lead actress in the movie "Sleepless in Seattle"?
 
 <num> Number: 26
 
+<title>
 <desc> Description:
 What is the name of the "female" counterpart to El Nino, which results in cooling temperatures and very dry weather?
 
+<narr>
 </top>
 
 
@@ -262,9 +314,11 @@ What is the name of the "female" counterpart to El Nino, which results in coolin
 
 <num> Number: 27
 
+<title>
 <desc> Description:
 Where did the 6th annual meeting of Indonesia-Malaysia forest experts take place?
 
+<narr>
 </top>
 
 
@@ -272,9 +326,11 @@ Where did the 6th annual meeting of Indonesia-Malaysia forest experts take place
 
 <num> Number: 28
 
+<title>
 <desc> Description:
 Who may be best known for breaking the color line in baseball?
 
+<narr>
 </top>
 
 
@@ -282,9 +338,11 @@ Who may be best known for breaking the color line in baseball?
 
 <num> Number: 29
 
+<title>
 <desc> Description:
 What is the brightest star visible from Earth?
 
+<narr>
 </top>
 
 
@@ -292,9 +350,11 @@ What is the brightest star visible from Earth?
 
 <num> Number: 30
 
+<title>
 <desc> Description:
 What are the Valdez Principles?
 
+<narr>
 </top>
 
 
@@ -302,9 +362,11 @@ What are the Valdez Principles?
 
 <num> Number: 31
 
+<title>
 <desc> Description:
 Where was Ulysses S. Grant born?
 
+<narr>
 </top>
 
 
@@ -312,9 +374,11 @@ Where was Ulysses S. Grant born?
 
 <num> Number: 32
 
+<title>
 <desc> Description:
 Who received the Will Rogers Award in 1989?
 
+<narr>
 </top>
 
 
@@ -322,9 +386,11 @@ Who received the Will Rogers Award in 1989?
 
 <num> Number: 33
 
+<title>
 <desc> Description:
 What is the largest city in Germany?
 
+<narr>
 </top>
 
 
@@ -332,9 +398,11 @@ What is the largest city in Germany?
 
 <num> Number: 34
 
+<title>
 <desc> Description:
 Where is the actress, Marion Davies, buried?
 
+<narr>
 </top>
 
 
@@ -342,9 +410,11 @@ Where is the actress, Marion Davies, buried?
 
 <num> Number: 35
 
+<title>
 <desc> Description:
 What is the name of the highest mountain in Africa?
 
+<narr>
 </top>
 
 
@@ -352,9 +422,11 @@ What is the name of the highest mountain in Africa?
 
 <num> Number: 36
 
+<title>
 <desc> Description:
 In 1990, what day of the week did Christmas fall on?
 
+<narr>
 </top>
 
 
@@ -362,9 +434,11 @@ In 1990, what day of the week did Christmas fall on?
 
 <num> Number: 37
 
+<title>
 <desc> Description:
 What was the name of the US helicopter pilot shot down over North Korea?
 
+<narr>
 </top>
 
 
@@ -372,9 +446,11 @@ What was the name of the US helicopter pilot shot down over North Korea?
 
 <num> Number: 38
 
+<title>
 <desc> Description:
 Where was George Washington born?
 
+<narr>
 </top>
 
 
@@ -382,9 +458,11 @@ Where was George Washington born?
 
 <num> Number: 39
 
+<title>
 <desc> Description:
 Who was chosen to be the first black chairman of the military Joint Chiefs of Staff?
 
+<narr>
 </top>
 
 
@@ -392,9 +470,11 @@ Who was chosen to be the first black chairman of the military Joint Chiefs of St
 
 <num> Number: 40 
 
+<title>
 <desc> Description:
 Who won the Nobel Peace Prize in 1991?
 
+<narr>
 </top>
 
 
@@ -402,9 +482,11 @@ Who won the Nobel Peace Prize in 1991?
 
 <num> Number: 41
 
+<title>
 <desc> Description:
 What is the legal blood alcohol limit for the state of California?
 
+<narr>
 </top>
 
 
@@ -412,9 +494,11 @@ What is the legal blood alcohol limit for the state of California?
 
 <num> Number: 42
 
+<title>
 <desc> Description:
 What was the target rate for M3 growth in 1992?
 
+<narr>
 </top>
 
 
@@ -422,9 +506,11 @@ What was the target rate for M3 growth in 1992?
 
 <num> Number: 43
 
+<title>
 <desc> Description:
 What costume designer decided that Michael Jackson should only wear one glove?
 
+<narr>
 </top>
 
 
@@ -432,9 +518,11 @@ What costume designer decided that Michael Jackson should only wear one glove?
 
 <num> Number: 44
 
+<title>
 <desc> Description:
 Who is the director of the international group called the Human Genome Organization (HUGO) that is trying to coordinate gene-mapping research worldwide?
 
+<narr>
 </top>
 
 
@@ -442,9 +530,11 @@ Who is the director of the international group called the Human Genome Organizat
 
 <num> Number: 45
 
+<title>
 <desc> Description:
 When did Lucelly Garcia, a former ambassador of Columbia to Honduras, die?
 
+<narr>
 </top>
 
 
@@ -452,9 +542,11 @@ When did Lucelly Garcia, a former ambassador of Columbia to Honduras, die?
 
 <num> Number: 46
 
+<title>
 <desc> Description:
 Who is the mayor of Marbella?
 
+<narr>
 </top>
 
 
@@ -462,9 +554,11 @@ Who is the mayor of Marbella?
 
 <num> Number: 47
 
+<title>
 <desc> Description:
 What company is the largest Japanese ship builder?
 
+<narr>
 </top>
 
 
@@ -472,9 +566,11 @@ What company is the largest Japanese ship builder?
 
 <num> Number: 48
 
+<title>
 <desc> Description:
 Where is the massive North Korean nuclear complex located?
 
+<narr>
 </top>
 
 
@@ -482,9 +578,11 @@ Where is the massive North Korean nuclear complex located?
 
 <num> Number: 49
 
+<title>
 <desc> Description:
 Who fired Maria Ybarra from her position in San Diego council?
 
+<narr>
 </top>
 
 
@@ -492,9 +590,11 @@ Who fired Maria Ybarra from her position in San Diego council?
 
 <num> Number: 50
 
+<title>
 <desc> Description:
 When was Dubai's first concrete house built?
 
+<narr>
 </top>
 
 
@@ -502,9 +602,11 @@ When was Dubai's first concrete house built?
 
 <num> Number: 51
 
+<title>
 <desc> Description:
 Who is the president of Stanford University?
 
+<narr>
 </top>
 
 
@@ -512,9 +614,11 @@ Who is the president of Stanford University?
 
 <num> Number: 52
 
+<title>
 <desc> Description:
 Who invented the road traffic cone?
 
+<narr>
 </top>
 
 
@@ -522,9 +626,11 @@ Who invented the road traffic cone?
 
 <num> Number: 53
 
+<title>
 <desc> Description:
 Who was the first doctor to successfully transplant a liver?
 
+<narr>
 </top>
 
 
@@ -532,9 +638,11 @@ Who was the first doctor to successfully transplant a liver?
 
 <num> Number: 54
 
+<title>
 <desc> Description:
 When did Nixon die?
 
+<narr>
 </top>
 
 
@@ -542,9 +650,11 @@ When did Nixon die?
 
 <num> Number: 55
 
+<title>
 <desc> Description:
 Where is Microsoft's corporate headquarters located?
 
+<narr>
 </top>
 
 
@@ -552,9 +662,11 @@ Where is Microsoft's corporate headquarters located?
 
 <num> Number: 56
 
+<title>
 <desc> Description:
 How many calories are there in a Big Mac?
 
+<narr>
 </top>
 
 
@@ -562,9 +674,11 @@ How many calories are there in a Big Mac?
 
 <num> Number: 57
 
+<title>
 <desc> Description:
 What is the acronym for the rating system for air conditioner efficiency?
 
+<narr>
 </top>
 
 
@@ -572,9 +686,11 @@ What is the acronym for the rating system for air conditioner efficiency?
 
 <num> Number: 58
 
+<title>
 <desc> Description:
 Name a film that has won the Golden Bear in the Berlin Film Festival?
 
+<narr>
 </top>
 
 
@@ -582,9 +698,11 @@ Name a film that has won the Golden Bear in the Berlin Film Festival?
 
 <num> Number: 59
 
+<title>
 <desc> Description:
 Who was President of Costa Rica in 1994?
 
+<narr>
 </top>
 
 
@@ -592,9 +710,11 @@ Who was President of Costa Rica in 1994?
 
 <num> Number: 60
 
+<title>
 <desc> Description:
 What is the fare cost for the round trip between New York and London on Concorde?
 
+<narr>
 </top>
 
 
@@ -602,9 +722,11 @@ What is the fare cost for the round trip between New York and London on Concorde
 
 <num> Number: 61
 
+<title>
 <desc> Description:
 What brand of white rum is still made in Cuba?
 
+<narr>
 </top>
 
 
@@ -612,9 +734,11 @@ What brand of white rum is still made in Cuba?
 
 <num> Number: 62
 
+<title>
 <desc> Description:
 What is the name of the chronic neurological autoimmune disease which attacks the protein sheath that surrounds nerve cells causing a gradual loss of movement in the body?
 
+<narr>
 </top>
 
 
@@ -622,9 +746,11 @@ What is the name of the chronic neurological autoimmune disease which attacks th
 
 <num> Number: 63
 
+<title>
 <desc> Description:
 What nuclear-powered Russian submarine sank in the Norwegian Sea on April 7, 1989?
 
+<narr>
 </top>
 
 
@@ -632,9 +758,11 @@ What nuclear-powered Russian submarine sank in the Norwegian Sea on April 7, 198
 
 <num> Number: 64
 
+<title>
 <desc> Description:
 Who is the voice of Miss Piggy?
 
+<narr>
 </top>
 
 
@@ -642,9 +770,11 @@ Who is the voice of Miss Piggy?
 
 <num> Number: 65
 
+<title>
 <desc> Description:
 Name a country that is developing a magnetic levitation railway system?
 
+<narr>
 </top>
 
 
@@ -652,9 +782,11 @@ Name a country that is developing a magnetic levitation railway system?
 
 <num> Number: 66
 
+<title>
 <desc> Description:
 Name the first private citizen to fly in space.
 
+<narr>
 </top>
 
 
@@ -662,9 +794,11 @@ Name the first private citizen to fly in space.
 
 <num> Number: 67
 
+<title>
 <desc> Description:
 What is the longest river in the United States?
 
+<narr>
 </top>
 
 
@@ -672,9 +806,11 @@ What is the longest river in the United States?
 
 <num> Number: 68
 
+<title>
 <desc> Description:
 What does El Nino mean in spanish?
 
+<narr>
 </top>
 
 
@@ -682,9 +818,11 @@ What does El Nino mean in spanish?
 
 <num> Number: 69
 
+<title>
 <desc> Description:
 Who came up with the name, El Nino? 
 
+<narr>
 </top>
 
 
@@ -692,9 +830,11 @@ Who came up with the name, El Nino?
 
 <num> Number: 70
 
+<title>
 <desc> Description:
 How many lives were lost in the China Airlines' crash in Nagoya, Japan?
 
+<narr>
 </top>
 
 
@@ -702,9 +842,11 @@ How many lives were lost in the China Airlines' crash in Nagoya, Japan?
 
 <num> Number: 71
 
+<title>
 <desc> Description:
 In what year did Joe DiMaggio compile his 56-game hitting streak?
 
+<narr>
 </top>
 
 
@@ -712,9 +854,11 @@ In what year did Joe DiMaggio compile his 56-game hitting streak?
 
 <num> Number: 72
 
+<title>
 <desc> Description:
 When did the original Howdy Doody show go off the air?
 
+<narr>
 </top>
 
 
@@ -722,9 +866,11 @@ When did the original Howdy Doody show go off the air?
 
 <num> Number: 73
 
+<title>
 <desc> Description:
 Where is the Taj Mahal?
 
+<narr>
 </top>
 
 
@@ -732,9 +878,11 @@ Where is the Taj Mahal?
 
 <num> Number: 74
 
+<title>
 <desc> Description:
 Who leads the star ship Enterprise in Star Trek?
 
+<narr>
 </top>
 
 
@@ -742,9 +890,11 @@ Who leads the star ship Enterprise in Star Trek?
 
 <num> Number: 75
 
+<title>
 <desc> Description:
 What cancer is commonly associated with AIDS?
 
+<narr>
 </top>
 
 
@@ -752,9 +902,11 @@ What cancer is commonly associated with AIDS?
 
 <num> Number: 76
 
+<title>
 <desc> Description:
 In which year was New Zealand excluded from the ANZUS alliance?
 
+<narr>
 </top>
 
 
@@ -762,9 +914,11 @@ In which year was New Zealand excluded from the ANZUS alliance?
 
 <num> Number: 77
 
+<title>
 <desc> Description:
 Who played the part of the Godfather in the movie, "The Godfather"? 
 
+<narr>
 </top>
 
 
@@ -772,9 +926,11 @@ Who played the part of the Godfather in the movie, "The Godfather"?
 
 <num> Number: 78
 
+<title>
 <desc> Description:
 Which large U.S. city had the highest murder rate for 1988?
 
+<narr>
 </top>
 
 
@@ -782,9 +938,11 @@ Which large U.S. city had the highest murder rate for 1988?
 
 <num> Number: 79
 
+<title>
 <desc> Description:
 What did Shostakovich write for Rostropovich?
 
+<narr>
 </top>
 
 
@@ -792,9 +950,11 @@ What did Shostakovich write for Rostropovich?
 
 <num> Number: 80
 
+<title>
 <desc> Description:
 What is the name of the promising anticancer compound derived from the pacific yew tree?
 
+<narr>
 </top>
 
 
@@ -802,9 +962,11 @@ What is the name of the promising anticancer compound derived from the pacific y
 
 <num> Number: 81
 
+<title>
 <desc> Description:
 How many inhabitants live in the town of Ushuaia?
 
+<narr>
 </top>
 
 
@@ -812,9 +974,11 @@ How many inhabitants live in the town of Ushuaia?
 
 <num> Number: 82
 
+<title>
 <desc> Description:
 How many consecutive baseball games did Lou Gehrig play?
 
+<narr>
 </top>
 
 
@@ -822,9 +986,11 @@ How many consecutive baseball games did Lou Gehrig play?
 
 <num> Number: 83
 
+<title>
 <desc> Description:
 What is the tallest building in Japan?
 
+<narr>
 </top>
 
 
@@ -832,9 +998,11 @@ What is the tallest building in Japan?
 
 <num> Number: 84
 
+<title>
 <desc> Description:
 Which country is Australia's largest export market?
 
+<narr>
 </top>
 
 
@@ -842,9 +1010,11 @@ Which country is Australia's largest export market?
 
 <num> Number: 85
 
+<title>
 <desc> Description:
 Which former Ku Klux Klan member won an elected office in the U.S.?
 
+<narr>
 </top>
 
 
@@ -852,9 +1022,11 @@ Which former Ku Klux Klan member won an elected office in the U.S.?
 
 <num> Number: 86
 
+<title>
 <desc> Description:
 Who won two gold medals in skiing in the Olympic Games in Calgary?
 
+<narr>
 </top>
 
 
@@ -862,9 +1034,11 @@ Who won two gold medals in skiing in the Olympic Games in Calgary?
 
 <num> Number: 87
 
+<title>
 <desc> Description:
 Who followed Willy Brandt as chancellor of the Federal Republic of Germany?
 
+<narr>
 </top>
 
 
@@ -872,9 +1046,11 @@ Who followed Willy Brandt as chancellor of the Federal Republic of Germany?
 
 <num> Number: 88
 
+<title>
 <desc> Description:
 What is Grenada's main commodity export?
 
+<narr>
 </top>
 
 
@@ -882,9 +1058,11 @@ What is Grenada's main commodity export?
 
 <num> Number: 89
 
+<title>
 <desc> Description:
 At what age did Rossini stop writing opera?
 
+<narr>
 </top>
 
 
@@ -892,9 +1070,11 @@ At what age did Rossini stop writing opera?
 
 <num> Number: 90
 
+<title>
 <desc> Description:
 Who is the founder of Scientology?
 
+<narr>
 </top>
 
 
@@ -902,9 +1082,11 @@ Who is the founder of Scientology?
 
 <num> Number: 91
 
+<title>
 <desc> Description:
 Which city in China has the largest number of foreign financial companies?
 
+<narr>
 </top>
 
 
@@ -912,9 +1094,11 @@ Which city in China has the largest number of foreign financial companies?
 
 <num> Number: 92
 
+<title>
 <desc> Description:
 Who released the Internet worm in the late 1980s?
 
+<narr>
 </top>
 
 
@@ -922,9 +1106,11 @@ Who released the Internet worm in the late 1980s?
 
 <num> Number: 93
 
+<title>
 <desc> Description:
 Who first circumnavigated the globe?
 
+<narr>
 </top>
 
 
@@ -932,9 +1118,11 @@ Who first circumnavigated the globe?
 
 <num> Number: 94
 
+<title>
 <desc> Description:
 Who wrote the song, "Stardust"?
 
+<narr>
 </top>
 
 
@@ -942,9 +1130,11 @@ Who wrote the song, "Stardust"?
 
 <num> Number: 95
 
+<title>
 <desc> Description:
 What country is the worlds leading supplier of cannabis?
 
+<narr>
 </top>
 
 
@@ -952,9 +1142,11 @@ What country is the worlds leading supplier of cannabis?
 
 <num> Number: 96
 
+<title>
 <desc> Description:
 What time of day did Emperor Hirohito die?
 
+<narr>
 </top>
 
 
@@ -962,9 +1154,11 @@ What time of day did Emperor Hirohito die?
 
 <num> Number: 97
 
+<title>
 <desc> Description:
 How large is the Arctic refuge to preserve unique wildlife and wilderness value on Alaska's north coast?
 
+<narr>
 </top>
 
 
@@ -972,9 +1166,11 @@ How large is the Arctic refuge to preserve unique wildlife and wilderness value 
 
 <num> Number: 98
 
+<title>
 <desc> Description:
 Where is the highest point in Japan?
 
+<narr>
 </top>
 
 
@@ -982,9 +1178,11 @@ Where is the highest point in Japan?
 
 <num> Number: 99
 
+<title>
 <desc> Description:
 What is the term for the sum of all genetic material in a given organism?
 
+<narr>
 </top>
 
 
@@ -992,9 +1190,11 @@ What is the term for the sum of all genetic material in a given organism?
 
 <num> Number: 100
 
+<title>
 <desc> Description:
 What is considered the costliest disaster the insurance industry has ever faced?
 
+<narr>
 </top>
 
 
@@ -1002,9 +1202,11 @@ What is considered the costliest disaster the insurance industry has ever faced?
 
 <num> Number: 101
 
+<title>
 <desc> Description:
 How many people live in the Falklands?
 
+<narr>
 </top>
 
 
@@ -1012,9 +1214,11 @@ How many people live in the Falklands?
 
 <num> Number: 102
 
+<title>
 <desc> Description:
 Who is the Voyager project manager?
 
+<narr>
 </top>
 
 
@@ -1022,9 +1226,11 @@ Who is the Voyager project manager?
 
 <num> Number: 103
 
+<title>
 <desc> Description:
 How many people died when the Estonia sank in 1994?
 
+<narr>
 </top>
 
 
@@ -1032,9 +1238,11 @@ How many people died when the Estonia sank in 1994?
 
 <num> Number: 104
 
+<title>
 <desc> Description:
 What language is most commonly used in Bombay?
 
+<narr>
 </top>
 
 
@@ -1042,9 +1250,11 @@ What language is most commonly used in Bombay?
 
 <num> Number: 105
 
+<title>
 <desc> Description:
 How many people does Honda employ in the U.S.?
 
+<narr>
 </top>
 
 
@@ -1052,9 +1262,11 @@ How many people does Honda employ in the U.S.?
 
 <num> Number: 106
 
+<title>
 <desc> Description:
 What is the second highest mountain peak in the world?
 
+<narr>
 </top>
 
 
@@ -1062,9 +1274,11 @@ What is the second highest mountain peak in the world?
 
 <num> Number: 107
 
+<title>
 <desc> Description:
 When was China's first nuclear test?
 
+<narr>
 </top>
 
 
@@ -1072,9 +1286,11 @@ When was China's first nuclear test?
 
 <num> Number: 108
 
+<title>
 <desc> Description:
 Which company created the Internet browser Mosaic?
 
+<narr>
 </top>
 
 
@@ -1082,9 +1298,11 @@ Which company created the Internet browser Mosaic?
 
 <num> Number: 109
 
+<title>
 <desc> Description:
 Where does Buzz Aldrin want to build a permanent, manned space station?
 
+<narr>
 </top>
 
 
@@ -1092,9 +1310,11 @@ Where does Buzz Aldrin want to build a permanent, manned space station?
 
 <num> Number: 110
 
+<title>
 <desc> Description:
 Who killed Lee Harvey Oswald?
 
+<narr>
 </top>
 
 
@@ -1102,9 +1322,11 @@ Who killed Lee Harvey Oswald?
 
 <num> Number: 111
 
+<title>
 <desc> Description:
 How long does it take to travel from Tokyo to Niigata?
 
+<narr>
 </top>
 
 
@@ -1112,9 +1334,11 @@ How long does it take to travel from Tokyo to Niigata?
 
 <num> Number: 112
 
+<title>
 <desc> Description:
 Who is the President of Ghana?
 
+<narr>
 </top>
 
 
@@ -1122,9 +1346,11 @@ Who is the President of Ghana?
 
 <num> Number: 113
 
+<title>
 <desc> Description:
 What is the name of the medical condition in which a baby is born without a brain?
 
+<narr>
 </top>
 
 
@@ -1132,9 +1358,11 @@ What is the name of the medical condition in which a baby is born without a brai
 
 <num> Number: 114
 
+<title>
 <desc> Description:
 How much stronger is the new vitreous carbon material invented by the Tokyo Institute of Technology compared with the material made from cellulose?
 
+<narr>
 </top>
 
 
@@ -1142,9 +1370,11 @@ How much stronger is the new vitreous carbon material invented by the Tokyo Inst
 
 <num> Number: 115
 
+<title>
 <desc> Description:
 What is Head Start?
 
+<narr>
 </top>
 
 
@@ -1152,9 +1382,11 @@ What is Head Start?
 
 <num> Number: 116
 
+<title>
 <desc> Description:
 Which team won the Super Bowl in 1968?
 
+<narr>
 </top>
 
 
@@ -1162,9 +1394,11 @@ Which team won the Super Bowl in 1968?
 
 <num> Number: 117
 
+<title>
 <desc> Description:
 What two researchers discovered the double-helix structure of DNA in 1953?
 
+<narr>
 </top>
 
 
@@ -1172,9 +1406,11 @@ What two researchers discovered the double-helix structure of DNA in 1953?
 
 <num> Number: 118
 
+<title>
 <desc> Description:
 What percentage of the world's plant and animal species can be found in the Amazon forests?
 
+<narr>
 </top>
 
 
@@ -1182,9 +1418,11 @@ What percentage of the world's plant and animal species can be found in the Amaz
 
 <num> Number: 119
 
+<title>
 <desc> Description:
 What Nobel laureate was expelled from the Philippines before the conference on East Timor?
 
+<narr>
 </top>
 
 
@@ -1192,9 +1430,11 @@ What Nobel laureate was expelled from the Philippines before the conference on E
 
 <num> Number: 120
 
+<title>
 <desc> Description:
 Who held the endurance record for women pilots in 1929?
 
+<narr>
 </top>
 
 
@@ -1202,9 +1442,11 @@ Who held the endurance record for women pilots in 1929?
 
 <num> Number: 121
 
+<title>
 <desc> Description:
 Who won the first general election for President held in Malawi in May 1994?
 
+<narr>
 </top>
 
 
@@ -1212,9 +1454,11 @@ Who won the first general election for President held in Malawi in May 1994?
 
 <num> Number: 122
 
+<title>
 <desc> Description:
 Who is section manager for guidance and control systems at JPL?
 
+<narr>
 </top>
 
 
@@ -1222,9 +1466,11 @@ Who is section manager for guidance and control systems at JPL?
 
 <num> Number: 123
 
+<title>
 <desc> Description:
 How many Vietnamese were there in the Soviet Union?
 
+<narr>
 </top>
 
 
@@ -1232,9 +1478,11 @@ How many Vietnamese were there in the Soviet Union?
 
 <num> Number: 124
 
+<title>
 <desc> Description:
 What was Agent Orange used for during the Vietnam War?
 
+<narr>
 </top>
 
 
@@ -1242,9 +1490,11 @@ What was Agent Orange used for during the Vietnam War?
 
 <num> Number: 125
 
+<title>
 <desc> Description:
 In what city is the US Declaration of Independence located?
 
+<narr>
 </top>
 
 
@@ -1252,9 +1502,11 @@ In what city is the US Declaration of Independence located?
 
 <num> Number: 126
 
+<title>
 <desc> Description:
 When did Israel begin turning the Gaza Strip and Jericho over to the PLO?
 
+<narr>
 </top>
 
 
@@ -1262,9 +1514,11 @@ When did Israel begin turning the Gaza Strip and Jericho over to the PLO?
 
 <num> Number: 127
 
+<title>
 <desc> Description:
 Which city has the oldest relationship as a sister-city with Los Angeles?
 
+<narr>
 </top>
 
 
@@ -1272,9 +1526,11 @@ Which city has the oldest relationship as a sister-city with Los Angeles?
 
 <num> Number: 128
 
+<title>
 <desc> Description:
 Who was the second man to walk on the moon?
 
+<narr>
 </top>
 
 
@@ -1282,9 +1538,11 @@ Who was the second man to walk on the moon?
 
 <num> Number: 129
 
+<title>
 <desc> Description:
 How many times was pitcher, Warren Spahn, a 20-game winner in his 21 major league seasons?
 
+<narr>
 </top>
 
 
@@ -1292,9 +1550,11 @@ How many times was pitcher, Warren Spahn, a 20-game winner in his 21 major leagu
 
 <num> Number: 130
 
+<title>
 <desc> Description:
 When was Yemen reunified?
 
+<narr>
 </top>
 
 
@@ -1302,9 +1562,11 @@ When was Yemen reunified?
 
 <num> Number: 131
 
+<title>
 <desc> Description:
 Which Japanese car maker had its biggest percentage of sale in the domestic market?
 
+<narr>
 </top>
 
 
@@ -1312,9 +1574,11 @@ Which Japanese car maker had its biggest percentage of sale in the domestic mark
 
 <num> Number: 132
 
+<title>
 <desc> Description:
 What is the capital of Uruguay?
 
+<narr>
 </top>
 
 
@@ -1322,9 +1586,11 @@ What is the capital of Uruguay?
 
 <num> Number: 133
 
+<title>
 <desc> Description:
 What is the name for the technique of growing certain plants in soils contaminated with toxic metals, wherein the plants take up the toxic metals, are harvested, and the metals recovered for recycling?
 
+<narr>
 </top>
 
 
@@ -1332,9 +1598,11 @@ What is the name for the technique of growing certain plants in soils contaminat
 
 <num> Number: 134
 
+<title>
 <desc> Description:
 Where is it planned to berth the merchant ship, Lane Victory, which Merchant Marine veterans are converting into a floating museum?
 
+<narr>
 </top>
 
 
@@ -1342,9 +1610,11 @@ Where is it planned to berth the merchant ship, Lane Victory, which Merchant Mar
 
 <num> Number: 135
 
+<title>
 <desc> Description:
 What famous communist leader died in Mexico City?
 
+<narr>
 </top>
 
 
@@ -1352,9 +1622,11 @@ What famous communist leader died in Mexico City?
 
 <num> Number: 136
 
+<title>
 <desc> Description:
 Who is the Queen of Holland?
 
+<narr>
 </top>
 
 
@@ -1362,9 +1634,11 @@ Who is the Queen of Holland?
 
 <num> Number: 137
 
+<title>
 <desc> Description:
 Who is the president of the Spanish government?
 
+<narr>
 </top>
 
 
@@ -1372,9 +1646,11 @@ Who is the president of the Spanish government?
 
 <num> Number: 138
 
+<title>
 <desc> Description:
 What is the name of the normal process in all living things, including humans, in which cells are programmed to "commit suicide"?
 
+<narr>
 </top>
 
 
@@ -1382,9 +1658,11 @@ What is the name of the normal process in all living things, including humans, i
 
 <num> Number: 139
 
+<title>
 <desc> Description:
 How many people did the United Nations commit to help restore order and distribute humanitarian relief in Somalia in September 1992?
 
+<narr>
 </top>
 
 
@@ -1392,9 +1670,11 @@ How many people did the United Nations commit to help restore order and distribu
 
 <num> Number: 140
 
+<title>
 <desc> Description:
 How many people on the ground were killed from the bombing of Pan Am Flight 103 over Lockerbie, Scotland, December 21, 1988?
 
+<narr>
 </top>
 
 
@@ -1402,9 +1682,11 @@ How many people on the ground were killed from the bombing of Pan Am Flight 103 
 
 <num> Number: 141
 
+<title>
 <desc> Description:
 What is the duration of the trip from Bristol to London by rail?
 
+<narr>
 </top>
 
 
@@ -1412,9 +1694,11 @@ What is the duration of the trip from Bristol to London by rail?
 
 <num> Number: 142
 
+<title>
 <desc> Description:
 What is the population of Ulan Bator, capital of Mongolia?
 
+<narr>
 </top>
 
 
@@ -1422,9 +1706,11 @@ What is the population of Ulan Bator, capital of Mongolia?
 
 <num> Number: 143
 
+<title>
 <desc> Description:
 Where does most of the marijuana entering the United States come from?
 
+<narr>
 </top>
 
 
@@ -1432,9 +1718,11 @@ Where does most of the marijuana entering the United States come from?
 
 <num> Number: 144
 
+<title>
 <desc> Description:
 How many megawatts will the power project in Indonesia, built by a consortium headed by Mission Energy of US, produce?
 
+<narr>
 </top>
 
 
@@ -1442,9 +1730,11 @@ How many megawatts will the power project in Indonesia, built by a consortium he
 
 <num> Number: 145
 
+<title>
 <desc> Description:
 What did John Hinckley do to impress Jodie Foster?
 
+<narr>
 </top>
 
 
@@ -1452,9 +1742,11 @@ What did John Hinckley do to impress Jodie Foster?
 
 <num> Number: 146
 
+<title>
 <desc> Description:
 In what year did Ireland elect its first woman president?
 
+<narr>
 </top>
 
 
@@ -1462,9 +1754,11 @@ In what year did Ireland elect its first woman president?
 
 <num> Number: 147
 
+<title>
 <desc> Description:
 Who is the prime minister of Japan?
 
+<narr>
 </top>
 
 
@@ -1472,9 +1766,11 @@ Who is the prime minister of Japan?
 
 <num> Number: 148
 
+<title>
 <desc> Description:
 How many soldiers were involved in the last Panama invasion by the United States of America?
 
+<narr>
 </top>
 
 
@@ -1482,9 +1778,11 @@ How many soldiers were involved in the last Panama invasion by the United States
 
 <num> Number: 149
 
+<title>
 <desc> Description:
 Where is the Bulls basketball team based?
 
+<narr>
 </top>
 
 
@@ -1492,9 +1790,11 @@ Where is the Bulls basketball team based?
 
 <num> Number: 150
 
+<title>
 <desc> Description:
 What is the length of border between the Ukraine and Russia?
 
+<narr>
 </top>
 
 
@@ -1502,9 +1802,11 @@ What is the length of border between the Ukraine and Russia?
 
 <num> Number: 151
 
+<title>
 <desc> Description:
 Where did Dylan Thomas die?
 
+<narr>
 </top>
 
 
@@ -1512,9 +1814,11 @@ Where did Dylan Thomas die?
 
 <num> Number: 152
 
+<title>
 <desc> Description:
 How many people live in Tokyo?
 
+<narr>
 </top>
 
 
@@ -1522,9 +1826,11 @@ How many people live in Tokyo?
 
 <num> Number: 153
 
+<title>
 <desc> Description:
 What is the capital of California?
 
+<narr>
 </top>
 
 
@@ -1532,9 +1838,11 @@ What is the capital of California?
 
 <num> Number: 154
 
+<title>
 <desc> Description:
 How many Grand Slam titles did Bjorn Borg win?
 
+<narr>
 </top>
 
 
@@ -1542,9 +1850,11 @@ How many Grand Slam titles did Bjorn Borg win?
 
 <num> Number: 155
 
+<title>
 <desc> Description:
 Who was the Democratic nominee in the American presidential election?
 
+<narr>
 </top>
 
 
@@ -1552,9 +1862,11 @@ Who was the Democratic nominee in the American presidential election?
 
 <num> Number: 156
 
+<title>
 <desc> Description:
 When was General Manuel Noriega ousted as the leader of Panama and turned over to U.S. authorities?
 
+<narr>
 </top>
 
 
@@ -1562,9 +1874,11 @@ When was General Manuel Noriega ousted as the leader of Panama and turned over t
 
 <num> Number: 157
 
+<title>
 <desc> Description:
 Where is  Dartmouth College?
 
+<narr>
 </top>
 
 
@@ -1572,9 +1886,11 @@ Where is  Dartmouth College?
 
 <num> Number: 158
 
+<title>
 <desc> Description:
 How many mines can still be found in the Falklands after the war ended?
 
+<narr>
 </top>
 
 
@@ -1582,9 +1898,11 @@ How many mines can still be found in the Falklands after the war ended?
 
 <num> Number: 159
 
+<title>
 <desc> Description:
 Why are electric cars less efficient in the north-east than in California?
 
+<narr>
 </top>
 
 
@@ -1592,9 +1910,11 @@ Why are electric cars less efficient in the north-east than in California?
 
 <num> Number: 160 
 
+<title>
 <desc> Description:
 When did French revolutionaries storm the Bastille?
 
+<narr>
 </top>
 
 
@@ -1602,9 +1922,11 @@ When did French revolutionaries storm the Bastille?
 
 <num> Number: 161
 
+<title>
 <desc> Description:
 How rich is Bill Gates?
 
+<narr>
 </top>
 
 
@@ -1612,9 +1934,11 @@ How rich is Bill Gates?
 
 <num> Number: 162
 
+<title>
 <desc> Description:
 What is the capital of Kosovo?
 
+<narr>
 </top>
 
 
@@ -1622,9 +1946,11 @@ What is the capital of Kosovo?
 
 <num> Number: 163
 
+<title>
 <desc> Description:
 What state does Charles Robb represent?
 
+<narr>
 </top>
 
 
@@ -1632,9 +1958,11 @@ What state does Charles Robb represent?
 
 <num> Number: 164
 
+<title>
 <desc> Description:
 Who is the leading competitor of Trans Union Company?
 
+<narr>
 </top>
 
 
@@ -1642,9 +1970,11 @@ Who is the leading competitor of Trans Union Company?
 
 <num> Number: 165
 
+<title>
 <desc> Description:
 Which type of submarine was bought recently by South Korea?
 
+<narr>
 </top>
 
 
@@ -1652,9 +1982,11 @@ Which type of submarine was bought recently by South Korea?
 
 <num> Number: 166
 
+<title>
 <desc> Description:
 When did communist control end in Hungary?
 
+<narr>
 </top>
 
 
@@ -1662,9 +1994,11 @@ When did communist control end in Hungary?
 
 <num> Number: 167
 
+<title>
 <desc> Description:
 What nationality is Pope John Paul II?
 
+<narr>
 </top>
 
 
@@ -1672,9 +2006,11 @@ What nationality is Pope John Paul II?
 
 <num> Number: 168
 
+<title>
 <desc> Description:
 Who was the captain of the tanker, Exxon Valdez, involved in the oil spill in Prince William Sound, Alaska, 1989?
 
+<narr>
 </top>
 
 
@@ -1682,9 +2018,11 @@ Who was the captain of the tanker, Exxon Valdez, involved in the oil spill in Pr
 
 <num> Number: 169
 
+<title>
 <desc> Description:
 Whom did the Chicago Bulls beat in the 1993 championship?
 
+<narr>
 </top>
 
 
@@ -1692,9 +2030,11 @@ Whom did the Chicago Bulls beat in the 1993 championship?
 
 <num> Number: 170
 
+<title>
 <desc> Description:
 Who was President of Afghanistan in 1994?
 
+<narr>
 </top>
 
 
@@ -1702,9 +2042,11 @@ Who was President of Afghanistan in 1994?
 
 <num> Number: 171
 
+<title>
 <desc> Description:
 Who is the director of intergovernmental affairs for the San Diego county?
 
+<narr>
 </top>
 
 
@@ -1712,9 +2054,11 @@ Who is the director of intergovernmental affairs for the San Diego county?
 
 <num> Number: 172
 
+<title>
 <desc> Description:
 Where is the Keck telescope?
 
+<narr>
 </top>
 
 
@@ -1722,9 +2066,11 @@ Where is the Keck telescope?
 
 <num> Number: 173
 
+<title>
 <desc> Description:
 How many moons does Jupiter have?
 
+<narr>
 </top>
 
 
@@ -1732,9 +2078,11 @@ How many moons does Jupiter have?
 
 <num> Number: 174
 
+<title>
 <desc> Description:
 When did Jaco Pastorius die?
 
+<narr>
 </top>
 
 
@@ -1742,9 +2090,11 @@ When did Jaco Pastorius die?
 
 <num> Number: 175
 
+<title>
 <desc> Description:
 When did beethoven die?
 
+<narr>
 </top>
 
 
@@ -1752,9 +2102,11 @@ When did beethoven die?
 
 <num> Number: 176
 
+<title>
 <desc> Description:
 How many people in Tucson?
 
+<narr>
 </top>
 
 
@@ -1762,9 +2114,11 @@ How many people in Tucson?
 
 <num> Number: 177
 
+<title>
 <desc> Description:
 How tall is Mt. Everest?
 
+<narr>
 </top>
 
 
@@ -1772,9 +2126,11 @@ How tall is Mt. Everest?
 
 <num> Number: 178
 
+<title>
 <desc> Description:
 What is the capital of Congo?
 
+<narr>
 </top>
 
 
@@ -1782,9 +2138,11 @@ What is the capital of Congo?
 
 <num> Number: 179
 
+<title>
 <desc> Description:
 What is the capital of Italy?
 
+<narr>
 </top>
 
 
@@ -1792,9 +2150,11 @@ What is the capital of Italy?
 
 <num> Number: 180
 
+<title>
 <desc> Description:
 What is the capital of Sri Lanka?
 
+<narr>
 </top>
 
 
@@ -1802,9 +2162,11 @@ What is the capital of Sri Lanka?
 
 <num> Number: 181
 
+<title>
 <desc> Description:
 What novel inspired the movie BladeRunner?
 
+<narr>
 </top>
 
 
@@ -1812,9 +2174,11 @@ What novel inspired the movie BladeRunner?
 
 <num> Number: 182
 
+<title>
 <desc> Description:
 What was the first Gilbert and Sullivan opera?
 
+<narr>
 </top>
 
 
@@ -1822,9 +2186,11 @@ What was the first Gilbert and Sullivan opera?
 
 <num> Number: 183
 
+<title>
 <desc> Description:
 What was the name of the computer in "2001: A Space Odyssey"?
 
+<narr>
 </top>
 
 
@@ -1832,9 +2198,11 @@ What was the name of the computer in "2001: A Space Odyssey"?
 
 <num> Number: 184
 
+<title>
 <desc> Description:
 When was Queen Victoria born?
 
+<narr>
 </top>
 
 
@@ -1842,9 +2210,11 @@ When was Queen Victoria born?
 
 <num> Number: 185
 
+<title>
 <desc> Description:
 When was the battle of the Somme fought?
 
+<narr>
 </top>
 
 
@@ -1852,9 +2222,11 @@ When was the battle of the Somme fought?
 
 <num> Number: 186
 
+<title>
 <desc> Description:
 Where did the Battle of the Bulge take place?
 
+<narr>
 </top>
 
 
@@ -1862,9 +2234,11 @@ Where did the Battle of the Bulge take place?
 
 <num> Number: 187
 
+<title>
 <desc> Description:
 Where was Lincoln assassinated?
 
+<narr>
 </top>
 
 
@@ -1872,9 +2246,11 @@ Where was Lincoln assassinated?
 
 <num> Number: 188
 
+<title>
 <desc> Description:
 When was the women's suffrage amendment ratified?
 
+<narr>
 </top>
 
 
@@ -1882,9 +2258,11 @@ When was the women's suffrage amendment ratified?
 
 <num> Number: 189
 
+<title>
 <desc> Description:
 Where is Qatar?
 
+<narr>
 </top>
 
 
@@ -1892,9 +2270,11 @@ Where is Qatar?
 
 <num> Number: 190
 
+<title>
 <desc> Description:
 Where is South Bend?
 
+<narr>
 </top>
 
 
@@ -1902,9 +2282,11 @@ Where is South Bend?
 
 <num> Number: 191
 
+<title>
 <desc> Description:
 Where was Harry Truman born?
 
+<narr>
 </top>
 
 
@@ -1912,9 +2294,11 @@ Where was Harry Truman born?
 
 <num> Number: 192
 
+<title>
 <desc> Description:
 Who was Secretary of State during the Nixon administration?
 
+<narr>
 </top>
 
 
@@ -1922,9 +2306,11 @@ Who was Secretary of State during the Nixon administration?
 
 <num> Number: 193
 
+<title>
 <desc> Description:
 Who was the 16th President of the United States?
 
+<narr>
 </top>
 
 
@@ -1932,9 +2318,11 @@ Who was the 16th President of the United States?
 
 <num> Number: 194
 
+<title>
 <desc> Description:
 Who wrote "The Pines of Rome"?
 
+<narr>
 </top>
 
 
@@ -1942,9 +2330,11 @@ Who wrote "The Pines of Rome"?
 
 <num> Number: 195
 
+<title>
 <desc> Description:
 Who wrote "Dubliners"? 
 
+<narr>
 </top>
 
 
@@ -1952,9 +2342,11 @@ Who wrote "Dubliners"?
 
 <num> Number: 196
 
+<title>
 <desc> Description:
 Who wrote "Hamlet"?
 
+<narr>
 </top>
 
 
@@ -1962,9 +2354,11 @@ Who wrote "Hamlet"?
 
 <num> Number: 197
 
+<title>
 <desc> Description:
 What did Richard Feynman say upon hearing he would receive the Nobel Prize in Physics?
 
+<narr>
 </top>
 
 
@@ -1972,9 +2366,11 @@ What did Richard Feynman say upon hearing he would receive the Nobel Prize in Ph
 
 <num> Number: 198
 
+<title>
 <desc> Description:
 How did Socrates die?
 
+<narr>
 </top>
 
 
@@ -1982,9 +2378,11 @@ How did Socrates die?
 
 <num> Number: 199
 
+<title>
 <desc> Description:
 How tall is the Matterhorn?
 
+<narr>
 </top>
 
 
@@ -1992,7 +2390,9 @@ How tall is the Matterhorn?
 
 <num> Number: 200 
 
+<title>
 <desc> Description:
 How tall is the replica of the Matterhorn at Disneyland?
 
+<narr>
 </top>

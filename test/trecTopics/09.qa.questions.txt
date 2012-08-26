@@ -2,9 +2,11 @@
 
 <num> Number: 201
 
+<title>
 <desc> Description:
 What was the name of the first Russian astronaut to do a spacewalk?
 
+<narr>
 </top>
 
 
@@ -12,9 +14,11 @@ What was the name of the first Russian astronaut to do a spacewalk?
 
 <num> Number: 202
 
+<title>
 <desc> Description:
 Where is Belize located?
 
+<narr>
 </top>
 
 
@@ -22,9 +26,11 @@ Where is Belize located?
 
 <num> Number: 203
 
+<title>
 <desc> Description:
 How much folic acid should an expectant mother get daily?
 
+<narr>
 </top>
 
 
@@ -32,9 +38,11 @@ How much folic acid should an expectant mother get daily?
 
 <num> Number: 204
 
+<title>
 <desc> Description:
 What type of bridge is the Golden Gate Bridge?
 
+<narr>
 </top>
 
 
@@ -42,9 +50,11 @@ What type of bridge is the Golden Gate Bridge?
 
 <num> Number: 205
 
+<title>
 <desc> Description:
 What is the population of the Bahamas?
 
+<narr>
 </top>
 
 
@@ -52,9 +62,11 @@ What is the population of the Bahamas?
 
 <num> Number: 206
 
+<title>
 <desc> Description:
 How far away is the moon?
 
+<narr>
 </top>
 
 
@@ -62,9 +74,11 @@ How far away is the moon?
 
 <num> Number: 207
 
+<title>
 <desc> Description:
 What is Francis Scott Key best known for?
 
+<narr>
 </top>
 
 
@@ -72,9 +86,11 @@ What is Francis Scott Key best known for?
 
 <num> Number: 208
 
+<title>
 <desc> Description:
 What state has the most Indians?
 
+<narr>
 </top>
 
 
@@ -82,9 +98,11 @@ What state has the most Indians?
 
 <num> Number: 209
 
+<title>
 <desc> Description:
 Who invented the paper clip?
 
+<narr>
 </top>
 
 
@@ -92,9 +110,11 @@ Who invented the paper clip?
 
 <num> Number: 210
 
+<title>
 <desc> Description:
 How many dogs pull a sled in the Iditarod?
 
+<narr>
 </top>
 
 
@@ -102,9 +122,11 @@ How many dogs pull a sled in the Iditarod?
 
 <num> Number: 211
 
+<title>
 <desc> Description:
 Where did bocci originate?
 
+<narr>
 </top>
 
 
@@ -112,9 +134,11 @@ Where did bocci originate?
 
 <num> Number: 212
 
+<title>
 <desc> Description:
 Who invented the electric guitar?
 
+<narr>
 </top>
 
 
@@ -122,9 +146,11 @@ Who invented the electric guitar?
 
 <num> Number: 213
 
+<title>
 <desc> Description:
 Name a flying mammal.
 
+<narr>
 </top>
 
 
@@ -132,9 +158,11 @@ Name a flying mammal.
 
 <num> Number: 214
 
+<title>
 <desc> Description:
 How many hexagons are on a soccer ball?
 
+<narr>
 </top>
 
 
@@ -142,9 +170,11 @@ How many hexagons are on a soccer ball?
 
 <num> Number: 215
 
+<title>
 <desc> Description:
 Who is the leader of India?
 
+<narr>
 </top>
 
 
@@ -152,9 +182,11 @@ Who is the leader of India?
 
 <num> Number: 216
 
+<title>
 <desc> Description:
 What is the primary language of the Philippines?
 
+<narr>
 </top>
 
 
@@ -162,9 +194,11 @@ What is the primary language of the Philippines?
 
 <num> Number: 217
 
+<title>
 <desc> Description:
 What is the habitat of the chickadee?
 
+<narr>
 </top>
 
 
@@ -172,9 +206,11 @@ What is the habitat of the chickadee?
 
 <num> Number: 218
 
+<title>
 <desc> Description:
 Who was Whitcomb Judson?
 
+<narr>
 </top>
 
 
@@ -182,9 +218,11 @@ Who was Whitcomb Judson?
 
 <num> Number: 219
 
+<title>
 <desc> Description:
 What is the population of Japan?
 
+<narr>
 </top>
 
 
@@ -192,9 +230,11 @@ What is the population of Japan?
 
 <num> Number: 220
 
+<title>
 <desc> Description:
 Who is the prime minister of Australia?
 
+<narr>
 </top>
 
 
@@ -202,9 +242,11 @@ Who is the prime minister of Australia?
 
 <num> Number: 221
 
+<title>
 <desc> Description:
 Who killed Martin Luther King?
 
+<narr>
 </top>
 
 
@@ -212,9 +254,11 @@ Who killed Martin Luther King?
 
 <num> Number: 222
 
+<title>
 <desc> Description:
 Who is Anubis?
 
+<narr>
 </top>
 
 
@@ -222,9 +266,11 @@ Who is Anubis?
 
 <num> Number: 223
 
+<title>
 <desc> Description:
 Where's Montenegro?
 
+<narr>
 </top>
 
 
@@ -232,9 +278,11 @@ Where's Montenegro?
 
 <num> Number: 224
 
+<title>
 <desc> Description:
 What does laser stand for?
 
+<narr>
 </top>
 
 
@@ -242,9 +290,11 @@ What does laser stand for?
 
 <num> Number: 225
 
+<title>
 <desc> Description:
 Who is the Greek God of the Sea?
 
+<narr>
 </top>
 
 
@@ -252,9 +302,11 @@ Who is the Greek God of the Sea?
 
 <num> Number: 226
 
+<title>
 <desc> Description:
 Where is the Danube? 
 
+<narr>
 </top>
 
 
@@ -262,9 +314,11 @@ Where is the Danube?
 
 <num> Number: 227
 
+<title>
 <desc> Description:
 Where does dew come from?
 
+<narr>
 </top>
 
 
@@ -272,9 +326,11 @@ Where does dew come from?
 
 <num> Number: 228
 
+<title>
 <desc> Description:
 What is platinum?
 
+<narr>
 </top>
 
 
@@ -282,9 +338,11 @@ What is platinum?
 
 <num> Number: 229
 
+<title>
 <desc> Description:
 Who is the fastest swimmer in the world?
 
+<narr>
 </top>
 
 
@@ -292,9 +350,11 @@ Who is the fastest swimmer in the world?
 
 <num> Number: 230
 
+<title>
 <desc> Description:
 When did the vesuvius last erupt?
 
+<narr>
 </top>
 
 
@@ -302,9 +362,11 @@ When did the vesuvius last erupt?
 
 <num> Number: 231
 
+<title>
 <desc> Description:
 Who was the president of Vichy France?
 
+<narr>
 </top>
 
 
@@ -312,9 +374,11 @@ Who was the president of Vichy France?
 
 <num> Number: 232
 
+<title>
 <desc> Description:
 Who invented television?
 
+<narr>
 </top>
 
 
@@ -322,9 +386,11 @@ Who invented television?
 
 <num> Number: 233
 
+<title>
 <desc> Description:
 Who made the first airplane?
 
+<narr>
 </top>
 
 
@@ -332,9 +398,11 @@ Who made the first airplane?
 
 <num> Number: 234
 
+<title>
 <desc> Description:
 Who made the first airplane that could fly?
 
+<narr>
 </top>
 
 
@@ -342,9 +410,11 @@ Who made the first airplane that could fly?
 
 <num> Number: 235
 
+<title>
 <desc> Description:
 How many astronauts have been on the moon?
 
+<narr>
 </top>
 
 
@@ -352,9 +422,11 @@ How many astronauts have been on the moon?
 
 <num> Number: 236
 
+<title>
 <desc> Description:
 Who is Coronado?
 
+<narr>
 </top>
 
 
@@ -362,9 +434,11 @@ Who is Coronado?
 
 <num> Number: 237
 
+<title>
 <desc> Description:
 Name one of the major gods of Hinduism?
 
+<narr>
 </top>
 
 
@@ -372,9 +446,11 @@ Name one of the major gods of Hinduism?
 
 <num> Number: 238
 
+<title>
 <desc> Description:
 What does the abbreviation OAS stand for?
 
+<narr>
 </top>
 
 
@@ -382,9 +458,11 @@ What does the abbreviation OAS stand for?
 
 <num> Number: 239
 
+<title>
 <desc> Description:
 Who is Barbara Jordan?
 
+<narr>
 </top>
 
 
@@ -392,9 +470,11 @@ Who is Barbara Jordan?
 
 <num> Number: 240
 
+<title>
 <desc> Description:
 How many years ago did the ship Titanic sink?
 
+<narr>
 </top>
 
 
@@ -402,9 +482,11 @@ How many years ago did the ship Titanic sink?
 
 <num> Number: 241
 
+<title>
 <desc> Description:
 What is a caldera?
 
+<narr>
 </top>
 
 
@@ -412,9 +494,11 @@ What is a caldera?
 
 <num> Number: 242
 
+<title>
 <desc> Description:
 What was the name of the famous battle in 1836 between Texas and Mexico?
 
+<narr>
 </top>
 
 
@@ -422,9 +506,11 @@ What was the name of the famous battle in 1836 between Texas and Mexico?
 
 <num> Number: 243
 
+<title>
 <desc> Description:
 Where did the ukulele originate?
 
+<narr>
 </top>
 
 
@@ -432,9 +518,11 @@ Where did the ukulele originate?
 
 <num> Number: 244
 
+<title>
 <desc> Description:
 Who invented baseball?
 
+<narr>
 </top>
 
 
@@ -442,9 +530,11 @@ Who invented baseball?
 
 <num> Number: 245
 
+<title>
 <desc> Description:
 Where can you find the Venus flytrap?
 
+<narr>
 </top>
 
 
@@ -452,9 +542,11 @@ Where can you find the Venus flytrap?
 
 <num> Number: 246
 
+<title>
 <desc> Description:
 What did Vasco da Gama discover?
 
+<narr>
 </top>
 
 
@@ -462,9 +554,11 @@ What did Vasco da Gama discover?
 
 <num> Number: 247
 
+<title>
 <desc> Description:
 Who won the Battle of Gettysburg?
 
+<narr>
 </top>
 
 
@@ -472,9 +566,11 @@ Who won the Battle of Gettysburg?
 
 <num> Number: 248
 
+<title>
 <desc> Description:
 What is the largest snake in the world?
 
+<narr>
 </top>
 
 
@@ -482,9 +578,11 @@ What is the largest snake in the world?
 
 <num> Number: 249
 
+<title>
 <desc> Description:
 Where is the Valley of the Kings?
 
+<narr>
 </top>
 
 
@@ -492,9 +590,11 @@ Where is the Valley of the Kings?
 
 <num> Number: 250
 
+<title>
 <desc> Description:
 Where did the Maya people live?
 
+<narr>
 </top>
 
 
@@ -502,9 +602,11 @@ Where did the Maya people live?
 
 <num> Number: 251
 
+<title>
 <desc> Description:
 How many people live in Chile?
 
+<narr>
 </top>
 
 
@@ -512,9 +614,11 @@ How many people live in Chile?
 
 <num> Number: 252
 
+<title>
 <desc> Description:
 When was the first flush toilet invented?
 
+<narr>
 </top>
 
 
@@ -522,9 +626,11 @@ When was the first flush toilet invented?
 
 <num> Number: 253
 
+<title>
 <desc> Description:
 Who is William Wordsworth?
 
+<narr>
 </top>
 
 
@@ -532,9 +638,11 @@ Who is William Wordsworth?
 
 <num> Number: 254
 
+<title>
 <desc> Description:
 What is California's state bird?
 
+<narr>
 </top>
 
 
@@ -542,9 +650,11 @@ What is California's state bird?
 
 <num> Number: 255
 
+<title>
 <desc> Description:
 Who thought of teaching people to tie their shoe laces?
 
+<narr>
 </top>
 
 
@@ -552,9 +662,11 @@ Who thought of teaching people to tie their shoe laces?
 
 <num> Number: 256
 
+<title>
 <desc> Description:
 Who is buried in the great pyramid of Giza?
 
+<narr>
 </top>
 
 
@@ -562,9 +674,11 @@ Who is buried in the great pyramid of Giza?
 
 <num> Number: 257
 
+<title>
 <desc> Description:
 What do penguins eat?
 
+<narr>
 </top>
 
 
@@ -572,9 +686,11 @@ What do penguins eat?
 
 <num> Number: 258
 
+<title>
 <desc> Description:
 Where do lobsters like to live?
 
+<narr>
 </top>
 
 
@@ -582,9 +698,11 @@ Where do lobsters like to live?
 
 <num> Number: 259
 
+<title>
 <desc> Description:
 What are birds descendents of?
 
+<narr>
 </top>
 
 
@@ -592,9 +710,11 @@ What are birds descendents of?
 
 <num> Number: 260
 
+<title>
 <desc> Description:
 What does NAFTA stand for?
 
+<narr>
 </top>
 
 
@@ -602,9 +722,11 @@ What does NAFTA stand for?
 
 <num> Number: 261
 
+<title>
 <desc> Description:
 What company sells the most greeting cards?
 
+<narr>
 </top>
 
 
@@ -612,9 +734,11 @@ What company sells the most greeting cards?
 
 <num> Number: 262
 
+<title>
 <desc> Description:
 What is the name of the longest ruling dynasty of Japan?
 
+<narr>
 </top>
 
 
@@ -622,9 +746,11 @@ What is the name of the longest ruling dynasty of Japan?
 
 <num> Number: 263
 
+<title>
 <desc> Description:
 When was Babe Ruth born?
 
+<narr>
 </top>
 
 
@@ -632,9 +758,11 @@ When was Babe Ruth born?
 
 <num> Number: 264
 
+<title>
 <desc> Description:
 Who wrote the Farmer's Almanac?
 
+<narr>
 </top>
 
 
@@ -642,9 +770,11 @@ Who wrote the Farmer's Almanac?
 
 <num> Number: 265
 
+<title>
 <desc> Description:
 What's the farthest planet from the sun?
 
+<narr>
 </top>
 
 
@@ -652,9 +782,11 @@ What's the farthest planet from the sun?
 
 <num> Number: 266
 
+<title>
 <desc> Description:
 Where was Pythagoras born?
 
+<narr>
 </top>
 
 
@@ -662,9 +794,11 @@ Where was Pythagoras born?
 
 <num> Number: 267
 
+<title>
 <desc> Description:
 What is the name for clouds that produce rain?
 
+<narr>
 </top>
 
 
@@ -672,9 +806,11 @@ What is the name for clouds that produce rain?
 
 <num> Number: 268
 
+<title>
 <desc> Description:
 Who killed Caesar?
 
+<narr>
 </top>
 
 
@@ -682,9 +818,11 @@ Who killed Caesar?
 
 <num> Number: 269
 
+<title>
 <desc> Description:
 Who was Picasso?
 
+<narr>
 </top>
 
 
@@ -692,9 +830,11 @@ Who was Picasso?
 
 <num> Number: 270
 
+<title>
 <desc> Description:
 Where is the Orinoco?
 
+<narr>
 </top>
 
 
@@ -702,9 +842,11 @@ Where is the Orinoco?
 
 <num> Number: 271
 
+<title>
 <desc> Description:
 How tall is the giraffe?
 
+<narr>
 </top>
 
 
@@ -712,9 +854,11 @@ How tall is the giraffe?
 
 <num> Number: 272
 
+<title>
 <desc> Description:
 Where are there aborigines?
 
+<narr>
 </top>
 
 
@@ -722,9 +866,11 @@ Where are there aborigines?
 
 <num> Number: 273
 
+<title>
 <desc> Description:
 Who was the first U.S. president ever to resign?
 
+<narr>
 </top>
 
 
@@ -732,9 +878,11 @@ Who was the first U.S. president ever to resign?
 
 <num> Number: 274
 
+<title>
 <desc> Description:
 Who invented the game Scrabble?
 
+<narr>
 </top>
 
 
@@ -742,9 +890,11 @@ Who invented the game Scrabble?
 
 <num> Number: 275
 
+<title>
 <desc> Description:
 About how many soldiers died in World War II?
 
+<narr>
 </top>
 
 
@@ -752,9 +902,11 @@ About how many soldiers died in World War II?
 
 <num> Number: 276
 
+<title>
 <desc> Description:
 How much money does the Sultan of Brunei have?
 
+<narr>
 </top>
 
 
@@ -762,9 +914,11 @@ How much money does the Sultan of Brunei have?
 
 <num> Number: 277
 
+<title>
 <desc> Description:
 How large is Missouri's population?
 
+<narr>
 </top>
 
 
@@ -772,9 +926,11 @@ How large is Missouri's population?
 
 <num> Number: 278
 
+<title>
 <desc> Description:
 What was the death toll at the eruption of Mount Pinatubo?
 
+<narr>
 </top>
 
 
@@ -782,9 +938,11 @@ What was the death toll at the eruption of Mount Pinatubo?
 
 <num> Number: 279
 
+<title>
 <desc> Description:
 Who was Lacan?
 
+<narr>
 </top>
 
 
@@ -792,9 +950,11 @@ Who was Lacan?
 
 <num> Number: 280
 
+<title>
 <desc> Description:
 What's the tallest building in New York City?
 
+<narr>
 </top>
 
 
@@ -802,9 +962,11 @@ What's the tallest building in New York City?
 
 <num> Number: 281
 
+<title>
 <desc> Description:
 When did Geraldine Ferraro run for vice president?
 
+<narr>
 </top>
 
 
@@ -812,9 +974,11 @@ When did Geraldine Ferraro run for vice president?
 
 <num> Number: 282
 
+<title>
 <desc> Description:
 What do ladybugs eat?
 
+<narr>
 </top>
 
 
@@ -822,9 +986,11 @@ What do ladybugs eat?
 
 <num> Number: 283
 
+<title>
 <desc> Description:
 Where is Ayer's rock?
 
+<narr>
 </top>
 
 
@@ -832,9 +998,11 @@ Where is Ayer's rock?
 
 <num> Number: 284
 
+<title>
 <desc> Description:
 What is the life expectancy of an elephant?
 
+<narr>
 </top>
 
 
@@ -842,9 +1010,11 @@ What is the life expectancy of an elephant?
 
 <num> Number: 285
 
+<title>
 <desc> Description:
 When was the first railroad from the east coast to the west coast completed?
 
+<narr>
 </top>
 
 
@@ -852,9 +1022,11 @@ When was the first railroad from the east coast to the west coast completed?
 
 <num> Number: 286
 
+<title>
 <desc> Description:
 What is the nickname of Pennsylvania?
 
+<narr>
 </top>
 
 
@@ -862,9 +1034,11 @@ What is the nickname of Pennsylvania?
 
 <num> Number: 287
 
+<title>
 <desc> Description:
 Who is Desmond Tutu?
 
+<narr>
 </top>
 
 
@@ -872,9 +1046,11 @@ Who is Desmond Tutu?
 
 <num> Number: 288
 
+<title>
 <desc> Description:
 How fast can a Corvette go?
 
+<narr>
 </top>
 
 
@@ -882,9 +1058,11 @@ How fast can a Corvette go?
 
 <num> Number: 289
 
+<title>
 <desc> Description:
 What are John C. Calhoun and Henry Clay known as?
 
+<narr>
 </top>
 
 
@@ -892,9 +1070,11 @@ What are John C. Calhoun and Henry Clay known as?
 
 <num> Number: 290
 
+<title>
 <desc> Description:
 When was Hurricane Hugo?
 
+<narr>
 </top>
 
 
@@ -902,9 +1082,11 @@ When was Hurricane Hugo?
 
 <num> Number: 291
 
+<title>
 <desc> Description:
 When did the Carolingian period begin? 
 
+<narr>
 </top>
 
 
@@ -912,9 +1094,11 @@ When did the Carolingian period begin?
 
 <num> Number: 292
 
+<title>
 <desc> Description:
 How big is Australia?
 
+<narr>
 </top>
 
 
@@ -922,9 +1106,11 @@ How big is Australia?
 
 <num> Number: 293
 
+<title>
 <desc> Description:
 Who found Hawaii?
 
+<narr>
 </top>
 
 
@@ -932,9 +1118,11 @@ Who found Hawaii?
 
 <num> Number: 294
 
+<title>
 <desc> Description:
 Who is the richest person in the world?
 
+<narr>
 </top>
 
 
@@ -942,9 +1130,11 @@ Who is the richest person in the world?
 
 <num> Number: 295
 
+<title>
 <desc> Description:
 How many films did Ingmar Bergman make?
 
+<narr>
 </top>
 
 
@@ -952,9 +1142,11 @@ How many films did Ingmar Bergman make?
 
 <num> Number: 296
 
+<title>
 <desc> Description:
 What is the federal minimum wage?
 
+<narr>
 </top>
 
 
@@ -962,9 +1154,11 @@ What is the federal minimum wage?
 
 <num> Number: 297
 
+<title>
 <desc> Description:
 What did brontosauruses eat?
 
+<narr>
 </top>
 
 
@@ -972,9 +1166,11 @@ What did brontosauruses eat?
 
 <num> Number: 298
 
+<title>
 <desc> Description:
 What is California's state tree?
 
+<narr>
 </top>
 
 
@@ -982,9 +1178,11 @@ What is California's state tree?
 
 <num> Number: 299
 
+<title>
 <desc> Description:
 How many types of lemurs are there?
 
+<narr>
 </top>
 
 
@@ -992,9 +1190,11 @@ How many types of lemurs are there?
 
 <num> Number: 300
 
+<title>
 <desc> Description:
 What is leukemia?
 
+<narr>
 </top>
 
 
@@ -1002,9 +1202,11 @@ What is leukemia?
 
 <num> Number: 301
 
+<title>
 <desc> Description:
 Who was the first coach of the Cleveland Browns?
 
+<narr>
 </top>
 
 
@@ -1012,9 +1214,11 @@ Who was the first coach of the Cleveland Browns?
 
 <num> Number: 302
 
+<title>
 <desc> Description:
 How many people die from snakebite poisoning in the U.S. per year?
 
+<narr>
 </top>
 
 
@@ -1022,9 +1226,11 @@ How many people die from snakebite poisoning in the U.S. per year?
 
 <num> Number: 303
 
+<title>
 <desc> Description:
 Who is the prophet of the religion of Islam?
 
+<narr>
 </top>
 
 
@@ -1032,9 +1238,11 @@ Who is the prophet of the religion of Islam?
 
 <num> Number: 304
 
+<title>
 <desc> Description:
 Where is Tornado Alley?
 
+<narr>
 </top>
 
 
@@ -1042,9 +1250,11 @@ Where is Tornado Alley?
 
 <num> Number: 305
 
+<title>
 <desc> Description:
 What is molybdenum?
 
+<narr>
 </top>
 
 
@@ -1052,9 +1262,11 @@ What is molybdenum?
 
 <num> Number: 306
 
+<title>
 <desc> Description:
 Where do hyenas live?
 
+<narr>
 </top>
 
 
@@ -1062,9 +1274,11 @@ Where do hyenas live?
 
 <num> Number: 307
 
+<title>
 <desc> Description:
 Who is Peter Weir?
 
+<narr>
 </top>
 
 
@@ -1072,9 +1286,11 @@ Who is Peter Weir?
 
 <num> Number: 308
 
+<title>
 <desc> Description:
 How many home runs did Babe Ruth hit in his lifetime?
 
+<narr>
 </top>
 
 
@@ -1082,9 +1298,11 @@ How many home runs did Babe Ruth hit in his lifetime?
 
 <num> Number: 309
 
+<title>
 <desc> Description:
 Who was Buffalo Bill?
 
+<narr>
 </top>
 
 
@@ -1092,9 +1310,11 @@ Who was Buffalo Bill?
 
 <num> Number: 310
 
+<title>
 <desc> Description:
 Where is the bridge over the river Kwai?
 
+<narr>
 </top>
 
 
@@ -1102,9 +1322,11 @@ Where is the bridge over the river Kwai?
 
 <num> Number: 311
 
+<title>
 <desc> Description:
 How many Superbowls have the 49ers won?
 
+<narr>
 </top>
 
 
@@ -1112,9 +1334,11 @@ How many Superbowls have the 49ers won?
 
 <num> Number: 312
 
+<title>
 <desc> Description:
 Who was the architect of Central Park?
 
+<narr>
 </top>
 
 
@@ -1122,9 +1346,11 @@ Who was the architect of Central Park?
 
 <num> Number: 313
 
+<title>
 <desc> Description:
 Who invented paper?
 
+<narr>
 </top>
 
 
@@ -1132,9 +1358,11 @@ Who invented paper?
 
 <num> Number: 314
 
+<title>
 <desc> Description:
 What is Alice Cooper's real name?
 
+<narr>
 </top>
 
 
@@ -1142,9 +1370,11 @@ What is Alice Cooper's real name?
 
 <num> Number: 315
 
+<title>
 <desc> Description:
 Why can't ostriches fly?
 
+<narr>
 </top>
 
 
@@ -1152,9 +1382,11 @@ Why can't ostriches fly?
 
 <num> Number: 316
 
+<title>
 <desc> Description:
 Name a tiger that is extinct?
 
+<narr>
 </top>
 
 
@@ -1162,9 +1394,11 @@ Name a tiger that is extinct?
 
 <num> Number: 317
 
+<title>
 <desc> Description:
 Where is Guam?
 
+<narr>
 </top>
 
 
@@ -1172,9 +1406,11 @@ Where is Guam?
 
 <num> Number: 318
 
+<title>
 <desc> Description:
 Where did Bill Gates go to college?
 
+<narr>
 </top>
 
 
@@ -1182,9 +1418,11 @@ Where did Bill Gates go to college?
 
 <num> Number: 319
 
+<title>
 <desc> Description:
 How many continents are there?
 
+<narr>
 </top>
 
 
@@ -1192,9 +1430,11 @@ How many continents are there?
 
 <num> Number: 320
 
+<title>
 <desc> Description:
 Where is Romania located?
 
+<narr>
 </top>
 
 
@@ -1202,9 +1442,11 @@ Where is Romania located?
 
 <num> Number: 321
 
+<title>
 <desc> Description:
 When was the De Beers company founded?
 
+<narr>
 </top>
 
 
@@ -1212,9 +1454,11 @@ When was the De Beers company founded?
 
 <num> Number: 322
 
+<title>
 <desc> Description:
 Who was the first king of England?
 
+<narr>
 </top>
 
 
@@ -1222,9 +1466,11 @@ Who was the first king of England?
 
 <num> Number: 323
 
+<title>
 <desc> Description:
 Who is the richest woman in the world?
 
+<narr>
 </top>
 
 
@@ -1232,9 +1478,11 @@ Who is the richest woman in the world?
 
 <num> Number: 324
 
+<title>
 <desc> Description:
 What is California's capital?
 
+<narr>
 </top>
 
 
@@ -1242,9 +1490,11 @@ What is California's capital?
 
 <num> Number: 325
 
+<title>
 <desc> Description:
 What is the size of Argentina?
 
+<narr>
 </top>
 
 
@@ -1252,9 +1502,11 @@ What is the size of Argentina?
 
 <num> Number: 326
 
+<title>
 <desc> Description:
 What do manatees eat?
 
+<narr>
 </top>
 
 
@@ -1262,9 +1514,11 @@ What do manatees eat?
 
 <num> Number: 327
 
+<title>
 <desc> Description:
 When was the San Francisco fire?
 
+<narr>
 </top>
 
 
@@ -1272,9 +1526,11 @@ When was the San Francisco fire?
 
 <num> Number: 328
 
+<title>
 <desc> Description:
 What was the man's name who was killed in a duel with Aaron Burr?
 
+<narr>
 </top>
 
 
@@ -1282,9 +1538,11 @@ What was the man's name who was killed in a duel with Aaron Burr?
 
 <num> Number: 329
 
+<title>
 <desc> Description:
 What is the population of Mexico?
 
+<narr>
 </top>
 
 
@@ -1292,9 +1550,11 @@ What is the population of Mexico?
 
 <num> Number: 330
 
+<title>
 <desc> Description:
 When was the slinky invented?
 
+<narr>
 </top>
 
 
@@ -1302,9 +1562,11 @@ When was the slinky invented?
 
 <num> Number: 331
 
+<title>
 <desc> Description:
 How hot is the core of the earth?
 
+<narr>
 </top>
 
 
@@ -1312,9 +1574,11 @@ How hot is the core of the earth?
 
 <num> Number: 332
 
+<title>
 <desc> Description:
 How long would it take to get from Earth to Mars?
 
+<narr>
 </top>
 
 
@@ -1322,9 +1586,11 @@ How long would it take to get from Earth to Mars?
 
 <num> Number: 333
 
+<title>
 <desc> Description:
 What is the name of the second space shuttle?
 
+<narr>
 </top>
 
 
@@ -1332,9 +1598,11 @@ What is the name of the second space shuttle?
 
 <num> Number: 334
 
+<title>
 <desc> Description:
 How old is the sun?
 
+<narr>
 </top>
 
 
@@ -1342,9 +1610,11 @@ How old is the sun?
 
 <num> Number: 335
 
+<title>
 <desc> Description:
 What is the wingspan of a condor?
 
+<narr>
 </top>
 
 
@@ -1352,9 +1622,11 @@ What is the wingspan of a condor?
 
 <num> Number: 336
 
+<title>
 <desc> Description:
 When was Microsoft established?
 
+<narr>
 </top>
 
 
@@ -1362,9 +1634,11 @@ When was Microsoft established?
 
 <num> Number: 337
 
+<title>
 <desc> Description:
 What's the average salary of a professional baseball player?
 
+<narr>
 </top>
 
 
@@ -1372,9 +1646,11 @@ What's the average salary of a professional baseball player?
 
 <num> Number: 338
 
+<title>
 <desc> Description:
 Who invented basketball?
 
+<narr>
 </top>
 
 
@@ -1382,9 +1658,11 @@ Who invented basketball?
 
 <num> Number: 339
 
+<title>
 <desc> Description:
 What was the ball game of ancient Mayans called?
 
+<narr>
 </top>
 
 
@@ -1392,9 +1670,11 @@ What was the ball game of ancient Mayans called?
 
 <num> Number: 340
 
+<title>
 <desc> Description:
 Who is Zebulon Pike?
 
+<narr>
 </top>
 
 
@@ -1402,9 +1682,11 @@ Who is Zebulon Pike?
 
 <num> Number: 341
 
+<title>
 <desc> Description:
 How wide is the Atlantic Ocean?
 
+<narr>
 </top>
 
 
@@ -1412,9 +1694,11 @@ How wide is the Atlantic Ocean?
 
 <num> Number: 342
 
+<title>
 <desc> Description:
 What effect does a prism have on light?
 
+<narr>
 </top>
 
 
@@ -1422,9 +1706,11 @@ What effect does a prism have on light?
 
 <num> Number: 343
 
+<title>
 <desc> Description:
 What's the longest river in the world?
 
+<narr>
 </top>
 
 
@@ -1432,9 +1718,11 @@ What's the longest river in the world?
 
 <num> Number: 344
 
+<title>
 <desc> Description:
 Who was considered to be the father of psychology?
 
+<narr>
 </top>
 
 
@@ -1442,9 +1730,11 @@ Who was considered to be the father of psychology?
 
 <num> Number: 345
 
+<title>
 <desc> Description:
 What is the population of Kansas?
 
+<narr>
 </top>
 
 
@@ -1452,9 +1742,11 @@ What is the population of Kansas?
 
 <num> Number: 346
 
+<title>
 <desc> Description:
 Who is Langston Hughes?
 
+<narr>
 </top>
 
 
@@ -1462,9 +1754,11 @@ Who is Langston Hughes?
 
 <num> Number: 347
 
+<title>
 <desc> Description:
 Who was Monet?
 
+<narr>
 </top>
 
 
@@ -1472,9 +1766,11 @@ Who was Monet?
 
 <num> Number: 348
 
+<title>
 <desc> Description:
 Who built the first pyramid?
 
+<narr>
 </top>
 
 
@@ -1482,9 +1778,11 @@ Who built the first pyramid?
 
 <num> Number: 349
 
+<title>
 <desc> Description:
 What is the best-selling book of all time?
 
+<narr>
 </top>
 
 
@@ -1492,9 +1790,11 @@ What is the best-selling book of all time?
 
 <num> Number: 350
 
+<title>
 <desc> Description:
 How many Stradivarius violins were ever made?
 
+<narr>
 </top>
 
 
@@ -1502,9 +1802,11 @@ How many Stradivarius violins were ever made?
 
 <num> Number: 351
 
+<title>
 <desc> Description:
 Who is Charles Lindbergh?
 
+<narr>
 </top>
 
 
@@ -1512,9 +1814,11 @@ Who is Charles Lindbergh?
 
 <num> Number: 352
 
+<title>
 <desc> Description:
 Who invented the game bowling?
 
+<narr>
 </top>
 
 
@@ -1522,9 +1826,11 @@ Who invented the game bowling?
 
 <num> Number: 353
 
+<title>
 <desc> Description:
 The numbering system we use today was introduced to the western world by what culture?
 
+<narr>
 </top>
 
 
@@ -1532,9 +1838,11 @@ The numbering system we use today was introduced to the western world by what cu
 
 <num> Number: 354
 
+<title>
 <desc> Description:
 What is a nematode?
 
+<narr>
 </top>
 
 
@@ -1542,9 +1850,11 @@ What is a nematode?
 
 <num> Number: 355
 
+<title>
 <desc> Description:
 What is the most expensive car in the world?
 
+<narr>
 </top>
 
 
@@ -1552,9 +1862,11 @@ What is the most expensive car in the world?
 
 <num> Number: 356
 
+<title>
 <desc> Description:
 Where does chocolate come from?
 
+<narr>
 </top>
 
 
@@ -1562,9 +1874,11 @@ Where does chocolate come from?
 
 <num> Number: 357
 
+<title>
 <desc> Description:
 What state in the United States covers the largest area?
 
+<narr>
 </top>
 
 
@@ -1572,9 +1886,11 @@ What state in the United States covers the largest area?
 
 <num> Number: 358
 
+<title>
 <desc> Description:
 What is a meerkat?
 
+<narr>
 </top>
 
 
@@ -1582,9 +1898,11 @@ What is a meerkat?
 
 <num> Number: 359
 
+<title>
 <desc> Description:
 Where is Melbourne?
 
+<narr>
 </top>
 
 
@@ -1592,9 +1910,11 @@ Where is Melbourne?
 
 <num> Number: 360
 
+<title>
 <desc> Description:
 How much in miles is a ten K run?
 
+<narr>
 </top>
 
 
@@ -1602,9 +1922,11 @@ How much in miles is a ten K run?
 
 <num> Number: 361
 
+<title>
 <desc> Description:
 How hot does the inside of an active volcano get?
 
+<narr>
 </top>
 
 
@@ -1612,9 +1934,11 @@ How hot does the inside of an active volcano get?
 
 <num> Number: 362
 
+<title>
 <desc> Description:
 What is the capital of Burkina Faso?
 
+<narr>
 </top>
 
 
@@ -1622,9 +1946,11 @@ What is the capital of Burkina Faso?
 
 <num> Number: 363
 
+<title>
 <desc> Description:
 What is the capital of Haiti?
 
+<narr>
 </top>
 
 
@@ -1632,9 +1958,11 @@ What is the capital of Haiti?
 
 <num> Number: 364
 
+<title>
 <desc> Description:
 How many people lived in Nebraska in the mid 1980s?
 
+<narr>
 </top>
 
 
@@ -1642,9 +1970,11 @@ How many people lived in Nebraska in the mid 1980s?
 
 <num> Number: 365
 
+<title>
 <desc> Description:
 What is the population of Mozambique?	
 
+<narr>
 </top>
 
 
@@ -1652,9 +1982,11 @@ What is the population of Mozambique?
 
 <num> Number: 366
 
+<title>
 <desc> Description:
 Who won the Superbowl in 1982?
 
+<narr>
 </top>
 
 
@@ -1662,9 +1994,11 @@ Who won the Superbowl in 1982?
 
 <num> Number: 367
 
+<title>
 <desc> Description:
 What is Martin Luther King Jr.'s real birthday?
 
+<narr>
 </top>
 
 
@@ -1672,9 +2006,11 @@ What is Martin Luther King Jr.'s real birthday?
 
 <num> Number: 368
 
+<title>
 <desc> Description:
 Where is Trinidad?
 
+<narr>
 </top>
 
 
@@ -1682,9 +2018,11 @@ Where is Trinidad?
 
 <num> Number: 369
 
+<title>
 <desc> Description:
 Where did the Inuits live?
 
+<narr>
 </top>
 
 
@@ -1692,9 +2030,11 @@ Where did the Inuits live?
 
 <num> Number: 370
 
+<title>
 <desc> Description:
 What is the most common cancer?
 
+<narr>
 </top>
 
 
@@ -1702,9 +2042,11 @@ What is the most common cancer?
 
 <num> Number: 371
 
+<title>
 <desc> Description:
 A corgi is a kind of what?
 
+<narr>
 </top>
 
 
@@ -1712,9 +2054,11 @@ A corgi is a kind of what?
 
 <num> Number: 372
 
+<title>
 <desc> Description:
 When was the Triangle Shirtwaist fire?
 
+<narr>
 </top>
 
 
@@ -1722,9 +2066,11 @@ When was the Triangle Shirtwaist fire?
 
 <num> Number: 373
 
+<title>
 <desc> Description:
 Where is the Kalahari desert?
 
+<narr>
 </top>
 
 
@@ -1732,9 +2078,11 @@ Where is the Kalahari desert?
 
 <num> Number: 374
 
+<title>
 <desc> Description:
 What is porphyria?
 
+<narr>
 </top>
 
 
@@ -1742,9 +2090,11 @@ What is porphyria?
 
 <num> Number: 375
 
+<title>
 <desc> Description:
 What ocean did the Titanic sink in?
 
+<narr>
 </top>
 
 
@@ -1752,9 +2102,11 @@ What ocean did the Titanic sink in?
 
 <num> Number: 376
 
+<title>
 <desc> Description:
 Who was the 33rd president of the United States?
 
+<narr>
 </top>
 
 
@@ -1762,9 +2114,11 @@ Who was the 33rd president of the United States?
 
 <num> Number: 377
 
+<title>
 <desc> Description:
 At what speed does the Earth revolve around the sun?
 
+<narr>
 </top>
 
 
@@ -1772,9 +2126,11 @@ At what speed does the Earth revolve around the sun?
 
 <num> Number: 378
 
+<title>
 <desc> Description:
 Who is the emperor of Japan?
 
+<narr>
 </top>
 
 
@@ -1782,9 +2138,11 @@ Who is the emperor of Japan?
 
 <num> Number: 379
 
+<title>
 <desc> Description:
 How big is our galaxy in diameter?
 
+<narr>
 </top>
 
 
@@ -1792,9 +2150,11 @@ How big is our galaxy in diameter?
 
 <num> Number: 380
 
+<title>
 <desc> Description:
 What language is mostly spoken in Brazil?
 
+<narr>
 </top>
 
 
@@ -1802,9 +2162,11 @@ What language is mostly spoken in Brazil?
 
 <num> Number: 381
 
+<title>
 <desc> Description:
 Who assassinated President McKinley?
 
+<narr>
 </top>
 
 
@@ -1812,9 +2174,11 @@ Who assassinated President McKinley?
 
 <num> Number: 382
 
+<title>
 <desc> Description:
 When did Muhammad live?
 
+<narr>
 </top>
 
 
@@ -1822,9 +2186,11 @@ When did Muhammad live?
 
 <num> Number: 383
 
+<title>
 <desc> Description:
 What is the largest variety of cactus?
 
+<narr>
 </top>
 
 
@@ -1832,9 +2198,11 @@ What is the largest variety of cactus?
 
 <num> Number: 384
 
+<title>
 <desc> Description:
 Who invented the radio?
 
+<narr>
 </top>
 
 
@@ -1842,9 +2210,11 @@ Who invented the radio?
 
 <num> Number: 385
 
+<title>
 <desc> Description:
 Where are zebras most likely found?
 
+<narr>
 </top>
 
 
@@ -1852,9 +2222,11 @@ Where are zebras most likely found?
 
 <num> Number: 386
 
+<title>
 <desc> Description:
 What is anorexia nervosa?
 
+<narr>
 </top>
 
 
@@ -1862,9 +2234,11 @@ What is anorexia nervosa?
 
 <num> Number: 387
 
+<title>
 <desc> Description:
 What year did Montana become a state? 
 
+<narr>
 </top>
 
 
@@ -1872,9 +2246,11 @@ What year did Montana become a state?
 
 <num> Number: 388
 
+<title>
 <desc> Description:
 What were the names of the three ships used by Columbus?
 
+<narr>
 </top>
 
 
@@ -1882,9 +2258,11 @@ What were the names of the three ships used by Columbus?
 
 <num> Number: 389
 
+<title>
 <desc> Description:
 Who was the 21st U.S. President?
 
+<narr>
 </top>
 
 
@@ -1892,9 +2270,11 @@ Who was the 21st U.S. President?
 
 <num> Number: 390
 
+<title>
 <desc> Description:
 Where was John Adams born?
 
+<narr>
 </top>
 
 
@@ -1902,9 +2282,11 @@ Where was John Adams born?
 
 <num> Number: 391
 
+<title>
 <desc> Description:
 Who painted Olympia?
 
+<narr>
 </top>
 
 
@@ -1912,9 +2294,11 @@ Who painted Olympia?
 
 <num> Number: 392
 
+<title>
 <desc> Description:
 Who was Quetzalcoatl?
 
+<narr>
 </top>
 
 
@@ -1922,9 +2306,11 @@ Who was Quetzalcoatl?
 
 <num> Number: 393
 
+<title>
 <desc> Description:
 Where is your corpus callosum?
 
+<narr>
 </top>
 
 
@@ -1932,9 +2318,11 @@ Where is your corpus callosum?
 
 <num> Number: 394
 
+<title>
 <desc> Description:
 What is the longest word in the English language?
 
+<narr>
 </top>
 
 
@@ -1942,9 +2330,11 @@ What is the longest word in the English language?
 
 <num> Number: 395
 
+<title>
 <desc> Description:
 What is saltpeter?
 
+<narr>
 </top>
 
 
@@ -1952,9 +2342,11 @@ What is saltpeter?
 
 <num> Number: 396
 
+<title>
 <desc> Description:
 Who invented silly putty?
 
+<narr>
 </top>
 
 
@@ -1962,9 +2354,11 @@ Who invented silly putty?
 
 <num> Number: 397
 
+<title>
 <desc> Description:
 When was the Brandenburg Gate in Berlin built?
 
+<narr>
 </top>
 
 
@@ -1972,9 +2366,11 @@ When was the Brandenburg Gate in Berlin built?
 
 <num> Number: 398
 
+<title>
 <desc> Description:
 When is Boxing Day?
 
+<narr>
 </top>
 
 
@@ -1982,9 +2378,11 @@ When is Boxing Day?
 
 <num> Number: 399
 
+<title>
 <desc> Description:
 What is the exchange rate between England and the U.S.?
 
+<narr>
 </top>
 
 
@@ -1992,9 +2390,11 @@ What is the exchange rate between England and the U.S.?
 
 <num> Number: 400
 
+<title>
 <desc> Description:
 What is the name of the Jewish alphabet?
 
+<narr>
 </top>
 
 
@@ -2002,9 +2402,11 @@ What is the name of the Jewish alphabet?
 
 <num> Number: 401
 
+<title>
 <desc> Description:
 Who was Maria Theresa?
 
+<narr>
 </top>
 
 
@@ -2012,9 +2414,11 @@ Who was Maria Theresa?
 
 <num> Number: 402
 
+<title>
 <desc> Description:
 What nationality was Jackson Pollock?
 
+<narr>
 </top>
 
 
@@ -2022,9 +2426,11 @@ What nationality was Jackson Pollock?
 
 <num> Number: 403
 
+<title>
 <desc> Description:
 Tell me what city the Kentucky Horse Park is near?
 
+<narr>
 </top>
 
 
@@ -2032,9 +2438,11 @@ Tell me what city the Kentucky Horse Park is near?
 
 <num> Number: 404
 
+<title>
 <desc> Description:
 What is the state nickname of Mississippi?
 
+<narr>
 </top>
 
 
@@ -2042,9 +2450,11 @@ What is the state nickname of Mississippi?
 
 <num> Number: 405
 
+<title>
 <desc> Description:
 Who used to make cars with rotary engines?
 
+<narr>
 </top>
 
 
@@ -2052,9 +2462,11 @@ Who used to make cars with rotary engines?
 
 <num> Number: 406
 
+<title>
 <desc> Description:
 What is the tallest mountain?
 
+<narr>
 </top>
 
 
@@ -2062,9 +2474,11 @@ What is the tallest mountain?
 
 <num> Number: 407
 
+<title>
 <desc> Description:
 What is Black Hills, South Dakota most famous for?
 
+<narr>
 </top>
 
 
@@ -2072,9 +2486,11 @@ What is Black Hills, South Dakota most famous for?
 
 <num> Number: 408
 
+<title>
 <desc> Description:
 What kind of animal was Winnie the Pooh?
 
+<narr>
 </top>
 
 
@@ -2082,9 +2498,11 @@ What kind of animal was Winnie the Pooh?
 
 <num> Number: 409
 
+<title>
 <desc> Description:
 What's another name for aspartame?
 
+<narr>
 </top>
 
 
@@ -2092,9 +2510,11 @@ What's another name for aspartame?
 
 <num> Number: 410
 
+<title>
 <desc> Description:
 What does hazmat stand for?
 
+<narr>
 </top>
 
 
@@ -2102,9 +2522,11 @@ What does hazmat stand for?
 
 <num> Number: 411
 
+<title>
 <desc> Description:
 What tourist attractions are there in Reims?
 
+<narr>
 </top>
 
 
@@ -2112,9 +2534,11 @@ What tourist attractions are there in Reims?
 
 <num> Number: 412
 
+<title>
 <desc> Description:
 Name a film in which Jude Law acted.
 
+<narr>
 </top>
 
 
@@ -2122,9 +2546,11 @@ Name a film in which Jude Law acted.
 
 <num> Number: 413
 
+<title>
 <desc> Description:
 Where are the U.S. headquarters for Procter & Gamble?
 
+<narr>
 </top>
 
 
@@ -2132,9 +2558,11 @@ Where are the U.S. headquarters for Procter & Gamble?
 
 <num> Number: 414
 
+<title>
 <desc> Description:
 What's the formal name for Lou Gehrig's disease?
 
+<narr>
 </top>
 
 
@@ -2142,9 +2570,11 @@ What's the formal name for Lou Gehrig's disease?
 
 <num> Number: 415
 
+<title>
 <desc> Description:
 What does CNN stand for?
 
+<narr>
 </top>
 
 
@@ -2152,9 +2582,11 @@ What does CNN stand for?
 
 <num> Number: 416
 
+<title>
 <desc> Description:
 When was CNN's first broadcast?
 
+<narr>
 </top>
 
 
@@ -2162,9 +2594,11 @@ When was CNN's first broadcast?
 
 <num> Number: 417
 
+<title>
 <desc> Description:
 Who owns CNN?
 
+<narr>
 </top>
 
 
@@ -2172,9 +2606,11 @@ Who owns CNN?
 
 <num> Number: 418
 
+<title>
 <desc> Description:
 What is the name of a Salt Lake City newspaper?
 
+<narr>
 </top>
 
 
@@ -2182,9 +2618,11 @@ What is the name of a Salt Lake City newspaper?
 
 <num> Number: 419
 
+<title>
 <desc> Description:
 Who was Jane Goodall?
 
+<narr>
 </top>
 
 
@@ -2192,9 +2630,11 @@ Who was Jane Goodall?
 
 <num> Number: 420
 
+<title>
 <desc> Description:
 What is pandoro?
 
+<narr>
 </top>
 
 
@@ -2202,9 +2642,11 @@ What is pandoro?
 
 <num> Number: 421
 
+<title>
 <desc> Description:
 What is thalassemia?
 
+<narr>
 </top>
 
 
@@ -2212,9 +2654,11 @@ What is thalassemia?
 
 <num> Number: 422
 
+<title>
 <desc> Description:
 When did Princess Diana and Prince Charles get married?
 
+<narr>
 </top>
 
 
@@ -2222,9 +2666,11 @@ When did Princess Diana and Prince Charles get married?
 
 <num> Number: 423
 
+<title>
 <desc> Description:
 What soft drink contains the largest amount of caffeine?
 
+<narr>
 </top>
 
 
@@ -2232,9 +2678,11 @@ What soft drink contains the largest amount of caffeine?
 
 <num> Number: 424
 
+<title>
 <desc> Description:
 What do you call a group of geese?
 
+<narr>
 </top>
 
 
@@ -2242,9 +2690,11 @@ What do you call a group of geese?
 
 <num> Number: 425
 
+<title>
 <desc> Description:
 How many months does a normal human pregnancy last?
 
+<narr>
 </top>
 
 
@@ -2252,9 +2702,11 @@ How many months does a normal human pregnancy last?
 
 <num> Number: 426
 
+<title>
 <desc> Description:
 What format was VHS's main competition?
 
+<narr>
 </top>
 
 
@@ -2262,9 +2714,11 @@ What format was VHS's main competition?
 
 <num> Number: 427
 
+<title>
 <desc> Description:
 What culture developed the idea of potlatch?
 
+<narr>
 </top>
 
 
@@ -2272,9 +2726,11 @@ What culture developed the idea of potlatch?
 
 <num> Number: 428
 
+<title>
 <desc> Description:
 Where is Logan International located?
 
+<narr>
 </top>
 
 
@@ -2282,9 +2738,11 @@ Where is Logan International located?
 
 <num> Number: 429
 
+<title>
 <desc> Description:
 What university was Woodrow Wilson President of?
 
+<narr>
 </top>
 
 
@@ -2292,9 +2750,11 @@ What university was Woodrow Wilson President of?
 
 <num> Number: 430
 
+<title>
 <desc> Description:
 Where is Basque country located?
 
+<narr>
 </top>
 
 
@@ -2302,9 +2762,11 @@ Where is Basque country located?
 
 <num> Number: 431
 
+<title>
 <desc> Description:
 What does CPR stand for?
 
+<narr>
 </top>
 
 
@@ -2312,9 +2774,11 @@ What does CPR stand for?
 
 <num> Number: 432
 
+<title>
 <desc> Description:
 What state produces the best lobster to eat?
 
+<narr>
 </top>
 
 
@@ -2322,9 +2786,11 @@ What state produces the best lobster to eat?
 
 <num> Number: 433
 
+<title>
 <desc> Description:
 Who was Darth Vader's son?
 
+<narr>
 </top>
 
 
@@ -2332,9 +2798,11 @@ Who was Darth Vader's son?
 
 <num> Number: 434
 
+<title>
 <desc> Description:
 What is a nanometer?
 
+<narr>
 </top>
 
 
@@ -2342,9 +2810,11 @@ What is a nanometer?
 
 <num> Number: 435
 
+<title>
 <desc> Description:
 How did Bob Marley die?
 
+<narr>
 </top>
 
 
@@ -2352,9 +2822,11 @@ How did Bob Marley die?
 
 <num> Number: 436
 
+<title>
 <desc> Description:
 What instrument is Ray Charles best known for playing?
 
+<narr>
 </top>
 
 
@@ -2362,9 +2834,11 @@ What instrument is Ray Charles best known for playing?
 
 <num> Number: 437
 
+<title>
 <desc> Description:
 What is Dick Clark's birthday?
 
+<narr>
 </top>
 
 
@@ -2372,9 +2846,11 @@ What is Dick Clark's birthday?
 
 <num> Number: 438
 
+<title>
 <desc> Description:
 What is titanium?
 
+<narr>
 </top>
 
 
@@ -2382,9 +2858,11 @@ What is titanium?
 
 <num> Number: 439
 
+<title>
 <desc> Description:
 What is "Nine Inch Nails"?
 
+<narr>
 </top>
 
 
@@ -2392,9 +2870,11 @@ What is "Nine Inch Nails"?
 
 <num> Number: 440
 
+<title>
 <desc> Description:
 Where was Poe born?
 
+<narr>
 </top>
 
 
@@ -2402,9 +2882,11 @@ Where was Poe born?
 
 <num> Number: 441
 
+<title>
 <desc> Description:
 What king was forced to agree to the Magna Carta?
 
+<narr>
 </top>
 
 
@@ -2412,9 +2894,11 @@ What king was forced to agree to the Magna Carta?
 
 <num> Number: 442
 
+<title>
 <desc> Description:
 What's the name of Pittsburgh's baseball team?
 
+<narr>
 </top>
 
 
@@ -2422,9 +2906,11 @@ What's the name of Pittsburgh's baseball team?
 
 <num> Number: 443
 
+<title>
 <desc> Description:
 What is the chemical formula/name for napalm?
 
+<narr>
 </top>
 
 
@@ -2432,9 +2918,11 @@ What is the chemical formula/name for napalm?
 
 <num> Number: 444
 
+<title>
 <desc> Description:
 Where is the location of the Orange Bowl?
 
+<narr>
 </top>
 
 
@@ -2442,9 +2930,11 @@ Where is the location of the Orange Bowl?
 
 <num> Number: 445
 
+<title>
 <desc> Description:
 When was the last major eruption of Mount St. Helens?
 
+<narr>
 </top>
 
 
@@ -2452,9 +2942,11 @@ When was the last major eruption of Mount St. Helens?
 
 <num> Number: 446
 
+<title>
 <desc> Description:
 What is the abbreviation for Original Equipment Manufacturer?
 
+<narr>
 </top>
 
 
@@ -2462,9 +2954,11 @@ What is the abbreviation for Original Equipment Manufacturer?
 
 <num> Number: 447
 
+<title>
 <desc> Description:
 What is anise?
 
+<narr>
 </top>
 
 
@@ -2472,9 +2966,11 @@ What is anise?
 
 <num> Number: 448
 
+<title>
 <desc> Description:
 Where is Rider College located?
 
+<narr>
 </top>
 
 
@@ -2482,9 +2978,11 @@ Where is Rider College located?
 
 <num> Number: 449
 
+<title>
 <desc> Description:
 What does Nicholas Cage do for a living?
 
+<narr>
 </top>
 
 
@@ -2492,9 +2990,11 @@ What does Nicholas Cage do for a living?
 
 <num> Number: 450
 
+<title>
 <desc> Description:
 What does caliente mean (in English)?
 
+<narr>
 </top>
 
 
@@ -2502,9 +3002,11 @@ What does caliente mean (in English)?
 
 <num> Number: 451
 
+<title>
 <desc> Description:
 Where is McCarren Airport?
 
+<narr>
 </top>
 
 
@@ -2512,9 +3014,11 @@ Where is McCarren Airport?
 
 <num> Number: 452
 
+<title>
 <desc> Description:
 Who created "The Muppets"?
 
+<narr>
 </top>
 
 
@@ -2522,9 +3026,11 @@ Who created "The Muppets"?
 
 <num> Number: 453
 
+<title>
 <desc> Description:
 When is Bastille Day?
 
+<narr>
 </top>
 
 
@@ -2532,9 +3038,11 @@ When is Bastille Day?
 
 <num> Number: 454
 
+<title>
 <desc> Description:
 What is the Islamic counterpart to the Red Cross?
 
+<narr>
 </top>
 
 
@@ -2542,9 +3050,11 @@ What is the Islamic counterpart to the Red Cross?
 
 <num> Number: 455
 
+<title>
 <desc> Description:
 What is Colin Powell best known for?
 
+<narr>
 </top>
 
 
@@ -2552,9 +3062,11 @@ What is Colin Powell best known for?
 
 <num> Number: 456
 
+<title>
 <desc> Description:
 What is the busiest air travel season?
 
+<narr>
 </top>
 
 
@@ -2562,9 +3074,11 @@ What is the busiest air travel season?
 
 <num> Number: 457
 
+<title>
 <desc> Description:
 Where is Webster University?
 
+<narr>
 </top>
 
 
@@ -2572,9 +3086,11 @@ Where is Webster University?
 
 <num> Number: 458
 
+<title>
 <desc> Description:
 What's the name of a golf course in Myrtle Beach?
 
+<narr>
 </top>
 
 
@@ -2582,9 +3098,11 @@ What's the name of a golf course in Myrtle Beach?
 
 <num> Number: 459
 
+<title>
 <desc> Description:
 When was John D. Rockefeller born?
 
+<narr>
 </top>
 
 
@@ -2592,9 +3110,11 @@ When was John D. Rockefeller born?
 
 <num> Number: 460
 
+<title>
 <desc> Description:
 Name a Gaelic language.
 
+<narr>
 </top>
 
 
@@ -2602,9 +3122,11 @@ Name a Gaelic language.
 
 <num> Number: 461
 
+<title>
 <desc> Description:
 Who was the author of the book about computer hackers called "The Cuckoo's Egg: Tracking a Spy Through the Maze of Computer Espionage"?
 
+<narr>
 </top>
 
 
@@ -2612,9 +3134,11 @@ Who was the author of the book about computer hackers called "The Cuckoo's Egg: 
 
 <num> Number: 462
 
+<title>
 <desc> Description:
 What is measured in curies?
 
+<narr>
 </top>
 
 
@@ -2622,9 +3146,11 @@ What is measured in curies?
 
 <num> Number: 463
 
+<title>
 <desc> Description:
 What is a stratocaster?
 
+<narr>
 </top>
 
 
@@ -2632,9 +3158,11 @@ What is a stratocaster?
 
 <num> Number: 464
 
+<title>
 <desc> Description:
 Where are the headquarters of Eli Lilly?
 
+<narr>
 </top>
 
 
@@ -2642,9 +3170,11 @@ Where are the headquarters of Eli Lilly?
 
 <num> Number: 465
 
+<title>
 <desc> Description:
 Where did Hillary Clinton graduate college?
 
+<narr>
 </top>
 
 
@@ -2652,9 +3182,11 @@ Where did Hillary Clinton graduate college?
 
 <num> Number: 466
 
+<title>
 <desc> Description:
 Where is Glasgow?
 
+<narr>
 </top>
 
 
@@ -2662,9 +3194,11 @@ Where is Glasgow?
 
 <num> Number: 467
 
+<title>
 <desc> Description:
 Who was Samuel Johnsons's friend and biographer?
 
+<narr>
 </top>
 
 
@@ -2672,9 +3206,11 @@ Who was Samuel Johnsons's friend and biographer?
 
 <num> Number: 468
 
+<title>
 <desc> Description:
 What is tyvek?
 
+<narr>
 </top>
 
 
@@ -2682,9 +3218,11 @@ What is tyvek?
 
 <num> Number: 469
 
+<title>
 <desc> Description:
 Who coined the term "cyberspace" in his novel "Neuromancer"?
 
+<narr>
 </top>
 
 
@@ -2692,9 +3230,11 @@ Who coined the term "cyberspace" in his novel "Neuromancer"?
 
 <num> Number: 470
 
+<title>
 <desc> Description:
 Who is the president of Bolivia?
 
+<narr>
 </top>
 
 
@@ -2702,9 +3242,11 @@ Who is the president of Bolivia?
 
 <num> Number: 471
 
+<title>
 <desc> Description:
 What year did Hitler die?
 
+<narr>
 </top>
 
 
@@ -2712,9 +3254,11 @@ What year did Hitler die?
 
 <num> Number: 472
 
+<title>
 <desc> Description:
 When did the American Civil War end?
 
+<narr>
 </top>
 
 
@@ -2722,9 +3266,11 @@ When did the American Civil War end?
 
 <num> Number: 473
 
+<title>
 <desc> Description:
 Who created the character of Scrooge?
 
+<narr>
 </top>
 
 
@@ -2732,9 +3278,11 @@ Who created the character of Scrooge?
 
 <num> Number: 474
 
+<title>
 <desc> Description:
 Who first broke the sound barrier?
 
+<narr>
 </top>
 
 
@@ -2742,9 +3290,11 @@ Who first broke the sound barrier?
 
 <num> Number: 475
 
+<title>
 <desc> Description:
 What is the salary of a U.S. Representative?
 
+<narr>
 </top>
 
 
@@ -2752,9 +3302,11 @@ What is the salary of a U.S. Representative?
 
 <num> Number: 476
 
+<title>
 <desc> Description:
 Name one of the Seven Wonders of the Ancient World.
 
+<narr>
 </top>
 
 
@@ -2762,9 +3314,11 @@ Name one of the Seven Wonders of the Ancient World.
 
 <num> Number: 477
 
+<title>
 <desc> Description:
 What are the birth dates for scorpios?
 
+<narr>
 </top>
 
 
@@ -2772,9 +3326,11 @@ What are the birth dates for scorpios?
 
 <num> Number: 478
 
+<title>
 <desc> Description:
 What is the airport code for Los Angeles International?
 
+<narr>
 </top>
 
 
@@ -2782,9 +3338,11 @@ What is the airport code for Los Angeles International?
 
 <num> Number: 479
 
+<title>
 <desc> Description:
 Who provides telephone service in Orange County, California?
 
+<narr>
 </top>
 
 
@@ -2792,9 +3350,11 @@ Who provides telephone service in Orange County, California?
 
 <num> Number: 480
 
+<title>
 <desc> Description:
 What is the zip code for Fremont, CA?
 
+<narr>
 </top>
 
 
@@ -2802,9 +3362,11 @@ What is the zip code for Fremont, CA?
 
 <num> Number: 481
 
+<title>
 <desc> Description:
 Who shot Billy the Kid?
 
+<narr>
 </top>
 
 
@@ -2812,9 +3374,11 @@ Who shot Billy the Kid?
 
 <num> Number: 482
 
+<title>
 <desc> Description:
 Who is the monarch of the United Kingdom?
 
+<narr>
 </top>
 
 
@@ -2822,9 +3386,11 @@ Who is the monarch of the United Kingdom?
 
 <num> Number: 483
 
+<title>
 <desc> Description:
 What is sake?
 
+<narr>
 </top>
 
 
@@ -2832,9 +3398,11 @@ What is sake?
 
 <num> Number: 484
 
+<title>
 <desc> Description:
 What is the name of the Lion King's son in the movie, "The Lion King"?
 
+<narr>
 </top>
 
 
@@ -2842,9 +3410,11 @@ What is the name of the Lion King's son in the movie, "The Lion King"?
 
 <num> Number: 485
 
+<title>
 <desc> Description:
 Where is Amsterdam?
 
+<narr>
 </top>
 
 
@@ -2852,9 +3422,11 @@ Where is Amsterdam?
 
 <num> Number: 486
 
+<title>
 <desc> Description:
 How many states have a "lemon law" for new automobiles?
 
+<narr>
 </top>
 
 
@@ -2862,9 +3434,11 @@ How many states have a "lemon law" for new automobiles?
 
 <num> Number: 487
 
+<title>
 <desc> Description:
 What was the name of the movie that starred Sharon Stone and Arnold Schwarzenegger?
 
+<narr>
 </top>
 
 
@@ -2872,9 +3446,11 @@ What was the name of the movie that starred Sharon Stone and Arnold Schwarzenegg
 
 <num> Number: 488
 
+<title>
 <desc> Description:
 What continent is Bolivia on?
 
+<narr>
 </top>
 
 
@@ -2882,9 +3458,11 @@ What continent is Bolivia on?
 
 <num> Number: 489
 
+<title>
 <desc> Description:
 What are the Poconos?
 
+<narr>
 </top>
 
 
@@ -2892,9 +3470,11 @@ What are the Poconos?
 
 <num> Number: 490
 
+<title>
 <desc> Description:
 Where did guinea pigs originate?
 
+<narr>
 </top>
 
 
@@ -2902,9 +3482,11 @@ Where did guinea pigs originate?
 
 <num> Number: 491
 
+<title>
 <desc> Description:
 Where did Woodstock take place?
 
+<narr>
 </top>
 
 
@@ -2912,9 +3494,11 @@ Where did Woodstock take place?
 
 <num> Number: 492
 
+<title>
 <desc> Description:
 What is the name of the vaccine for chicken pox?
 
+<narr>
 </top>
 
 
@@ -2922,9 +3506,11 @@ What is the name of the vaccine for chicken pox?
 
 <num> Number: 493
 
+<title>
 <desc> Description:
 What is Betsy Ross famous for?
 
+<narr>
 </top>
 
 
@@ -2932,9 +3518,11 @@ What is Betsy Ross famous for?
 
 <num> Number: 494
 
+<title>
 <desc> Description:
 Who wrote the book, "The Grinch Who Stole Christmas"?
 
+<narr>
 </top>
 
 
@@ -2942,9 +3530,11 @@ Who wrote the book, "The Grinch Who Stole Christmas"?
 
 <num> Number: 495
 
+<title>
 <desc> Description:
 When did Aldous Huxley write, "Brave New World"?
 
+<narr>
 </top>
 
 
@@ -2952,9 +3542,11 @@ When did Aldous Huxley write, "Brave New World"?
 
 <num> Number: 496
 
+<title>
 <desc> Description:
 Who wrote the book, "Song of Solomon"?
 
+<narr>
 </top>
 
 
@@ -2962,9 +3554,11 @@ Who wrote the book, "Song of Solomon"?
 
 <num> Number: 497
 
+<title>
 <desc> Description:
 Who portrayed Jake in the television show, "Jake and the Fatman"?
 
+<narr>
 </top>
 
 
@@ -2972,9 +3566,11 @@ Who portrayed Jake in the television show, "Jake and the Fatman"?
 
 <num> Number: 498
 
+<title>
 <desc> Description:
 Who portrayed Fatman in the television show, "Jake and the Fatman"?
 
+<narr>
 </top>
 
 
@@ -2982,9 +3578,11 @@ Who portrayed Fatman in the television show, "Jake and the Fatman"?
 
 <num> Number: 499
 
+<title>
 <desc> Description:
 Where is Venezuela?
 
+<narr>
 </top>
 
 
@@ -2992,9 +3590,11 @@ Where is Venezuela?
 
 <num> Number: 500
 
+<title>
 <desc> Description:
 What city in Florida is Sea World in?
 
+<narr>
 </top>
 
 
@@ -3002,9 +3602,11 @@ What city in Florida is Sea World in?
 
 <num> Number: 501
 
+<title>
 <desc> Description:
 What is the population of Ohio?
 
+<narr>
 </top>
 
 
@@ -3012,9 +3614,11 @@ What is the population of Ohio?
 
 <num> Number: 502
 
+<title>
 <desc> Description:
 What is one of the cities that the University of Minnesota is located in?
 
+<narr>
 </top>
 
 
@@ -3022,9 +3626,11 @@ What is one of the cities that the University of Minnesota is located in?
 
 <num> Number: 503
 
+<title>
 <desc> Description:
 What kind of sports team is the Buffalo Sabres?
 
+<narr>
 </top>
 
 
@@ -3032,9 +3638,11 @@ What kind of sports team is the Buffalo Sabres?
 
 <num> Number: 504
 
+<title>
 <desc> Description:
 Who is the founder of the Wal-Mart stores?
 
+<narr>
 </top>
 
 
@@ -3042,9 +3650,11 @@ Who is the founder of the Wal-Mart stores?
 
 <num> Number: 505
 
+<title>
 <desc> Description:
 What city is Massachusetts General Hospital located in?
 
+<narr>
 </top>
 
 
@@ -3052,9 +3662,11 @@ What city is Massachusetts General Hospital located in?
 
 <num> Number: 506
 
+<title>
 <desc> Description:
 Who reports the weather on the "Good Morning America" television show?
 
+<narr>
 </top>
 
 
@@ -3062,9 +3674,11 @@ Who reports the weather on the "Good Morning America" television show?
 
 <num> Number: 507
 
+<title>
 <desc> Description:
 When did the California lottery begin?
 
+<narr>
 </top>
 
 
@@ -3072,9 +3686,11 @@ When did the California lottery begin?
 
 <num> Number: 508
 
+<title>
 <desc> Description:
 Where is Los Vegas?
 
+<narr>
 </top>
 
 
@@ -3082,9 +3698,11 @@ Where is Los Vegas?
 
 <num> Number: 509
 
+<title>
 <desc> Description:
 When was Beethoven born?
 
+<narr>
 </top>
 
 
@@ -3092,9 +3710,11 @@ When was Beethoven born?
 
 <num> Number: 510
 
+<title>
 <desc> Description:
 What's the name of the tiger that advertises for Frosted Flakes cereal?
 
+<narr>
 </top>
 
 
@@ -3102,9 +3722,11 @@ What's the name of the tiger that advertises for Frosted Flakes cereal?
 
 <num> Number: 511
 
+<title>
 <desc> Description:
 Where is Tufts University?
 
+<narr>
 </top>
 
 
@@ -3112,9 +3734,11 @@ Where is Tufts University?
 
 <num> Number: 512
 
+<title>
 <desc> Description:
 What movie did Madilyn Kahn star in with Gene Wilder?
 
+<narr>
 </top>
 
 
@@ -3122,9 +3746,11 @@ What movie did Madilyn Kahn star in with Gene Wilder?
 
 <num> Number: 513
 
+<title>
 <desc> Description:
 When did the royal wedding of Prince Andrew and Fergie take place?
 
+<narr>
 </top>
 
 
@@ -3132,9 +3758,11 @@ When did the royal wedding of Prince Andrew and Fergie take place?
 
 <num> Number: 514
 
+<title>
 <desc> Description:
 What cereal goes "snap, crackle, pop"?
 
+<narr>
 </top>
 
 
@@ -3142,9 +3770,11 @@ What cereal goes "snap, crackle, pop"?
 
 <num> Number: 515
 
+<title>
 <desc> Description:
 For what disease is the drug Sinemet used as a treatment?
 
+<narr>
 </top>
 
 
@@ -3152,9 +3782,11 @@ For what disease is the drug Sinemet used as a treatment?
 
 <num> Number: 516
 
+<title>
 <desc> Description:
 Who is Henry Butler?
 
+<narr>
 </top>
 
 
@@ -3162,9 +3794,11 @@ Who is Henry Butler?
 
 <num> Number: 517
 
+<title>
 <desc> Description:
 What province is Edmonton located in?
 
+<narr>
 </top>
 
 
@@ -3172,9 +3806,11 @@ What province is Edmonton located in?
 
 <num> Number: 518
 
+<title>
 <desc> Description:
 In what area of the world was the Six Day War fought?
 
+<narr>
 </top>
 
 
@@ -3182,9 +3818,11 @@ In what area of the world was the Six Day War fought?
 
 <num> Number: 519
 
+<title>
 <desc> Description:
 What is the zip code for Parsippany, NJ?
 
+<narr>
 </top>
 
 
@@ -3192,9 +3830,11 @@ What is the zip code for Parsippany, NJ?
 
 <num> Number: 520
 
+<title>
 <desc> Description:
 When was the first Barbie produced?
 
+<narr>
 </top>
 
 
@@ -3202,9 +3842,11 @@ When was the first Barbie produced?
 
 <num> Number: 521
 
+<title>
 <desc> Description:
 What was the distinguishing mark on the "Little Rascals" dog?
 
+<narr>
 </top>
 
 
@@ -3212,9 +3854,11 @@ What was the distinguishing mark on the "Little Rascals" dog?
 
 <num> Number: 522
 
+<title>
 <desc> Description:
 What does EKG stand for?
 
+<narr>
 </top>
 
 
@@ -3222,9 +3866,11 @@ What does EKG stand for?
 
 <num> Number: 523
 
+<title>
 <desc> Description:
 What is Chiricahua the name of?
 
+<narr>
 </top>
 
 
@@ -3232,9 +3878,11 @@ What is Chiricahua the name of?
 
 <num> Number: 524
 
+<title>
 <desc> Description:
 Where did Wicca first develop?
 
+<narr>
 </top>
 
 
@@ -3242,9 +3890,11 @@ Where did Wicca first develop?
 
 <num> Number: 525
 
+<title>
 <desc> Description:
 Name a symptom of mononucleosis.
 
+<narr>
 </top>
 
 
@@ -3252,9 +3902,11 @@ Name a symptom of mononucleosis.
 
 <num> Number: 526
 
+<title>
 <desc> Description:
 Where are diamonds mined?
 
+<narr>
 </top>
 
 
@@ -3262,9 +3914,11 @@ Where are diamonds mined?
 
 <num> Number: 527
 
+<title>
 <desc> Description:
 When was the NFL established?
 
+<narr>
 </top>
 
 
@@ -3272,9 +3926,11 @@ When was the NFL established?
 
 <num> Number: 528
 
+<title>
 <desc> Description:
 What are geckos?
 
+<narr>
 </top>
 
 
@@ -3282,9 +3938,11 @@ What are geckos?
 
 <num> Number: 529
 
+<title>
 <desc> Description:
 Who is Terrence Malick?
 
+<narr>
 </top>
 
 
@@ -3292,9 +3950,11 @@ Who is Terrence Malick?
 
 <num> Number: 530
 
+<title>
 <desc> Description:
 What other name were the "Little Rascals" known as?
 
+<narr>
 </top>
 
 
@@ -3302,9 +3962,11 @@ What other name were the "Little Rascals" known as?
 
 <num> Number: 531
 
+<title>
 <desc> Description:
 What was the name of the "Little Rascals" dog?
 
+<narr>
 </top>
 
 
@@ -3312,9 +3974,11 @@ What was the name of the "Little Rascals" dog?
 
 <num> Number: 532
 
+<title>
 <desc> Description:
 What breed of dog was the "Little Rascals" dog?
 
+<narr>
 </top>
 
 
@@ -3322,9 +3986,11 @@ What breed of dog was the "Little Rascals" dog?
 
 <num> Number: 533
 
+<title>
 <desc> Description:
 Who won the rugby world cup in 1987?
 
+<narr>
 </top>
 
 
@@ -3332,9 +3998,11 @@ Who won the rugby world cup in 1987?
 
 <num> Number: 534
 
+<title>
 <desc> Description:
 Where is Windsor Castle?
 
+<narr>
 </top>
 
 
@@ -3342,9 +4010,11 @@ Where is Windsor Castle?
 
 <num> Number: 535
 
+<title>
 <desc> Description:
 Who portrayed "Rosanne Rosanna-Dana" on the television show "Saturday Night Live"?
 
+<narr>
 </top>
 
 
@@ -3352,9 +4022,11 @@ Who portrayed "Rosanne Rosanna-Dana" on the television show "Saturday Night Live
 
 <num> Number: 536
 
+<title>
 <desc> Description:
 What is the population of the United States?
 
+<narr>
 </top>
 
 
@@ -3362,9 +4034,11 @@ What is the population of the United States?
 
 <num> Number: 537
 
+<title>
 <desc> Description:
 What animal do buffalo wings come from?
 
+<narr>
 </top>
 
 
@@ -3372,9 +4046,11 @@ What animal do buffalo wings come from?
 
 <num> Number: 538
 
+<title>
 <desc> Description:
 When was the bar-code invented?
 
+<narr>
 </top>
 
 
@@ -3382,9 +4058,11 @@ When was the bar-code invented?
 
 <num> Number: 539
 
+<title>
 <desc> Description:
 What is witch hazel?
 
+<narr>
 </top>
 
 
@@ -3392,9 +4070,11 @@ What is witch hazel?
 
 <num> Number: 540
 
+<title>
 <desc> Description:
 What's the abbreviation for limited partnership?
 
+<narr>
 </top>
 
 
@@ -3402,9 +4082,11 @@ What's the abbreviation for limited partnership?
 
 <num> Number: 541
 
+<title>
 <desc> Description:
 What was the purpose of the Manhattan project?
 
+<narr>
 </top>
 
 
@@ -3412,9 +4094,11 @@ What was the purpose of the Manhattan project?
 
 <num> Number: 542
 
+<title>
 <desc> Description:
 What is the most common kind of skin cancer in the U.S.?
 
+<narr>
 </top>
 
 
@@ -3422,9 +4106,11 @@ What is the most common kind of skin cancer in the U.S.?
 
 <num> Number: 543
 
+<title>
 <desc> Description:
 Name a civil war battlefield.
 
+<narr>
 </top>
 
 
@@ -3432,9 +4118,11 @@ Name a civil war battlefield.
 
 <num> Number: 544
 
+<title>
 <desc> Description:
 What are pomegranates?
 
+<narr>
 </top>
 
 
@@ -3442,9 +4130,11 @@ What are pomegranates?
 
 <num> Number: 545
 
+<title>
 <desc> Description:
 Who wrote the song, "Silent Night"?
 
+<narr>
 </top>
 
 
@@ -3452,9 +4142,11 @@ Who wrote the song, "Silent Night"?
 
 <num> Number: 546
 
+<title>
 <desc> Description:
 Who portrayed "the man without a face" in the movie of the same name?
 
+<narr>
 </top>
 
 
@@ -3462,9 +4154,11 @@ Who portrayed "the man without a face" in the movie of the same name?
 
 <num> Number: 547
 
+<title>
 <desc> Description:
 When was the Hoover Dam constructed?
 
+<narr>
 </top>
 
 
@@ -3472,9 +4166,11 @@ When was the Hoover Dam constructed?
 
 <num> Number: 548
 
+<title>
 <desc> Description:
 What's the most famous tourist attraction in Rome?
 
+<narr>
 </top>
 
 
@@ -3482,9 +4178,11 @@ What's the most famous tourist attraction in Rome?
 
 <num> Number: 549
 
+<title>
 <desc> Description:
 At Christmas time, what is the traditional thing to do under the mistletoe?
 
+<narr>
 </top>
 
 
@@ -3492,9 +4190,11 @@ At Christmas time, what is the traditional thing to do under the mistletoe?
 
 <num> Number: 550
 
+<title>
 <desc> Description:
 What is the Pennsylvania state income tax rate?
 
+<narr>
 </top>
 
 
@@ -3502,9 +4202,11 @@ What is the Pennsylvania state income tax rate?
 
 <num> Number: 551
 
+<title>
 <desc> Description:
 What is the name of the Michelangelo painting that shows two hands with fingers touching?
 
+<narr>
 </top>
 
 
@@ -3512,9 +4214,11 @@ What is the name of the Michelangelo painting that shows two hands with fingers 
 
 <num> Number: 552
 
+<title>
 <desc> Description:
 What caused the Lynmouth floods?
 
+<narr>
 </top>
 
 
@@ -3522,9 +4226,11 @@ What caused the Lynmouth floods?
 
 <num> Number: 553
 
+<title>
 <desc> Description:
 What is the name of the company that manufactures the "American Girl" doll collection?
 
+<narr>
 </top>
 
 
@@ -3532,9 +4238,11 @@ What is the name of the company that manufactures the "American Girl" doll colle
 
 <num> Number: 554
 
+<title>
 <desc> Description:
 How many zip codes are there in the U.S.?
 
+<narr>
 </top>
 
 
@@ -3542,9 +4250,11 @@ How many zip codes are there in the U.S.?
 
 <num> Number: 555
 
+<title>
 <desc> Description:
 What was the name of the Titanic's captain?
 
+<narr>
 </top>
 
 
@@ -3552,9 +4262,11 @@ What was the name of the Titanic's captain?
 
 <num> Number: 556
 
+<title>
 <desc> Description:
 How many copies of an album must be sold for it to be a gold album?
 
+<narr>
 </top>
 
 
@@ -3562,9 +4274,11 @@ How many copies of an album must be sold for it to be a gold album?
 
 <num> Number: 557
 
+<title>
 <desc> Description:
 When is the Tulip Festival in Michigan?
 
+<narr>
 </top>
 
 
@@ -3572,9 +4286,11 @@ When is the Tulip Festival in Michigan?
 
 <num> Number: 558
 
+<title>
 <desc> Description:
 What is Giorgio Vasari famous for?
 
+<narr>
 </top>
 
 
@@ -3582,9 +4298,11 @@ What is Giorgio Vasari famous for?
 
 <num> Number: 559
 
+<title>
 <desc> Description:
 Who created the character James Bond?
 
+<narr>
 </top>
 
 
@@ -3592,9 +4310,11 @@ Who created the character James Bond?
 
 <num> Number: 560
 
+<title>
 <desc> Description:
 What store does Martha Stewart advertise for?
 
+<narr>
 </top>
 
 
@@ -3602,9 +4322,11 @@ What store does Martha Stewart advertise for?
 
 <num> Number: 561
 
+<title>
 <desc> Description:
 Name an American made motorcycle.
 
+<narr>
 </top>
 
 
@@ -3612,9 +4334,11 @@ Name an American made motorcycle.
 
 <num> Number: 562
 
+<title>
 <desc> Description:
 What Cruise Line does Kathie Lee Gifford advertise for?
 
+<narr>
 </top>
 
 
@@ -3622,9 +4346,11 @@ What Cruise Line does Kathie Lee Gifford advertise for?
 
 <num> Number: 563
 
+<title>
 <desc> Description:
 Name a movie that the actress, Sandra Bullock, had a role in.
 
+<narr>
 </top>
 
 
@@ -3632,9 +4358,11 @@ Name a movie that the actress, Sandra Bullock, had a role in.
 
 <num> Number: 564
 
+<title>
 <desc> Description:
 Where is the Thomas Edison Museum?
 
+<narr>
 </top>
 
 
@@ -3642,9 +4370,11 @@ Where is the Thomas Edison Museum?
 
 <num> Number: 565
 
+<title>
 <desc> Description:
 What is TCI?
 
+<narr>
 </top>
 
 
@@ -3652,9 +4382,11 @@ What is TCI?
 
 <num> Number: 566
 
+<title>
 <desc> Description:
 What state does MO stand for?
 
+<narr>
 </top>
 
 
@@ -3662,9 +4394,11 @@ What state does MO stand for?
 
 <num> Number: 567
 
+<title>
 <desc> Description:
 Name a female figure skater.
 
+<narr>
 </top>
 
 
@@ -3672,9 +4406,11 @@ Name a female figure skater.
 
 <num> Number: 568
 
+<title>
 <desc> Description:
 What state is the Filenes store located in?
 
+<narr>
 </top>
 
 
@@ -3682,9 +4418,11 @@ What state is the Filenes store located in?
 
 <num> Number: 569
 
+<title>
 <desc> Description:
 How much calcium should an adult female have daily?
 
+<narr>
 </top>
 
 
@@ -3692,9 +4430,11 @@ How much calcium should an adult female have daily?
 
 <num> Number: 570
 
+<title>
 <desc> Description:
 What hockey team did Wayne Gretzky play for?
 
+<narr>
 </top>
 
 
@@ -3702,9 +4442,11 @@ What hockey team did Wayne Gretzky play for?
 
 <num> Number: 571
 
+<title>
 <desc> Description:
 What hair color can I use to just cover a little gray?
 
+<narr>
 </top>
 
 
@@ -3712,9 +4454,11 @@ What hair color can I use to just cover a little gray?
 
 <num> Number: 572
 
+<title>
 <desc> Description:
 How long would it take for a $50 savings bond to mature?
 
+<narr>
 </top>
 
 
@@ -3722,9 +4466,11 @@ How long would it take for a $50 savings bond to mature?
 
 <num> Number: 573
 
+<title>
 <desc> Description:
 How many home runs did Lou Gehrig have during his career?
 
+<narr>
 </top>
 
 
@@ -3732,9 +4478,11 @@ How many home runs did Lou Gehrig have during his career?
 
 <num> Number: 574
 
+<title>
 <desc> Description:
 How many states have a lottery?
 
+<narr>
 </top>
 
 
@@ -3742,9 +4490,11 @@ How many states have a lottery?
 
 <num> Number: 575
 
+<title>
 <desc> Description:
 What kind of a sports team is the Wisconsin Badgers?
 
+<narr>
 </top>
 
 
@@ -3752,9 +4502,11 @@ What kind of a sports team is the Wisconsin Badgers?
 
 <num> Number: 576
 
+<title>
 <desc> Description:
 What is the name of Joan Jett's band?
 
+<narr>
 </top>
 
 
@@ -3762,9 +4514,11 @@ What is the name of Joan Jett's band?
 
 <num> Number: 577
 
+<title>
 <desc> Description:
 Can you give me the name of a clock maker in London, England?
 
+<narr>
 </top>
 
 
@@ -3772,9 +4526,11 @@ Can you give me the name of a clock maker in London, England?
 
 <num> Number: 578
 
+<title>
 <desc> Description:
 What was the name of the sitcom that Alyssa Milano starred in with Tony Danza?
 
+<narr>
 </top>
 
 
@@ -3782,9 +4538,11 @@ What was the name of the sitcom that Alyssa Milano starred in with Tony Danza?
 
 <num> Number: 579
 
+<title>
 <desc> Description:
 What is the real name of the singer, Madonna?
 
+<narr>
 </top>
 
 
@@ -3792,9 +4550,11 @@ What is the real name of the singer, Madonna?
 
 <num> Number: 580
 
+<title>
 <desc> Description:
 Where did yoga originate?
 
+<narr>
 </top>
 
 
@@ -3802,9 +4562,11 @@ Where did yoga originate?
 
 <num> Number: 581
 
+<title>
 <desc> Description:
 What flower did Vincent Van Gogh paint?
 
+<narr>
 </top>
 
 
@@ -3812,9 +4574,11 @@ What flower did Vincent Van Gogh paint?
 
 <num> Number: 582
 
+<title>
 <desc> Description:
 What radio station did Paul Harvey work for?
 
+<narr>
 </top>
 
 
@@ -3822,9 +4586,11 @@ What radio station did Paul Harvey work for?
 
 <num> Number: 583
 
+<title>
 <desc> Description:
 What's the name of the song Will Smith sings about parents?
 
+<narr>
 </top>
 
 
@@ -3832,9 +4598,11 @@ What's the name of the song Will Smith sings about parents?
 
 <num> Number: 584
 
+<title>
 <desc> Description:
 What does NASA stand for?
 
+<narr>
 </top>
 
 
@@ -3842,9 +4610,11 @@ What does NASA stand for?
 
 <num> Number: 585
 
+<title>
 <desc> Description:
 What famous model was married to Billy Joel?
 
+<narr>
 </top>
 
 
@@ -3852,9 +4622,11 @@ What famous model was married to Billy Joel?
 
 <num> Number: 586
 
+<title>
 <desc> Description:
 What is the chemical symbol for nitrogen?
 
+<narr>
 </top>
 
 
@@ -3862,9 +4634,11 @@ What is the chemical symbol for nitrogen?
 
 <num> Number: 587
 
+<title>
 <desc> Description:
 In what book can I find the story of Aladdin?
 
+<narr>
 </top>
 
 
@@ -3872,9 +4646,11 @@ In what book can I find the story of Aladdin?
 
 <num> Number: 588
 
+<title>
 <desc> Description:
 When did World War I start?
 
+<narr>
 </top>
 
 
@@ -3882,9 +4658,11 @@ When did World War I start?
 
 <num> Number: 589
 
+<title>
 <desc> Description:
 What state is Niagra Falls located in?
 
+<narr>
 </top>
 
 
@@ -3892,9 +4670,11 @@ What state is Niagra Falls located in?
 
 <num> Number: 590
 
+<title>
 <desc> Description:
 What's the name of the actress who starred in the movie, "Silence of the Lambs"?
 
+<narr>
 </top>
 
 
@@ -3902,9 +4682,11 @@ What's the name of the actress who starred in the movie, "Silence of the Lambs"?
 
 <num> Number: 591
 
+<title>
 <desc> Description:
 Who owns the St. Louis Rams?
 
+<narr>
 </top>
 
 
@@ -3912,9 +4694,11 @@ Who owns the St. Louis Rams?
 
 <num> Number: 592
 
+<title>
 <desc> Description:
 Where could I go to take a ride on a steam locomotive?
 
+<narr>
 </top>
 
 
@@ -3922,9 +4706,11 @@ Where could I go to take a ride on a steam locomotive?
 
 <num> Number: 593
 
+<title>
 <desc> Description:
 When was the movie, Caligula, made?
 
+<narr>
 </top>
 
 
@@ -3932,9 +4718,11 @@ When was the movie, Caligula, made?
 
 <num> Number: 594
 
+<title>
 <desc> Description:
 Name an American war plane?
 
+<narr>
 </top>
 
 
@@ -3942,9 +4730,11 @@ Name an American war plane?
 
 <num> Number: 595
 
+<title>
 <desc> Description:
 Where is Burma?
 
+<narr>
 </top>
 
 
@@ -3952,9 +4742,11 @@ Where is Burma?
 
 <num> Number: 596
 
+<title>
 <desc> Description:
 How many highway miles to the gallon can you get with the Ford Fiesta?
 
+<narr>
 </top>
 
 
@@ -3962,9 +4754,11 @@ How many highway miles to the gallon can you get with the Ford Fiesta?
 
 <num> Number: 597
 
+<title>
 <desc> Description:
 Name a novel written by John Steinbeck.
 
+<narr>
 </top>
 
 
@@ -3972,9 +4766,11 @@ Name a novel written by John Steinbeck.
 
 <num> Number: 598
 
+<title>
 <desc> Description:
 Who wrote the song, "Boys of Summer"?
 
+<narr>
 </top>
 
 
@@ -3982,9 +4778,11 @@ Who wrote the song, "Boys of Summer"?
 
 <num> Number: 599
 
+<title>
 <desc> Description:
 What is the mascot for Notre Dame University?
 
+<narr>
 </top>
 
 
@@ -3992,9 +4790,11 @@ What is the mascot for Notre Dame University?
 
 <num> Number: 600
 
+<title>
 <desc> Description:
 What is typhoid fever?
 
+<narr>
 </top>
 
 
@@ -4002,9 +4802,11 @@ What is typhoid fever?
 
 <num> Number: 601
 
+<title>
 <desc> Description:
 When did the neanderthal man live?
 
+<narr>
 </top>
 
 
@@ -4012,9 +4814,11 @@ When did the neanderthal man live?
 
 <num> Number: 602
 
+<title>
 <desc> Description:
 Who manufactures the software, "PhotoShop"?
 
+<narr>
 </top>
 
 
@@ -4022,9 +4826,11 @@ Who manufactures the software, "PhotoShop"?
 
 <num> Number: 603
 
+<title>
 <desc> Description:
 How many casinos are in Atlantic City, NJ?
 
+<narr>
 </top>
 
 
@@ -4032,9 +4838,11 @@ How many casinos are in Atlantic City, NJ?
 
 <num> Number: 604
 
+<title>
 <desc> Description:
 What state does Martha Stewart live in?
 
+<narr>
 </top>
 
 
@@ -4042,9 +4850,11 @@ What state does Martha Stewart live in?
 
 <num> Number: 605
 
+<title>
 <desc> Description:
 Who was the first woman in space?
 
+<narr>
 </top>
 
 
@@ -4052,9 +4862,11 @@ Who was the first woman in space?
 
 <num> Number: 606
 
+<title>
 <desc> Description:
 What are Cushman and Wakefield known for?
 
+<narr>
 </top>
 
 
@@ -4062,9 +4874,11 @@ What are Cushman and Wakefield known for?
 
 <num> Number: 607
 
+<title>
 <desc> Description:
 What is D.B. Cooper known for?
 
+<narr>
 </top>
 
 
@@ -4072,9 +4886,11 @@ What is D.B. Cooper known for?
 
 <num> Number: 608
 
+<title>
 <desc> Description:
 When was Nostradamus born?
 
+<narr>
 </top>
 
 
@@ -4082,9 +4898,11 @@ When was Nostradamus born?
 
 <num> Number: 609
 
+<title>
 <desc> Description:
 When was "the Great Depression"?
 
+<narr>
 </top>
 
 
@@ -4092,9 +4910,11 @@ When was "the Great Depression"?
 
 <num> Number: 610
 
+<title>
 <desc> Description:
 What is Archimedes famous for?
 
+<narr>
 </top>
 
 
@@ -4102,9 +4922,11 @@ What is Archimedes famous for?
 
 <num> Number: 611
 
+<title>
 <desc> Description:
 What is the medical condition of hypertension?
 
+<narr>
 </top>
 
 
@@ -4112,9 +4934,11 @@ What is the medical condition of hypertension?
 
 <num> Number: 612
 
+<title>
 <desc> Description:
 Who created the comic strip, "Garfield"?
 
+<narr>
 </top>
 
 
@@ -4122,9 +4946,11 @@ Who created the comic strip, "Garfield"?
 
 <num> Number: 613
 
+<title>
 <desc> Description:
 Where is the Isle of Man?
 
+<narr>
 </top>
 
 
@@ -4132,9 +4958,11 @@ Where is the Isle of Man?
 
 <num> Number: 614
 
+<title>
 <desc> Description:
 Who wrote the book, "Huckleberry Finn"?
 
+<narr>
 </top>
 
 
@@ -4142,9 +4970,11 @@ Who wrote the book, "Huckleberry Finn"?
 
 <num> Number: 615
 
+<title>
 <desc> Description:
 What day is known as the "national day of prayer"?
 
+<narr>
 </top>
 
 
@@ -4152,9 +4982,11 @@ What day is known as the "national day of prayer"?
 
 <num> Number: 616
 
+<title>
 <desc> Description:
 What is the purpose of a car bra?
 
+<narr>
 </top>
 
 
@@ -4162,9 +4994,11 @@ What is the purpose of a car bra?
 
 <num> Number: 617
 
+<title>
 <desc> Description:
 What are chloroplasts?
 
+<narr>
 </top>
 
 
@@ -4172,9 +5006,11 @@ What are chloroplasts?
 
 <num> Number: 618
 
+<title>
 <desc> Description:
 What is the name of the art of growing miniature trees?
 
+<narr>
 </top>
 
 
@@ -4182,9 +5018,11 @@ What is the name of the art of growing miniature trees?
 
 <num> Number: 619
 
+<title>
 <desc> Description:
 What is the telephone number for the University of Kentucky?
 
+<narr>
 </top>
 
 
@@ -4192,9 +5030,11 @@ What is the telephone number for the University of Kentucky?
 
 <num> Number: 620
 
+<title>
 <desc> Description:
 Who wrote "The Scarlet Letter"?
 
+<narr>
 </top>
 
 
@@ -4202,9 +5042,11 @@ Who wrote "The Scarlet Letter"?
 
 <num> Number: 621
 
+<title>
 <desc> Description:
 Name an art gallery in New York.
 
+<narr>
 </top>
 
 
@@ -4212,9 +5054,11 @@ Name an art gallery in New York.
 
 <num> Number: 622
 
+<title>
 <desc> Description:
 What type of hunting are retrievers used for?
 
+<narr>
 </top>
 
 
@@ -4222,9 +5066,11 @@ What type of hunting are retrievers used for?
 
 <num> Number: 623
 
+<title>
 <desc> Description:
 What party was Winston Churchill a member of?
 
+<narr>
 </top>
 
 
@@ -4232,9 +5078,11 @@ What party was Winston Churchill a member of?
 
 <num> Number: 624
 
+<title>
 <desc> Description:
 How was Teddy Roosevelt related to FDR?
 
+<narr>
 </top>
 
 
@@ -4242,9 +5090,11 @@ How was Teddy Roosevelt related to FDR?
 
 <num> Number: 625
 
+<title>
 <desc> Description:
 When did the Chernobyl nuclear accident occur?
 
+<narr>
 </top>
 
 
@@ -4252,9 +5102,11 @@ When did the Chernobyl nuclear accident occur?
 
 <num> Number: 626
 
+<title>
 <desc> Description:
 What does SIDS stand for?
 
+<narr>
 </top>
 
 
@@ -4262,9 +5114,11 @@ What does SIDS stand for?
 
 <num> Number: 627
 
+<title>
 <desc> Description:
 What's the name of the star of the cooking show, "Galloping Gourmet"?
 
+<narr>
 </top>
 
 
@@ -4272,9 +5126,11 @@ What's the name of the star of the cooking show, "Galloping Gourmet"?
 
 <num> Number: 628
 
+<title>
 <desc> Description:
 What city is 94.5 KDGE Radio located in?
 
+<narr>
 </top>
 
 
@@ -4282,9 +5138,11 @@ What city is 94.5 KDGE Radio located in?
 
 <num> Number: 629
 
+<title>
 <desc> Description:
 What President became Chief Justice after his presidency?
 
+<narr>
 </top>
 
 
@@ -4292,9 +5150,11 @@ What President became Chief Justice after his presidency?
 
 <num> Number: 630
 
+<title>
 <desc> Description:
 How tall is kilamanjaro?
 
+<narr>
 </top>
 
 
@@ -4302,9 +5162,11 @@ How tall is kilamanjaro?
 
 <num> Number: 631
 
+<title>
 <desc> Description:
 Who won the nobel prize in literature in 1988?
 
+<narr>
 </top>
 
 
@@ -4312,9 +5174,11 @@ Who won the nobel prize in literature in 1988?
 
 <num> Number: 632
 
+<title>
 <desc> Description:
 What's the name of the Tampa newspaper?
 
+<narr>
 </top>
 
 
@@ -4322,9 +5186,11 @@ What's the name of the Tampa newspaper?
 
 <num> Number: 633
 
+<title>
 <desc> Description:
 How long do hermit crabs live?
 
+<narr>
 </top>
 
 
@@ -4332,9 +5198,11 @@ How long do hermit crabs live?
 
 <num> Number: 634
 
+<title>
 <desc> Description:
 What is Dr. Ruth's last name?
 
+<narr>
 </top>
 
 
@@ -4342,9 +5210,11 @@ What is Dr. Ruth's last name?
 
 <num> Number: 635
 
+<title>
 <desc> Description:
 What is cribbage?
 
+<narr>
 </top>
 
 
@@ -4352,9 +5222,11 @@ What is cribbage?
 
 <num> Number: 636
 
+<title>
 <desc> Description:
 Italy is the largest producer of what?
 
+<narr>
 </top>
 
 
@@ -4362,9 +5234,11 @@ Italy is the largest producer of what?
 
 <num> Number: 637
 
+<title>
 <desc> Description:
 What wrestling star became "The Incredible Hulk"?
 
+<narr>
 </top>
 
 
@@ -4372,9 +5246,11 @@ What wrestling star became "The Incredible Hulk"?
 
 <num> Number: 638
 
+<title>
 <desc> Description:
 Who wrote "The Pit and the Pendulum"?
 
+<narr>
 </top>
 
 
@@ -4382,9 +5258,11 @@ Who wrote "The Pit and the Pendulum"?
 
 <num> Number: 639
 
+<title>
 <desc> Description:
 Who manufacturers Magic Chef applicances?
 
+<narr>
 </top>
 
 
@@ -4392,9 +5270,11 @@ Who manufacturers Magic Chef applicances?
 
 <num> Number: 640
 
+<title>
 <desc> Description:
 When was the first Wall Street Journal published?
 
+<narr>
 </top>
 
 
@@ -4402,9 +5282,11 @@ When was the first Wall Street Journal published?
 
 <num> Number: 641
 
+<title>
 <desc> Description:
 What is the normal resting heart rate of a healthy adult?
 
+<narr>
 </top>
 
 
@@ -4412,9 +5294,11 @@ What is the normal resting heart rate of a healthy adult?
 
 <num> Number: 642
 
+<title>
 <desc> Description:
 Who's the lead singer of the Led Zeppelin band?
 
+<narr>
 </top>
 
 
@@ -4422,9 +5306,11 @@ Who's the lead singer of the Led Zeppelin band?
 
 <num> Number: 643
 
+<title>
 <desc> Description:
 Who wrote "An Ideal Husband"?
 
+<narr>
 </top>
 
 
@@ -4432,9 +5318,11 @@ Who wrote "An Ideal Husband"?
 
 <num> Number: 644
 
+<title>
 <desc> Description:
 What is ouzo?
 
+<narr>
 </top>
 
 
@@ -4442,9 +5330,11 @@ What is ouzo?
 
 <num> Number: 645
 
+<title>
 <desc> Description:
 When did the Dow first reach 2000?
 
+<narr>
 </top>
 
 
@@ -4452,9 +5342,11 @@ When did the Dow first reach 2000?
 
 <num> Number: 646
 
+<title>
 <desc> Description:
 Who was Charles Lindbergh's wife?
 
+<narr>
 </top>
 
 
@@ -4462,9 +5354,11 @@ Who was Charles Lindbergh's wife?
 
 <num> Number: 647
 
+<title>
 <desc> Description:
 How many miles is it from London, England to Plymouth, England?
 
+<narr>
 </top>
 
 
@@ -4472,9 +5366,11 @@ How many miles is it from London, England to Plymouth, England?
 
 <num> Number: 648
 
+<title>
 <desc> Description:
 Who is Secretary-General of the United Nations?
 
+<narr>
 </top>
 
 
@@ -4482,9 +5378,11 @@ Who is Secretary-General of the United Nations?
 
 <num> Number: 649
 
+<title>
 <desc> Description:
 Who played the teacher in Dead Poet's Society?
 
+<narr>
 </top>
 
 
@@ -4492,9 +5390,11 @@ Who played the teacher in Dead Poet's Society?
 
 <num> Number: 650
 
+<title>
 <desc> Description:
 How many counties are in Indiana?
 
+<narr>
 </top>
 
 
@@ -4502,9 +5402,11 @@ How many counties are in Indiana?
 
 <num> Number: 651
 
+<title>
 <desc> Description:
 What actress starred in "The Lion in Winter"?
 
+<narr>
 </top>
 
 
@@ -4512,9 +5414,11 @@ What actress starred in "The Lion in Winter"?
 
 <num> Number: 652
 
+<title>
 <desc> Description:
 Where was Tesla born?
 
+<narr>
 </top>
 
 
@@ -4522,9 +5426,11 @@ Where was Tesla born?
 
 <num> Number: 653
 
+<title>
 <desc> Description:
 What's the name of a hotel in Indianapolis?
 
+<narr>
 </top>
 
 
@@ -4532,9 +5438,11 @@ What's the name of a hotel in Indianapolis?
 
 <num> Number: 654
 
+<title>
 <desc> Description:
 What U.S. Government agency registers trademarks?
 
+<narr>
 </top>
 
 
@@ -4542,9 +5450,11 @@ What U.S. Government agency registers trademarks?
 
 <num> Number: 655
 
+<title>
 <desc> Description:
 Who started the Dominos Pizza chain?
 
+<narr>
 </top>
 
 
@@ -4552,9 +5462,11 @@ Who started the Dominos Pizza chain?
 
 <num> Number: 656
 
+<title>
 <desc> Description:
 What is the hair style called that new military recruits receive?
 
+<narr>
 </top>
 
 
@@ -4562,9 +5474,11 @@ What is the hair style called that new military recruits receive?
 
 <num> Number: 657
 
+<title>
 <desc> Description:
 In what country is a stuck-out tongue a friendly greeting?
 
+<narr>
 </top>
 
 
@@ -4572,9 +5486,11 @@ In what country is a stuck-out tongue a friendly greeting?
 
 <num> Number: 658
 
+<title>
 <desc> Description:
 Where is Kings Canyon?
 
+<narr>
 </top>
 
 
@@ -4582,9 +5498,11 @@ Where is Kings Canyon?
 
 <num> Number: 659
 
+<title>
 <desc> Description:
 Where is the Mayo Clinic?
 
+<narr>
 </top>
 
 
@@ -4592,9 +5510,11 @@ Where is the Mayo Clinic?
 
 <num> Number: 660
 
+<title>
 <desc> Description:
 How big is the Electoral College?
 
+<narr>
 </top>
 
 
@@ -4602,9 +5522,11 @@ How big is the Electoral College?
 
 <num> Number: 661
 
+<title>
 <desc> Description:
 How much does one ton of cement cost?
 
+<narr>
 </top>
 
 
@@ -4612,9 +5534,11 @@ How much does one ton of cement cost?
 
 <num> Number: 662
 
+<title>
 <desc> Description:
 Where does Mother Angelica live?
 
+<narr>
 </top>
 
 
@@ -4622,9 +5546,11 @@ Where does Mother Angelica live?
 
 <num> Number: 663
 
+<title>
 <desc> Description:
 How many people watch network television?
 
+<narr>
 </top>
 
 
@@ -4632,9 +5558,11 @@ How many people watch network television?
 
 <num> Number: 664
 
+<title>
 <desc> Description:
 What is the name of a Greek god?
 
+<narr>
 </top>
 
 
@@ -4642,9 +5570,11 @@ What is the name of a Greek god?
 
 <num> Number: 665
 
+<title>
 <desc> Description:
 What year was the first automobile manufactured?
 
+<narr>
 </top>
 
 
@@ -4652,9 +5582,11 @@ What year was the first automobile manufactured?
 
 <num> Number: 666
 
+<title>
 <desc> Description:
 What's the population of Mississippi?
 
+<narr>
 </top>
 
 
@@ -4662,9 +5594,11 @@ What's the population of Mississippi?
 
 <num> Number: 667
 
+<title>
 <desc> Description:
 What was the name of Jacques Cousteau's ship?
 
+<narr>
 </top>
 
 
@@ -4672,9 +5606,11 @@ What was the name of Jacques Cousteau's ship?
 
 <num> Number: 668
 
+<title>
 <desc> Description:
 What are the names of Jacques Cousteau's two sons?
 
+<narr>
 </top>
 
 
@@ -4682,9 +5618,11 @@ What are the names of Jacques Cousteau's two sons?
 
 <num> Number: 669
 
+<title>
 <desc> Description:
 What is Java?
 
+<narr>
 </top>
 
 
@@ -4692,9 +5630,11 @@ What is Java?
 
 <num> Number: 670
 
+<title>
 <desc> Description:
 What does Final Four refer to in the sports world?
 
+<narr>
 </top>
 
 
@@ -4702,9 +5642,11 @@ What does Final Four refer to in the sports world?
 
 <num> Number: 671
 
+<title>
 <desc> Description:
 What does Knight Ridder publish?
 
+<narr>
 </top>
 
 
@@ -4712,9 +5654,11 @@ What does Knight Ridder publish?
 
 <num> Number: 672
 
+<title>
 <desc> Description:
 What task does the Bouvier breed of dog perform?
 
+<narr>
 </top>
 
 
@@ -4722,9 +5666,11 @@ What task does the Bouvier breed of dog perform?
 
 <num> Number: 673
 
+<title>
 <desc> Description:
 What sport do the Cleaveland Cavaliers play?
 
+<narr>
 </top>
 
 
@@ -4732,9 +5678,11 @@ What sport do the Cleaveland Cavaliers play?
 
 <num> Number: 674
 
+<title>
 <desc> Description:
 What year was the Avery Dennison company founded?
 
+<narr>
 </top>
 
 
@@ -4742,9 +5690,11 @@ What year was the Avery Dennison company founded?
 
 <num> Number: 675
 
+<title>
 <desc> Description:
 What's the population of Biloxi, Mississippi?
 
+<narr>
 </top>
 
 
@@ -4752,9 +5702,11 @@ What's the population of Biloxi, Mississippi?
 
 <num> Number: 676
 
+<title>
 <desc> Description:
 Name a ballet company Mikhail Baryshnikov has danced for?
 
+<narr>
 </top>
 
 
@@ -4762,9 +5714,11 @@ Name a ballet company Mikhail Baryshnikov has danced for?
 
 <num> Number: 677
 
+<title>
 <desc> Description:
 What was the name of the television show, staring Karl Malden, that had San Francisco in the title?
 
+<narr>
 </top>
 
 
@@ -4772,9 +5726,11 @@ What was the name of the television show, staring Karl Malden, that had San Fran
 
 <num> Number: 678
 
+<title>
 <desc> Description:
 Who was the founding member of the Pink Floyd band?
 
+<narr>
 </top>
 
 
@@ -4782,9 +5738,11 @@ Who was the founding member of the Pink Floyd band?
 
 <num> Number: 679
 
+<title>
 <desc> Description:
 What did Delilah do to Samson's hair?
 
+<narr>
 </top>
 
 
@@ -4792,9 +5750,11 @@ What did Delilah do to Samson's hair?
 
 <num> Number: 680
 
+<title>
 <desc> Description:
 What's the name of the Tokyo Stock Exchange?
 
+<narr>
 </top>
 
 
@@ -4802,9 +5762,11 @@ What's the name of the Tokyo Stock Exchange?
 
 <num> Number: 681
 
+<title>
 <desc> Description:
 What actor first portrayed James Bond?
 
+<narr>
 </top>
 
 
@@ -4812,9 +5774,11 @@ What actor first portrayed James Bond?
 
 <num> Number: 682
 
+<title>
 <desc> Description:
 What type of horses appear on the Budweiser commercials?
 
+<narr>
 </top>
 
 
@@ -4822,9 +5786,11 @@ What type of horses appear on the Budweiser commercials?
 
 <num> Number: 683
 
+<title>
 <desc> Description:
 What do river otters eat?
 
+<narr>
 </top>
 
 
@@ -4832,9 +5798,11 @@ What do river otters eat?
 
 <num> Number: 684
 
+<title>
 <desc> Description:
 When did the art of quilting begin?
 
+<narr>
 </top>
 
 
@@ -4842,9 +5810,11 @@ When did the art of quilting begin?
 
 <num> Number: 685
 
+<title>
 <desc> Description:
 When did Amtrak begin operations?
 
+<narr>
 </top>
 
 
@@ -4852,9 +5822,11 @@ When did Amtrak begin operations?
 
 <num> Number: 686
 
+<title>
 <desc> Description:
 Where is the Smithsonian Institute located?
 
+<narr>
 </top>
 
 
@@ -4862,9 +5834,11 @@ Where is the Smithsonian Institute located?
 
 <num> Number: 687
 
+<title>
 <desc> Description:
 What year did the Vietnam War end?
 
+<narr>
 </top>
 
 
@@ -4872,9 +5846,11 @@ What year did the Vietnam War end?
 
 <num> Number: 688
 
+<title>
 <desc> Description:
 What country are Godiva chocolates from?
 
+<narr>
 </top>
 
 
@@ -4882,9 +5858,11 @@ What country are Godiva chocolates from?
 
 <num> Number: 689
 
+<title>
 <desc> Description:
 How many islands does Fiji have?
 
+<narr>
 </top>
 
 
@@ -4892,9 +5870,11 @@ How many islands does Fiji have?
 
 <num> Number: 690
 
+<title>
 <desc> Description:
 What card company sells Christmas ornaments?
 
+<narr>
 </top>
 
 
@@ -4902,9 +5882,11 @@ What card company sells Christmas ornaments?
 
 <num> Number: 691
 
+<title>
 <desc> Description:
 Who manufactures synthroid?
 
+<narr>
 </top>
 
 
@@ -4912,9 +5894,11 @@ Who manufactures synthroid?
 
 <num> Number: 692
 
+<title>
 <desc> Description:
 What year was Desmond Mpilo Tutu awarded the Nobel Peace Prize?
 
+<narr>
 </top>
 
 
@@ -4922,9 +5906,11 @@ What year was Desmond Mpilo Tutu awarded the Nobel Peace Prize?
 
 <num> Number: 693
 
+<title>
 <desc> Description:
 What city did the Flintstones live in?
 
+<narr>
 </top>
 
 
@@ -4932,9 +5918,11 @@ What city did the Flintstones live in?
 
 <num> Number: 694
 
+<title>
 <desc> Description:
 Who was the oldest U.S. president?
 
+<narr>
 </top>
 
 
@@ -4942,9 +5930,11 @@ Who was the oldest U.S. president?
 
 <num> Number: 695
 
+<title>
 <desc> Description:
 Who was the tallest U.S. president?
 
+<narr>
 </top>
 
 
@@ -4952,9 +5942,11 @@ Who was the tallest U.S. president?
 
 <num> Number: 696
 
+<title>
 <desc> Description:
 Where is Santa Lucia?
 
+<narr>
 </top>
 
 
@@ -4962,9 +5954,11 @@ Where is Santa Lucia?
 
 <num> Number: 697
 
+<title>
 <desc> Description:
 Which U.S. President is buried in Washington, D.C.?
 
+<narr>
 </top>
 
 
@@ -4972,9 +5966,11 @@ Which U.S. President is buried in Washington, D.C.?
 
 <num> Number: 698
 
+<title>
 <desc> Description:
 Where is Ocho Rios?
 
+<narr>
 </top>
 
 
@@ -4982,9 +5978,11 @@ Where is Ocho Rios?
 
 <num> Number: 699
 
+<title>
 <desc> Description:
 What year was Janet Jackson's first album released?
 
+<narr>
 </top>
 
 
@@ -4992,9 +5990,11 @@ What year was Janet Jackson's first album released?
 
 <num> Number: 700
 
+<title>
 <desc> Description:
 What is another name for nearsightedness?
 
+<narr>
 </top>
 
 
@@ -5002,9 +6002,11 @@ What is another name for nearsightedness?
 
 <num> Number: 701
 
+<title>
 <desc> Description:
 Winnie the Pooh is what kind of animal?  
 
+<narr>
 </top>
 
 
@@ -5012,9 +6014,11 @@ Winnie the Pooh is what kind of animal?
 
 <num> Number: 702
 
+<title>
 <desc> Description:
 What species was Winnie the Pooh?
 
+<narr>
 </top>
 
 
@@ -5022,9 +6026,11 @@ What species was Winnie the Pooh?
 
 <num> Number: 703
 
+<title>
 <desc> Description:
 Winnie the Pooh is an imitation of which animal?
 
+<narr>
 </top>
 
 
@@ -5032,9 +6038,11 @@ Winnie the Pooh is an imitation of which animal?
 
 <num> Number: 704
 
+<title>
 <desc> Description:
 What was the species of Winnie the Pooh?
 
+<narr>
 </top>
 
 
@@ -5042,9 +6050,11 @@ What was the species of Winnie the Pooh?
 
 <num> Number: 705
 
+<title>
 <desc> Description:
 Aspartame is also known as what?
 
+<narr>
 </top>
 
 
@@ -5052,9 +6062,11 @@ Aspartame is also known as what?
 
 <num> Number: 706
 
+<title>
 <desc> Description:
 What is a synonym for aspartame?
 
+<narr>
 </top>
 
 
@@ -5062,9 +6074,11 @@ What is a synonym for aspartame?
 
 <num> Number: 707
 
+<title>
 <desc> Description:
 Aspartame is known by what other name?
 
+<narr>
 </top>
 
 
@@ -5072,9 +6086,11 @@ Aspartame is known by what other name?
 
 <num> Number: 708
 
+<title>
 <desc> Description:
 Aspartame is also called what?
 
+<narr>
 </top>
 
 
@@ -5082,9 +6098,11 @@ Aspartame is also called what?
 
 <num> Number: 709
 
+<title>
 <desc> Description:
 Hazmat stands for what?
 
+<narr>
 </top>
 
 
@@ -5092,9 +6110,11 @@ Hazmat stands for what?
 
 <num> Number: 710
 
+<title>
 <desc> Description:
 What is the definition of hazmat?
 
+<narr>
 </top>
 
 
@@ -5102,9 +6122,11 @@ What is the definition of hazmat?
 
 <num> Number: 711
 
+<title>
 <desc> Description:
 What are the names of the tourist attractions in Reims?
 
+<narr>
 </top>
 
 
@@ -5112,9 +6134,11 @@ What are the names of the tourist attractions in Reims?
 
 <num> Number: 712
 
+<title>
 <desc> Description:
 What do most tourists visit in Reims?
 
+<narr>
 </top>
 
 
@@ -5122,9 +6146,11 @@ What do most tourists visit in Reims?
 
 <num> Number: 713
 
+<title>
 <desc> Description:
 What attracts tourists to Reims?
 
+<narr>
 </top>
 
 
@@ -5132,9 +6158,11 @@ What attracts tourists to Reims?
 
 <num> Number: 714
 
+<title>
 <desc> Description:
 What are tourist attractions in Reims?
 
+<narr>
 </top>
 
 
@@ -5142,9 +6170,11 @@ What are tourist attractions in Reims?
 
 <num> Number: 715
 
+<title>
 <desc> Description:
 What could I see in Reims?
 
+<narr>
 </top>
 
 
@@ -5152,9 +6182,11 @@ What could I see in Reims?
 
 <num> Number: 716
 
+<title>
 <desc> Description:
 What is worth seeing in Reims?
 
+<narr>
 </top>
 
 
@@ -5162,9 +6194,11 @@ What is worth seeing in Reims?
 
 <num> Number: 717
 
+<title>
 <desc> Description:
 What can one see in Reims?
 
+<narr>
 </top>
 
 
@@ -5172,9 +6206,11 @@ What can one see in Reims?
 
 <num> Number: 718
 
+<title>
 <desc> Description:
 Jude Law was in what movie?
 
+<narr>
 </top>
 
 
@@ -5182,9 +6218,11 @@ Jude Law was in what movie?
 
 <num> Number: 719
 
+<title>
 <desc> Description:
 Jude Law acted in which film?
 
+<narr>
 </top>
 
 
@@ -5192,9 +6230,11 @@ Jude Law acted in which film?
 
 <num> Number: 720
 
+<title>
 <desc> Description:
 What is a film starring Jude Law?
 
+<narr>
 </top>
 
 
@@ -5202,9 +6242,11 @@ What is a film starring Jude Law?
 
 <num> Number: 721
 
+<title>
 <desc> Description:
 What film was Jude Law in?
 
+<narr>
 </top>
 
 
@@ -5212,9 +6254,11 @@ What film was Jude Law in?
 
 <num> Number: 722
 
+<title>
 <desc> Description:
 What film or films has Jude Law appeared in?
 
+<narr>
 </top>
 
 
@@ -5222,9 +6266,11 @@ What film or films has Jude Law appeared in?
 
 <num> Number: 723
 
+<title>
 <desc> Description:
 What city houses the U.S. headquarters of Procter and Gamble?
 
+<narr>
 </top>
 
 
@@ -5232,9 +6278,11 @@ What city houses the U.S. headquarters of Procter and Gamble?
 
 <num> Number: 724
 
+<title>
 <desc> Description:
 Where is Procter & Gamble headquartered in the U.S.?
 
+<narr>
 </top>
 
 
@@ -5242,9 +6290,11 @@ Where is Procter & Gamble headquartered in the U.S.?
 
 <num> Number: 725
 
+<title>
 <desc> Description:
 What is the U.S. location of Procter & Gamble corporate offices?
 
+<narr>
 </top>
 
 
@@ -5252,9 +6302,11 @@ What is the U.S. location of Procter & Gamble corporate offices?
 
 <num> Number: 726
 
+<title>
 <desc> Description:
 Procter & Gamble is headquartered in which U.S. city?
 
+<narr>
 </top>
 
 
@@ -5262,9 +6314,11 @@ Procter & Gamble is headquartered in which U.S. city?
 
 <num> Number: 727
 
+<title>
 <desc> Description:
 Where is Procter & Gamble based in the U.S.?
 
+<narr>
 </top>
 
 
@@ -5272,9 +6326,11 @@ Where is Procter & Gamble based in the U.S.?
 
 <num> Number: 728
 
+<title>
 <desc> Description:
 What is the recommended daily requirement for folic acid for pregnant women?
 
+<narr>
 </top>
 
 
@@ -5282,9 +6338,11 @@ What is the recommended daily requirement for folic acid for pregnant women?
 
 <num> Number: 729
 
+<title>
 <desc> Description:
 How much folic acid should a pregnant woman get each day?
 
+<narr>
 </top>
 
 
@@ -5292,9 +6350,11 @@ How much folic acid should a pregnant woman get each day?
 
 <num> Number: 730
 
+<title>
 <desc> Description:
 What is the daily requirement of folic acid for an expectant mother?
 
+<narr>
 </top>
 
 
@@ -5302,9 +6362,11 @@ What is the daily requirement of folic acid for an expectant mother?
 
 <num> Number: 731
 
+<title>
 <desc> Description:
 What amount of folic acid should an expectant mother take daily?
 
+<narr>
 </top>
 
 
@@ -5312,9 +6374,11 @@ What amount of folic acid should an expectant mother take daily?
 
 <num> Number: 732
 
+<title>
 <desc> Description:
 Name the first Russian astronaut to do a spacewalk.
 
+<narr>
 </top>
 
 
@@ -5322,9 +6386,11 @@ Name the first Russian astronaut to do a spacewalk.
 
 <num> Number: 733
 
+<title>
 <desc> Description:
 Who was the first Russian astronaut to walk in space?
 
+<narr>
 </top>
 
 
@@ -5332,9 +6398,11 @@ Who was the first Russian astronaut to walk in space?
 
 <num> Number: 734
 
+<title>
 <desc> Description:
 Who was the first Russian to do a spacewalk?
 
+<narr>
 </top>
 
 
@@ -5342,9 +6410,11 @@ Who was the first Russian to do a spacewalk?
 
 <num> Number: 735
 
+<title>
 <desc> Description:
 CNN is the abbreviation for what?
 
+<narr>
 </top>
 
 
@@ -5352,9 +6422,11 @@ CNN is the abbreviation for what?
 
 <num> Number: 736
 
+<title>
 <desc> Description:
 CNN is an acronym for what?
 
+<narr>
 </top>
 
 
@@ -5362,9 +6434,11 @@ CNN is an acronym for what?
 
 <num> Number: 737
 
+<title>
 <desc> Description:
 What was the date of CNN's first broadcast?
 
+<narr>
 </top>
 
 
@@ -5372,9 +6446,11 @@ What was the date of CNN's first broadcast?
 
 <num> Number: 738
 
+<title>
 <desc> Description:
 CNN began broadcasting in what year?
 
+<narr>
 </top>
 
 
@@ -5382,9 +6458,11 @@ CNN began broadcasting in what year?
 
 <num> Number: 739
 
+<title>
 <desc> Description:
 CNN's first broadcast occurred on what date?
 
+<narr>
 </top>
 
 
@@ -5392,9 +6470,11 @@ CNN's first broadcast occurred on what date?
 
 <num> Number: 740
 
+<title>
 <desc> Description:
 When did CNN begin broadcasting?
 
+<narr>
 </top>
 
 
@@ -5402,9 +6482,11 @@ When did CNN begin broadcasting?
 
 <num> Number: 741
 
+<title>
 <desc> Description:
 When did CNN go on the air?
 
+<narr>
 </top>
 
 
@@ -5412,9 +6494,11 @@ When did CNN go on the air?
 
 <num> Number: 742
 
+<title>
 <desc> Description:
 Who is the owner of CNN?
 
+<narr>
 </top>
 
 
@@ -5422,9 +6506,11 @@ Who is the owner of CNN?
 
 <num> Number: 743
 
+<title>
 <desc> Description:
 CNN is owned by whom?
 
+<narr>
 </top>
 
 
@@ -5432,9 +6518,11 @@ CNN is owned by whom?
 
 <num> Number: 744
 
+<title>
 <desc> Description:
 What newspaper serves Salt Lake City?
 
+<narr>
 </top>
 
 
@@ -5442,9 +6530,11 @@ What newspaper serves Salt Lake City?
 
 <num> Number: 745
 
+<title>
 <desc> Description:
 Name a Salt Lake City newspaper.
 
+<narr>
 </top>
 
 
@@ -5452,9 +6542,11 @@ Name a Salt Lake City newspaper.
 
 <num> Number: 746
 
+<title>
 <desc> Description:
 What is Jane Goodall famous for?
 
+<narr>
 </top>
 
 
@@ -5462,9 +6554,11 @@ What is Jane Goodall famous for?
 
 <num> Number: 747
 
+<title>
 <desc> Description:
 What is Jane Goodall known for?
 
+<narr>
 </top>
 
 
@@ -5472,9 +6566,11 @@ What is Jane Goodall known for?
 
 <num> Number: 748
 
+<title>
 <desc> Description:
 Why is Jane Goodall famous?
 
+<narr>
 </top>
 
 
@@ -5482,9 +6578,11 @@ Why is Jane Goodall famous?
 
 <num> Number: 749
 
+<title>
 <desc> Description:
 What made Jane Goodall famous?
 
+<narr>
 </top>
 
 
@@ -5492,9 +6590,11 @@ What made Jane Goodall famous?
 
 <num> Number: 750
 
+<title>
 <desc> Description:
 Define thalassemia.
 
+<narr>
 </top>
 
 
@@ -5502,9 +6602,11 @@ Define thalassemia.
 
 <num> Number: 751
 
+<title>
 <desc> Description:
 What is the meaning of thalassemia?
 
+<narr>
 </top>
 
 
@@ -5512,9 +6614,11 @@ What is the meaning of thalassemia?
 
 <num> Number: 752
 
+<title>
 <desc> Description:
 How is thalassemia defined?
 
+<narr>
 </top>
 
 
@@ -5522,9 +6626,11 @@ How is thalassemia defined?
 
 <num> Number: 753
 
+<title>
 <desc> Description:
 What soft drink is most heavily caffeinated?
 
+<narr>
 </top>
 
 
@@ -5532,9 +6638,11 @@ What soft drink is most heavily caffeinated?
 
 <num> Number: 754
 
+<title>
 <desc> Description:
 What is the most heavily caffeinated soft drink?
 
+<narr>
 </top>
 
 
@@ -5542,9 +6650,11 @@ What is the most heavily caffeinated soft drink?
 
 <num> Number: 755
 
+<title>
 <desc> Description:
 To get the most caffeine, what soda should I drink?
 
+<narr>
 </top>
 
 
@@ -5552,9 +6662,11 @@ To get the most caffeine, what soda should I drink?
 
 <num> Number: 756
 
+<title>
 <desc> Description:
 Which type of soda has the greatest amount of caffeine?
 
+<narr>
 </top>
 
 
@@ -5562,9 +6674,11 @@ Which type of soda has the greatest amount of caffeine?
 
 <num> Number: 757
 
+<title>
 <desc> Description:
 What soft drink would provide me with the biggest intake of caffeine?
 
+<narr>
 </top>
 
 
@@ -5572,9 +6686,11 @@ What soft drink would provide me with the biggest intake of caffeine?
 
 <num> Number: 758
 
+<title>
 <desc> Description:
 What is the collective term for geese?
 
+<narr>
 </top>
 
 
@@ -5582,9 +6698,11 @@ What is the collective term for geese?
 
 <num> Number: 759
 
+<title>
 <desc> Description:
 What is the collective noun for geese?
 
+<narr>
 </top>
 
 
@@ -5592,9 +6710,11 @@ What is the collective noun for geese?
 
 <num> Number: 760
 
+<title>
 <desc> Description:
 What is the term for a group of geese?
 
+<narr>
 </top>
 
 
@@ -5602,9 +6722,11 @@ What is the term for a group of geese?
 
 <num> Number: 761
 
+<title>
 <desc> Description:
 What is the name given to a group of geese?
 
+<narr>
 </top>
 
 
@@ -5612,9 +6734,11 @@ What is the name given to a group of geese?
 
 <num> Number: 762
 
+<title>
 <desc> Description:
 What is the gestation period for human pregnancies?
 
+<narr>
 </top>
 
 
@@ -5622,9 +6746,11 @@ What is the gestation period for human pregnancies?
 
 <num> Number: 763
 
+<title>
 <desc> Description:
 How long is human gestation?
 
+<narr>
 </top>
 
 
@@ -5632,9 +6758,11 @@ How long is human gestation?
 
 <num> Number: 764
 
+<title>
 <desc> Description:
 What is the gestation period for humans?
 
+<narr>
 </top>
 
 
@@ -5642,9 +6770,11 @@ What is the gestation period for humans?
 
 <num> Number: 765
 
+<title>
 <desc> Description:
 A normal human pregnancy lasts how many months?
 
+<narr>
 </top>
 
 
@@ -5652,9 +6782,11 @@ A normal human pregnancy lasts how many months?
 
 <num> Number: 766
 
+<title>
 <desc> Description:
 What was the alternate to VHS?
 
+<narr>
 </top>
 
 
@@ -5662,9 +6794,11 @@ What was the alternate to VHS?
 
 <num> Number: 767
 
+<title>
 <desc> Description:
 What video format was an alternative to VHS?
 
+<narr>
 </top>
 
 
@@ -5672,9 +6806,11 @@ What video format was an alternative to VHS?
 
 <num> Number: 768
 
+<title>
 <desc> Description:
 What format was the major competition of VHS?
 
+<narr>
 </top>
 
 
@@ -5682,9 +6818,11 @@ What format was the major competition of VHS?
 
 <num> Number: 769
 
+<title>
 <desc> Description:
 What ethnic group introduced the idea of potlatch?
 
+<narr>
 </top>
 
 
@@ -5692,9 +6830,11 @@ What ethnic group introduced the idea of potlatch?
 
 <num> Number: 770
 
+<title>
 <desc> Description:
 What is the cultural origin of the ceremony of potlatch?
 
+<narr>
 </top>
 
 
@@ -5702,9 +6842,11 @@ What is the cultural origin of the ceremony of potlatch?
 
 <num> Number: 771
 
+<title>
 <desc> Description:
 Who developed potlatch?
 
+<narr>
 </top>
 
 
@@ -5712,9 +6854,11 @@ Who developed potlatch?
 
 <num> Number: 772
 
+<title>
 <desc> Description:
 Where is Logan Airport?
 
+<narr>
 </top>
 
 
@@ -5722,9 +6866,11 @@ Where is Logan Airport?
 
 <num> Number: 773
 
+<title>
 <desc> Description:
 What city is Logan Airport in?
 
+<narr>
 </top>
 
 
@@ -5732,9 +6878,11 @@ What city is Logan Airport in?
 
 <num> Number: 774
 
+<title>
 <desc> Description:
 Logan International serves what city?
 
+<narr>
 </top>
 
 
@@ -5742,9 +6890,11 @@ Logan International serves what city?
 
 <num> Number: 775
 
+<title>
 <desc> Description:
 Logan International is located in what city?
 
+<narr>
 </top>
 
 
@@ -5752,9 +6902,11 @@ Logan International is located in what city?
 
 <num> Number: 776
 
+<title>
 <desc> Description:
 What city's airport is named Logan International?
 
+<narr>
 </top>
 
 
@@ -5762,9 +6914,11 @@ What city's airport is named Logan International?
 
 <num> Number: 777
 
+<title>
 <desc> Description:
 What city is served by Logan International Airport?
 
+<narr>
 </top>
 
 
@@ -5772,9 +6926,11 @@ What city is served by Logan International Airport?
 
 <num> Number: 778
 
+<title>
 <desc> Description:
 Woodrow Wilson was president of which university?
 
+<narr>
 </top>
 
 
@@ -5782,9 +6938,11 @@ Woodrow Wilson was president of which university?
 
 <num> Number: 779
 
+<title>
 <desc> Description:
 Name the university of which Woodrow Wilson was president.
 
+<narr>
 </top>
 
 
@@ -5792,9 +6950,11 @@ Name the university of which Woodrow Wilson was president.
 
 <num> Number: 780
 
+<title>
 <desc> Description:
 Woodrow Wilson served as president of what university?
 
+<narr>
 </top>
 
 
@@ -5802,9 +6962,11 @@ Woodrow Wilson served as president of what university?
 
 <num> Number: 781
 
+<title>
 <desc> Description:
 What does the acronym CPR mean?
 
+<narr>
 </top>
 
 
@@ -5812,9 +6974,11 @@ What does the acronym CPR mean?
 
 <num> Number: 782
 
+<title>
 <desc> Description:
 What do the initials CPR stand for?
 
+<narr>
 </top>
 
 
@@ -5822,9 +6986,11 @@ What do the initials CPR stand for?
 
 <num> Number: 783
 
+<title>
 <desc> Description:
 CPR is the abbreviation for what?
 
+<narr>
 </top>
 
 
@@ -5832,9 +6998,11 @@ CPR is the abbreviation for what?
 
 <num> Number: 784
 
+<title>
 <desc> Description:
 What is the meaning of "CPR"?
 
+<narr>
 </top>
 
 
@@ -5842,9 +7010,11 @@ What is the meaning of "CPR"?
 
 <num> Number: 785
 
+<title>
 <desc> Description:
 What was the name of Darth Vader's son?
 
+<narr>
 </top>
 
 
@@ -5852,9 +7022,11 @@ What was the name of Darth Vader's son?
 
 <num> Number: 786
 
+<title>
 <desc> Description:
 What was Darth Vader's son named?
 
+<narr>
 </top>
 
 
@@ -5862,9 +7034,11 @@ What was Darth Vader's son named?
 
 <num> Number: 787
 
+<title>
 <desc> Description:
 What caused the death of Bob Marley?
 
+<narr>
 </top>
 
 
@@ -5872,9 +7046,11 @@ What caused the death of Bob Marley?
 
 <num> Number: 788
 
+<title>
 <desc> Description:
 What killed Bob Marley?
 
+<narr>
 </top>
 
 
@@ -5882,9 +7058,11 @@ What killed Bob Marley?
 
 <num> Number: 789
 
+<title>
 <desc> Description:
 What was the cause of Bob Marley's death?
 
+<narr>
 </top>
 
 
@@ -5892,9 +7070,11 @@ What was the cause of Bob Marley's death?
 
 <num> Number: 790
 
+<title>
 <desc> Description:
 What instrument does Ray Charles play?
 
+<narr>
 </top>
 
 
@@ -5902,9 +7082,11 @@ What instrument does Ray Charles play?
 
 <num> Number: 791
 
+<title>
 <desc> Description:
 Musician Ray Charles plays what instrument?
 
+<narr>
 </top>
 
 
@@ -5912,9 +7094,11 @@ Musician Ray Charles plays what instrument?
 
 <num> Number: 792
 
+<title>
 <desc> Description:
 Ray Charles plays which instrument?
 
+<narr>
 </top>
 
 
@@ -5922,9 +7106,11 @@ Ray Charles plays which instrument?
 
 <num> Number: 793
 
+<title>
 <desc> Description:
 Ray Charles is best known for playing what instrument?
 
+<narr>
 </top>
 
 
@@ -5932,9 +7118,11 @@ Ray Charles is best known for playing what instrument?
 
 <num> Number: 794
 
+<title>
 <desc> Description:
 When was Dick Clark born?
 
+<narr>
 </top>
 
 
@@ -5942,9 +7130,11 @@ When was Dick Clark born?
 
 <num> Number: 795
 
+<title>
 <desc> Description:
 When is Dick Clark's birthday?
 
+<narr>
 </top>
 
 
@@ -5952,9 +7142,11 @@ When is Dick Clark's birthday?
 
 <num> Number: 796
 
+<title>
 <desc> Description:
 What is Dick Clark's date of birth?
 
+<narr>
 </top>
 
 
@@ -5962,9 +7154,11 @@ What is Dick Clark's date of birth?
 
 <num> Number: 797
 
+<title>
 <desc> Description:
 What was Poe's birthplace?
 
+<narr>
 </top>
 
 
@@ -5972,9 +7166,11 @@ What was Poe's birthplace?
 
 <num> Number: 798
 
+<title>
 <desc> Description:
 What was the birthplace of Edgar Allen Poe?
 
+<narr>
 </top>
 
 
@@ -5982,9 +7178,11 @@ What was the birthplace of Edgar Allen Poe?
 
 <num> Number: 799
 
+<title>
 <desc> Description:
 Where is Poe's birthplace?
 
+<narr>
 </top>
 
 
@@ -5992,9 +7190,11 @@ Where is Poe's birthplace?
 
 <num> Number: 800
 
+<title>
 <desc> Description:
 What monarch signed the Magna Carta?
 
+<narr>
 </top>
 
 
@@ -6002,9 +7202,11 @@ What monarch signed the Magna Carta?
 
 <num> Number: 801
 
+<title>
 <desc> Description:
 Which king signed the Magna Carta?
 
+<narr>
 </top>
 
 
@@ -6012,9 +7214,11 @@ Which king signed the Magna Carta?
 
 <num> Number: 802
 
+<title>
 <desc> Description:
 Who was the king who was forced to agree to the Magna Carta?
 
+<narr>
 </top>
 
 
@@ -6022,9 +7226,11 @@ Who was the king who was forced to agree to the Magna Carta?
 
 <num> Number: 803
 
+<title>
 <desc> Description:
 What king signed the Magna Carta?
 
+<narr>
 </top>
 
 
@@ -6032,9 +7238,11 @@ What king signed the Magna Carta?
 
 <num> Number: 804
 
+<title>
 <desc> Description:
 Who was the king who signed the Magna Carta?
 
+<narr>
 </top>
 
 
@@ -6042,9 +7250,11 @@ Who was the king who signed the Magna Carta?
 
 <num> Number: 805
 
+<title>
 <desc> Description:
 Where is one's corpus callosum found?
 
+<narr>
 </top>
 
 
@@ -6052,9 +7262,11 @@ Where is one's corpus callosum found?
 
 <num> Number: 806
 
+<title>
 <desc> Description:
 What part of your body contains the corpus callosum?
 
+<narr>
 </top>
 
 
@@ -6062,9 +7274,11 @@ What part of your body contains the corpus callosum?
 
 <num> Number: 807
 
+<title>
 <desc> Description:
 The corpus callosum is in what part of the body?
 
+<narr>
 </top>
 
 
@@ -6072,9 +7286,11 @@ The corpus callosum is in what part of the body?
 
 <num> Number: 808
 
+<title>
 <desc> Description:
 What English word has the most letters?
 
+<narr>
 </top>
 
 
@@ -6082,9 +7298,11 @@ What English word has the most letters?
 
 <num> Number: 809
 
+<title>
 <desc> Description:
 What English word contains the most letters?
 
+<narr>
 </top>
 
 
@@ -6092,9 +7310,11 @@ What English word contains the most letters?
 
 <num> Number: 810
 
+<title>
 <desc> Description:
 What is the longest English word?
 
+<narr>
 </top>
 
 
@@ -6102,9 +7322,11 @@ What is the longest English word?
 
 <num> Number: 811
 
+<title>
 <desc> Description:
 What is the name of the inventor of silly putty?
 
+<narr>
 </top>
 
 
@@ -6112,9 +7334,11 @@ What is the name of the inventor of silly putty?
 
 <num> Number: 812
 
+<title>
 <desc> Description:
 Silly putty was invented by whom?
 
+<narr>
 </top>
 
 
@@ -6122,9 +7346,11 @@ Silly putty was invented by whom?
 
 <num> Number: 813
 
+<title>
 <desc> Description:
 Who was the inventor of silly putty?
 
+<narr>
 </top>
 
 
@@ -6132,9 +7358,11 @@ Who was the inventor of silly putty?
 
 <num> Number: 814
 
+<title>
 <desc> Description:
 When was Berlin's Brandenburg gate erected?
 
+<narr>
 </top>
 
 
@@ -6142,9 +7370,11 @@ When was Berlin's Brandenburg gate erected?
 
 <num> Number: 815
 
+<title>
 <desc> Description:
 What is the date of Boxing Day?
 
+<narr>
 </top>
 
 
@@ -6152,9 +7382,11 @@ What is the date of Boxing Day?
 
 <num> Number: 816
 
+<title>
 <desc> Description:
 What date is Boxing Day?
 
+<narr>
 </top>
 
 
@@ -6162,9 +7394,11 @@ What date is Boxing Day?
 
 <num> Number: 817
 
+<title>
 <desc> Description:
 Boxing Day is celebrated on what date?
 
+<narr>
 </top>
 
 
@@ -6172,9 +7406,11 @@ Boxing Day is celebrated on what date?
 
 <num> Number: 818
 
+<title>
 <desc> Description:
 What city does McCarren Airport serve?
 
+<narr>
 </top>
 
 
@@ -6182,9 +7418,11 @@ What city does McCarren Airport serve?
 
 <num> Number: 819
 
+<title>
 <desc> Description:
 What city is served by McCarren Airport?
 
+<narr>
 </top>
 
 
@@ -6192,9 +7430,11 @@ What city is served by McCarren Airport?
 
 <num> Number: 820
 
+<title>
 <desc> Description:
 McCarren Airport is located in what city?
 
+<narr>
 </top>
 
 
@@ -6202,9 +7442,11 @@ McCarren Airport is located in what city?
 
 <num> Number: 821
 
+<title>
 <desc> Description:
 What is the location of McCarren Airport?
 
+<narr>
 </top>
 
 
@@ -6212,9 +7454,11 @@ What is the location of McCarren Airport?
 
 <num> Number: 822
 
+<title>
 <desc> Description:
 Where is McCarren Airport located?
 
+<narr>
 </top>
 
 
@@ -6222,9 +7466,11 @@ Where is McCarren Airport located?
 
 <num> Number: 823
 
+<title>
 <desc> Description:
 Who invented "The Muppets"?
 
+<narr>
 </top>
 
 
@@ -6232,9 +7478,11 @@ Who invented "The Muppets"?
 
 <num> Number: 824
 
+<title>
 <desc> Description:
 What was the name of "The Muppets" creator?
 
+<narr>
 </top>
 
 
@@ -6242,9 +7490,11 @@ What was the name of "The Muppets" creator?
 
 <num> Number: 825
 
+<title>
 <desc> Description:
 "The Muppets" was created by whom?
 
+<narr>
 </top>
 
 
@@ -6252,9 +7502,11 @@ What was the name of "The Muppets" creator?
 
 <num> Number: 826
 
+<title>
 <desc> Description:
 Name the creator of "The Muppets".
 
+<narr>
 </top>
 
 
@@ -6262,9 +7514,11 @@ Name the creator of "The Muppets".
 
 <num> Number: 827
 
+<title>
 <desc> Description:
 Who is the creator of "The Muppets"?
 
+<narr>
 </top>
 
 
@@ -6272,9 +7526,11 @@ Who is the creator of "The Muppets"?
 
 <num> Number: 828
 
+<title>
 <desc> Description:
 What is the date of Bastille Day?
 
+<narr>
 </top>
 
 
@@ -6282,9 +7538,11 @@ What is the date of Bastille Day?
 
 <num> Number: 829
 
+<title>
 <desc> Description:
 Bastille Day occurs on which date?
 
+<narr>
 </top>
 
 
@@ -6292,9 +7550,11 @@ Bastille Day occurs on which date?
 
 <num> Number: 830
 
+<title>
 <desc> Description:
 What is the equivalent of the Red Cross in the Middle East?
 
+<narr>
 </top>
 
 
@@ -6302,9 +7562,11 @@ What is the equivalent of the Red Cross in the Middle East?
 
 <num> Number: 831
 
+<title>
 <desc> Description:
 What is the name of the Islamic counterpart to the Red Cross?
 
+<narr>
 </top>
 
 
@@ -6312,9 +7574,11 @@ What is the name of the Islamic counterpart to the Red Cross?
 
 <num> Number: 832
 
+<title>
 <desc> Description:
 Name the Islamic counterpart to the Red Cross.
 
+<narr>
 </top>
 
 
@@ -6322,9 +7586,11 @@ Name the Islamic counterpart to the Red Cross.
 
 <num> Number: 833
 
+<title>
 <desc> Description:
 What is the Islamic equivalent of the Red Cross?
 
+<narr>
 </top>
 
 
@@ -6332,9 +7598,11 @@ What is the Islamic equivalent of the Red Cross?
 
 <num> Number: 834
 
+<title>
 <desc> Description:
 What is the name given to the Islamic counterpart of the Red Cross?
 
+<narr>
 </top>
 
 
@@ -6342,9 +7610,11 @@ What is the name given to the Islamic counterpart of the Red Cross?
 
 <num> Number: 835
 
+<title>
 <desc> Description:
 Colin Powell is most famous for what?
 
+<narr>
 </top>
 
 
@@ -6352,9 +7622,11 @@ Colin Powell is most famous for what?
 
 <num> Number: 836
 
+<title>
 <desc> Description:
 Colin Powell is best known for what achievement?
 
+<narr>
 </top>
 
 
@@ -6362,9 +7634,11 @@ Colin Powell is best known for what achievement?
 
 <num> Number: 837
 
+<title>
 <desc> Description:
 Who is Colin Powell?
 
+<narr>
 </top>
 
 
@@ -6372,9 +7646,11 @@ Who is Colin Powell?
 
 <num> Number: 838
 
+<title>
 <desc> Description:
 Colin Powell is famous for what?
 
+<narr>
 </top>
 
 
@@ -6382,9 +7658,11 @@ Colin Powell is famous for what?
 
 <num> Number: 839
 
+<title>
 <desc> Description:
 What time of year do most people fly?
 
+<narr>
 </top>
 
 
@@ -6392,9 +7670,11 @@ What time of year do most people fly?
 
 <num> Number: 840
 
+<title>
 <desc> Description:
 What time of year has the most air travel?
 
+<narr>
 </top>
 
 
@@ -6402,9 +7682,11 @@ What time of year has the most air travel?
 
 <num> Number: 841
 
+<title>
 <desc> Description:
 What time of year is air travel the heaviest?
 
+<narr>
 </top>
 
 
@@ -6412,9 +7694,11 @@ What time of year is air travel the heaviest?
 
 <num> Number: 842
 
+<title>
 <desc> Description:
 At what time of year is air travel at a peak?
 
+<narr>
 </top>
 
 
@@ -6422,9 +7706,11 @@ At what time of year is air travel at a peak?
 
 <num> Number: 843
 
+<title>
 <desc> Description:
 Name a golf course in Myrtle Beach.
 
+<narr>
 </top>
 
 
@@ -6432,9 +7718,11 @@ Name a golf course in Myrtle Beach.
 
 <num> Number: 844
 
+<title>
 <desc> Description:
 What is Pittsburg's baseball team called?
 
+<narr>
 </top>
 
 
@@ -6442,9 +7730,11 @@ What is Pittsburg's baseball team called?
 
 <num> Number: 845
 
+<title>
 <desc> Description:
 The major league baseball team in Pittsburgh is called what?
 
+<narr>
 </top>
 
 
@@ -6452,9 +7742,11 @@ The major league baseball team in Pittsburgh is called what?
 
 <num> Number: 846
 
+<title>
 <desc> Description:
 Name Pittsburgh's baseball team.
 
+<narr>
 </top>
 
 
@@ -6462,9 +7754,11 @@ Name Pittsburgh's baseball team.
 
 <num> Number: 847
 
+<title>
 <desc> Description:
 What city is the Orange Bowl in?
 
+<narr>
 </top>
 
 
@@ -6472,9 +7766,11 @@ What city is the Orange Bowl in?
 
 <num> Number: 848
 
+<title>
 <desc> Description:
 The Orange Bowl is in what city?
 
+<narr>
 </top>
 
 
@@ -6482,9 +7778,11 @@ The Orange Bowl is in what city?
 
 <num> Number: 849
 
+<title>
 <desc> Description:
 The Orange Bowl is located in what city?
 
+<narr>
 </top>
 
 
@@ -6492,9 +7790,11 @@ The Orange Bowl is located in what city?
 
 <num> Number: 850
 
+<title>
 <desc> Description:
 Where is the Orange Bowl?
 
+<narr>
 </top>
 
 
@@ -6502,9 +7802,11 @@ Where is the Orange Bowl?
 
 <num> Number: 851
 
+<title>
 <desc> Description:
 When did Mount St. Helens last erupt?
 
+<narr>
 </top>
 
 
@@ -6512,9 +7814,11 @@ When did Mount St. Helens last erupt?
 
 <num> Number: 852
 
+<title>
 <desc> Description:
 When did Mount St. Helen last have a major eruption?
 
+<narr>
 </top>
 
 
@@ -6522,9 +7826,11 @@ When did Mount St. Helen last have a major eruption?
 
 <num> Number: 853
 
+<title>
 <desc> Description:
 When did Mount St. Helen last have a significant eruption?
 
+<narr>
 </top>
 
 
@@ -6532,9 +7838,11 @@ When did Mount St. Helen last have a significant eruption?
 
 <num> Number: 854
 
+<title>
 <desc> Description:
 How do you abbreviate "Original Equipment Manufacturer"?
 
+<narr>
 </top>
 
 
@@ -6542,9 +7850,11 @@ How do you abbreviate "Original Equipment Manufacturer"?
 
 <num> Number: 855
 
+<title>
 <desc> Description:
 How is "Original Equipment Manufacturer" abbreviated?
 
+<narr>
 </top>
 
 
@@ -6552,9 +7862,11 @@ How is "Original Equipment Manufacturer" abbreviated?
 
 <num> Number: 856
 
+<title>
 <desc> Description:
 Where can one find Rider College?
 
+<narr>
 </top>
 
 
@@ -6562,9 +7874,11 @@ Where can one find Rider College?
 
 <num> Number: 857
 
+<title>
 <desc> Description:
 What is the location of Rider College?
 
+<narr>
 </top>
 
 
@@ -6572,9 +7886,11 @@ What is the location of Rider College?
 
 <num> Number: 858
 
+<title>
 <desc> Description:
 Rider College is located in what city?
 
+<narr>
 </top>
 
 
@@ -6582,9 +7898,11 @@ Rider College is located in what city?
 
 <num> Number: 859
 
+<title>
 <desc> Description:
 Where is Rider College?
 
+<narr>
 </top>
 
 
@@ -6592,9 +7910,11 @@ Where is Rider College?
 
 <num> Number: 860
 
+<title>
 <desc> Description:
 What is the occupation of Nicholas Cage?
 
+<narr>
 </top>
 
 
@@ -6602,9 +7922,11 @@ What is the occupation of Nicholas Cage?
 
 <num> Number: 861
 
+<title>
 <desc> Description:
 What is Nicholas Cage's profession?
 
+<narr>
 </top>
 
 
@@ -6612,9 +7934,11 @@ What is Nicholas Cage's profession?
 
 <num> Number: 862
 
+<title>
 <desc> Description:
 What is Nicholas Cage's occupation?
 
+<narr>
 </top>
 
 
@@ -6622,9 +7946,11 @@ What is Nicholas Cage's occupation?
 
 <num> Number: 863
 
+<title>
 <desc> Description:
 What does caliente translate to in English?
 
+<narr>
 </top>
 
 
@@ -6632,9 +7958,11 @@ What does caliente translate to in English?
 
 <num> Number: 864
 
+<title>
 <desc> Description:
 What is the English meaning of caliente?
 
+<narr>
 </top>
 
 
@@ -6642,9 +7970,11 @@ What is the English meaning of caliente?
 
 <num> Number: 865
 
+<title>
 <desc> Description:
 What is the meaning of caliente (in English)?
 
+<narr>
 </top>
 
 
@@ -6652,9 +7982,11 @@ What is the meaning of caliente (in English)?
 
 <num> Number: 866
 
+<title>
 <desc> Description:
 What is the English translation for the word "caliente"?
 
+<narr>
 </top>
 
 
@@ -6662,9 +7994,11 @@ What is the English translation for the word "caliente"?
 
 <num> Number: 867
 
+<title>
 <desc> Description:
 What is the Jewish alphabet called?
 
+<narr>
 </top>
 
 
@@ -6672,9 +8006,11 @@ What is the Jewish alphabet called?
 
 <num> Number: 868
 
+<title>
 <desc> Description:
 The Jewish alphabet is called what?
 
+<narr>
 </top>
 
 
@@ -6682,9 +8018,11 @@ The Jewish alphabet is called what?
 
 <num> Number: 869
 
+<title>
 <desc> Description:
 The Jewish alphabet is known as what?
 
+<narr>
 </top>
 
 
@@ -6692,9 +8030,11 @@ The Jewish alphabet is known as what?
 
 <num> Number: 870
 
+<title>
 <desc> Description:
 Jackson Pollock was a native of what country?
 
+<narr>
 </top>
 
 
@@ -6702,9 +8042,11 @@ Jackson Pollock was a native of what country?
 
 <num> Number: 871
 
+<title>
 <desc> Description:
 Jackson Pollock is of what nationality?
 
+<narr>
 </top>
 
 
@@ -6712,9 +8054,11 @@ Jackson Pollock is of what nationality?
 
 <num> Number: 872
 
+<title>
 <desc> Description:
 What was the nationality of Jackson Pollock?
 
+<narr>
 </top>
 
 
@@ -6722,9 +8066,11 @@ What was the nationality of Jackson Pollock?
 
 <num> Number: 873
 
+<title>
 <desc> Description:
 The Kentucky Horse Park is close to which American city?
 
+<narr>
 </top>
 
 
@@ -6732,9 +8078,11 @@ The Kentucky Horse Park is close to which American city?
 
 <num> Number: 874
 
+<title>
 <desc> Description:
 Where is the Kentucky Horse Park located?
 
+<narr>
 </top>
 
 
@@ -6742,9 +8090,11 @@ Where is the Kentucky Horse Park located?
 
 <num> Number: 875
 
+<title>
 <desc> Description:
 Where is the Kentucky Horse Park?
 
+<narr>
 </top>
 
 
@@ -6752,9 +8102,11 @@ Where is the Kentucky Horse Park?
 
 <num> Number: 876
 
+<title>
 <desc> Description:
 What city is the Kentucky Horse Park near?
 
+<narr>
 </top>
 
 
@@ -6762,9 +8114,11 @@ What city is the Kentucky Horse Park near?
 
 <num> Number: 877
 
+<title>
 <desc> Description:
 The Kentucky Horse Park is located near what city?
 
+<narr>
 </top>
 
 
@@ -6772,9 +8126,11 @@ The Kentucky Horse Park is located near what city?
 
 <num> Number: 878
 
+<title>
 <desc> Description:
 What is a nickname for Mississippi?
 
+<narr>
 </top>
 
 
@@ -6782,9 +8138,11 @@ What is a nickname for Mississippi?
 
 <num> Number: 879
 
+<title>
 <desc> Description:
 Mississippi is nicknamed what?
 
+<narr>
 </top>
 
 
@@ -6792,9 +8150,11 @@ Mississippi is nicknamed what?
 
 <num> Number: 880
 
+<title>
 <desc> Description:
 Mississippi has what name for a state nickname?
 
+<narr>
 </top>
 
 
@@ -6802,9 +8162,11 @@ Mississippi has what name for a state nickname?
 
 <num> Number: 881
 
+<title>
 <desc> Description:
 What is the nickname for the state of Mississippi?
 
+<narr>
 </top>
 
 
@@ -6812,9 +8174,11 @@ What is the nickname for the state of Mississippi?
 
 <num> Number: 882
 
+<title>
 <desc> Description:
 What is the nickname of the state of Mississippi?
 
+<narr>
 </top>
 
 
@@ -6822,9 +8186,11 @@ What is the nickname of the state of Mississippi?
 
 <num> Number: 883
 
+<title>
 <desc> Description:
 Rotary engines were manufactured by which company?
 
+<narr>
 </top>
 
 
@@ -6832,9 +8198,11 @@ Rotary engines were manufactured by which company?
 
 <num> Number: 884
 
+<title>
 <desc> Description:
 Who made the rotary engine automobile?
 
+<narr>
 </top>
 
 
@@ -6842,9 +8210,11 @@ Who made the rotary engine automobile?
 
 <num> Number: 885
 
+<title>
 <desc> Description:
 Rotary engine cars were made by what company?
 
+<narr>
 </top>
 
 
@@ -6852,9 +8222,11 @@ Rotary engine cars were made by what company?
 
 <num> Number: 886
 
+<title>
 <desc> Description:
 Rotary engines used to be made by whom?
 
+<narr>
 </top>
 
 
@@ -6862,9 +8234,11 @@ Rotary engines used to be made by whom?
 
 <num> Number: 887
 
+<title>
 <desc> Description:
 What company produced rotary engine vehicles?
 
+<narr>
 </top>
 
 
@@ -6872,9 +8246,11 @@ What company produced rotary engine vehicles?
 
 <num> Number: 888
 
+<title>
 <desc> Description:
 What is the world's highest peak?
 
+<narr>
 </top>
 
 
@@ -6882,9 +8258,11 @@ What is the world's highest peak?
 
 <num> Number: 889
 
+<title>
 <desc> Description:
 What is the highest mountain in the world?
 
+<narr>
 </top>
 
 
@@ -6892,9 +8270,11 @@ What is the highest mountain in the world?
 
 <num> Number: 890
 
+<title>
 <desc> Description:
 Name the highest mountain.
 
+<narr>
 </top>
 
 
@@ -6902,9 +8282,11 @@ Name the highest mountain.
 
 <num> Number: 891
 
+<title>
 <desc> Description:
 What is the name of the tallest mountain in the world?
 
+<narr>
 </top>
 
 
@@ -6912,9 +8294,11 @@ What is the name of the tallest mountain in the world?
 
 <num> Number: 892
 
+<title>
 <desc> Description:
 What makes Black Hills, South Dakota a tourist attraction?
 
+<narr>
 </top>
 
 
@@ -6922,7 +8306,9 @@ What makes Black Hills, South Dakota a tourist attraction?
 
 <num> Number: 893
 
+<title>
 <desc> Description:
 What are the Black Hills known for?
 
+<narr>
 </top>
