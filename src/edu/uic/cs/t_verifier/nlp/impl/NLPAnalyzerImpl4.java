@@ -34,6 +34,8 @@ import edu.uic.cs.t_verifier.misc.Assert;
 import edu.uic.cs.t_verifier.misc.ClassFactory;
 import edu.uic.cs.t_verifier.misc.Config;
 import edu.uic.cs.t_verifier.misc.LogHelper;
+import edu.uic.cs.t_verifier.ml.PersonNameIdentifier;
+import edu.uic.cs.t_verifier.ml.impl.PersonNameIdentifierStanfordNERImpl;
 import edu.uic.cs.t_verifier.nlp.impl.OpenNLPChunker.ChunkType;
 
 public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
@@ -185,6 +187,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 	private OpenNLPChunker chunker = new OpenNLPChunker();
 
 	//	private PersonNameIdentifier personNameIdentifier = new PersonNameIdentifierImpl();
+	private PersonNameIdentifier personNameIdentifier = new PersonNameIdentifierStanfordNERImpl();
 
 	//	private WikipediaContentExtractor wikipediaContentExtractor = new WikipediaContentExtractor() // for test
 	//	{
@@ -429,6 +432,40 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 				// System.out.println(name);
 			}
 
+			List<Integer> personNameIndices = personNameIdentifier
+					.identifyNameTermsWithinNounPhrase(tagsByTermOriginalForm,
+							null, null);
+			List<Entry<String, String>> oneName = null;
+			Integer lastTermindex = null;
+			for (Integer nameTermIndex : personNameIndices)
+			{
+				if (oneName == null) // new name
+				{
+					oneName = new ArrayList<Entry<String, String>>();
+					oneName.add(tagsByTermBasicForm.get(nameTermIndex));
+				}
+				else if (lastTermindex != nameTermIndex - 1) // finish name
+				{
+					matchedFullNames
+							.add(new SimpleEntry<List<Entry<String, String>>, String>(
+									oneName, concatenateTerms(oneName)));
+					oneName = null;
+				}
+				else
+				// continue name
+				{
+					oneName.add(tagsByTermBasicForm.get(nameTermIndex));
+				}
+
+				lastTermindex = nameTermIndex;
+			}
+
+			if (oneName != null)
+			{
+				matchedFullNames
+						.add(new SimpleEntry<List<Entry<String, String>>, String>(
+								oneName, concatenateTerms(oneName)));
+			}
 		}
 		LOGGER.info(">>>>> NounPhrases_from_chucker\t\t\t" + allNounPhrases);
 		LOGGER.info(">>>>> MatchedPersonName_full\t\t\t" + matchedFullNames); // TODO no use now
@@ -488,7 +525,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 		*/
 
 		// find those names only identified by name-list
-		List<List<Entry<String, String>>> matchedNamesIdentifiedByNameListOnly = filterOutNamesByWIkiAndWordNet(
+		List<List<Entry<String, String>>> matchedNamesIdentifiedByNameListOnly = filterOutNamesByWikiAndWordNet(
 				matchedFullNames, capitalizationsByOriginalCaseFromWiki,
 				capitalizationsBySingleNounTermFromWiki,
 				capitalizationsByOriginalCaseFromWordNet);
@@ -497,6 +534,13 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 				+ matchedNamesIdentifiedByNameListOnly);
 
 		// REPLACE /////////////////////////////////////////////////////////////
+		for (List<Entry<String, String>> entry : matchedNamesIdentifiedByNameListOnly)
+		{
+			String target = concatenateTerms(entry);
+			String replacement = WordUtils.capitalize(target);
+			sentence = sentence.replace(target, replacement);
+		}
+
 		for (Entry<List<Entry<String, String>>, String> entry : capitalizationsByOriginalCaseFromWiki)
 		{
 			sentence = replaceMatchedWikiPhrase(sentence, entry.getKey(),
@@ -515,12 +559,6 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			sentence = sentence.replace(target, entry.getValue());
 		}
 
-		for (List<Entry<String, String>> entry : matchedNamesIdentifiedByNameListOnly)
-		{
-			String target = concatenateTerms(entry);
-			String replacement = WordUtils.capitalize(target);
-			sentence = sentence.replace(target, replacement);
-		}
 		////////////////////////////////////////////////////////////////////////
 
 		//		// re-parse it /////////////////////////////////////////////////////////
@@ -580,12 +618,21 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<List<Entry<String, String>>> filterOutNamesByWIkiAndWordNet(
+	private List<List<Entry<String, String>>> filterOutNamesByWikiAndWordNet(
 			List<Entry<List<Entry<String, String>>, String>> matchedNames,
 			List<Entry<List<Entry<String, String>>, String>> capitalizationsByOriginalCaseFromWiki,
 			List<Entry<Entry<String, String>, String>> capitalizationsBySingleNounTermFromWiki,
 			List<Entry<List<Entry<String, String>>, String>> capitalizationsByOriginalCaseFromWordNet)
 	{
+		// names
+		List<List<Entry<String, String>>> squencesFromNameList = new ArrayList<List<Entry<String, String>>>(
+				matchedNames.size());
+		for (Entry<List<Entry<String, String>>, String> entry : matchedNames)
+		{
+			squencesFromNameList.add(entry.getKey());
+		}
+
+		// wiki phrases
 		capitalizationsByOriginalCaseFromWiki = (List<Entry<List<Entry<String, String>>, String>>) ((ArrayList<Entry<List<Entry<String, String>>, String>>) capitalizationsByOriginalCaseFromWiki)
 				.clone();
 		// combine noun-sequence and single-noun
@@ -597,18 +644,12 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 									.getValue()));
 		}
 
+		// wordnet phrases
 		capitalizationsByOriginalCaseFromWiki
 				.addAll(capitalizationsByOriginalCaseFromWordNet);
 
-		List<List<Entry<String, String>>> squencesFromNameList = new ArrayList<List<Entry<String, String>>>(
-				matchedNames.size());
-		for (Entry<List<Entry<String, String>>, String> entry : matchedNames)
-		{
-			squencesFromNameList.add(entry.getKey());
-		}
-
 		return filterOutOverlappings(squencesFromNameList,
-				capitalizationsByOriginalCaseFromWiki);
+				capitalizationsByOriginalCaseFromWiki, true);
 
 	}
 
@@ -720,31 +761,44 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 		////////////////////////////////////////////////////////////////////////
 		return filterOutOverlappings(nounSequences,
-				capitalizationsByOriginalCaseFromWiki);
+				capitalizationsByOriginalCaseFromWiki, false);
 	}
 
 	private List<List<Entry<String, String>>> filterOutOverlappings(
-			List<List<Entry<String, String>>> nounSequences,
-			List<Entry<List<Entry<String, String>>, String>> capitalizationsByOriginalCaseBase)
+			List<List<Entry<String, String>>> from,
+			List<Entry<List<Entry<String, String>>, String>> filterOut,
+			boolean keepIfIdentical)
 	{
-		if (capitalizationsByOriginalCaseBase.isEmpty()) // wikiepda has not identified any 
+		if (filterOut.isEmpty()) // wikiepda has not identified any 
 		{
-			return nounSequences;
+			return from;
 		}
 
 		List<List<Entry<String, String>>> squencesFromWiki = new ArrayList<List<Entry<String, String>>>(
-				capitalizationsByOriginalCaseBase.size());
-		for (Entry<List<Entry<String, String>>, String> entry : capitalizationsByOriginalCaseBase)
+				filterOut.size());
+		for (Entry<List<Entry<String, String>>, String> entry : filterOut)
 		{
 			squencesFromWiki.add(entry.getKey());
 		}
 
 		List<List<Entry<String, String>>> result = new ArrayList<List<Entry<String, String>>>();
-		ns: for (List<Entry<String, String>> nounSequence : nounSequences)
+		ns: for (List<Entry<String, String>> nounSequence : from)
 		{
 			// check if overlapping with any sequence from wikipedia
 			for (List<Entry<String, String>> squenceFromWiki : squencesFromWiki)
 			{
+				if (keepIfIdentical)
+				{
+					@SuppressWarnings("unchecked")
+					ArrayList<Entry<String, String>> nounSequenceClone = (ArrayList<Entry<String, String>>) ((ArrayList<Entry<String, String>>) nounSequence)
+							.clone();
+					nounSequenceClone.removeAll(squenceFromWiki);
+					if (nounSequenceClone.isEmpty()) // two are identical
+					{
+						break;
+					}
+				}
+
 				if (!Collections.disjoint(nounSequence, squenceFromWiki))
 				{
 					// overlap
