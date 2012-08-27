@@ -31,7 +31,7 @@ public class NLPAnalyzerImpl extends AbstractWordOperations implements
 
 	public NLPAnalyzerImpl()
 	{
-		lexicalizedParser = new LexicalizedParser(GRAMMAR);
+		lexicalizedParser = LexicalizedParser.loadModel(GRAMMAR);
 		TreebankLanguagePack tlp = new PennTreebankLanguagePack();
 		grammaticalStructureFactory = tlp.grammaticalStructureFactory();
 	}

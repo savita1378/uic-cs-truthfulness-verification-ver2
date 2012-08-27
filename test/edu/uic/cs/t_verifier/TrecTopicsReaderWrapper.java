@@ -55,7 +55,14 @@ public class TrecTopicsReaderWrapper
 	{
 		TrecTopicsReaderWrapper topicsReaderWrapper = new TrecTopicsReaderWrapper();
 		int count = 1;
-		for (String des : topicsReaderWrapper.readDescriptions("04.testset"))
+		for (String des : topicsReaderWrapper
+				.readDescriptions("08.qa.questions.txt"))
+		{
+			System.out.println(count++ + "\t" + des);
+		}
+
+		for (String des : topicsReaderWrapper
+				.readDescriptions("09.qa.questions.txt"))
 		{
 			System.out.println(count++ + "\t" + des);
 		}

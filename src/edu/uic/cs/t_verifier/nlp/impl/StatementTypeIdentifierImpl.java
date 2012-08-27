@@ -61,17 +61,17 @@ public class StatementTypeIdentifierImpl implements StatementTypeIdentifier,
 
 	private NLPAnalyzerImpl4 nlpAnalyzer = new NLPAnalyzerImpl4();
 
-	private static final String SERIALIZED_CLASSIFIER_PATH_7_CLASSES = "StanfordNer_classifiers/muc.7class.distsim.crf.ser.gz";
+	private static final String SERIALIZED_CLASSIFIER_PATH_7_CLASSES = "StanfordNer_classifiers/english.muc.7class.distsim.crf.ser.gz";
 	@SuppressWarnings("unchecked")
 	private AbstractSequenceClassifier<CoreLabel> classifier_7_classes = CRFClassifier
 			.getClassifierNoExceptions(SERIALIZED_CLASSIFIER_PATH_7_CLASSES);
 
-	//	private static final String SERIALIZED_CLASSIFIER_PATH_4_CLASSES = "StanfordNer_classifiers/conll.4class.distsim.crf.ser.gz";
+	//	private static final String SERIALIZED_CLASSIFIER_PATH_4_CLASSES = "StanfordNer_classifiers/english.conll.4class.distsim.crf.ser.gz";
 	//	@SuppressWarnings("unchecked")
 	//	private AbstractSequenceClassifier<CoreLabel> classifier_4_classes = CRFClassifier
 	//			.getClassifierNoExceptions(SERIALIZED_CLASSIFIER_PATH_4_CLASSES);
 
-	private static final String SERIALIZED_CLASSIFIER_PATH_3_CLASSES = "StanfordNer_classifiers/all.3class.distsim.crf.ser.gz";
+	private static final String SERIALIZED_CLASSIFIER_PATH_3_CLASSES = "StanfordNer_classifiers/english.all.3class.distsim.crf.ser.gz";
 	@SuppressWarnings("unchecked")
 	private AbstractSequenceClassifier<CoreLabel> classifier_3_classes = CRFClassifier
 			.getClassifierNoExceptions(SERIALIZED_CLASSIFIER_PATH_3_CLASSES);
