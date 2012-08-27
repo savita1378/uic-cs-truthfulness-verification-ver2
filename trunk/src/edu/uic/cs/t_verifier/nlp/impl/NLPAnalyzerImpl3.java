@@ -44,8 +44,8 @@ public class NLPAnalyzerImpl3 extends AbstractWordOperations implements
 	private static final List<String> PUNCTUATIONS = Arrays
 			.asList(new String[] { ".", ",", ":" });
 
-	protected static final LexicalizedParser lexicalizedParser = new LexicalizedParser(
-			GRAMMAR);
+	protected static final LexicalizedParser lexicalizedParser = LexicalizedParser
+			.loadModel(GRAMMAR);
 	private static final GrammaticalStructureFactory grammaticalStructureFactory;
 	static
 	{

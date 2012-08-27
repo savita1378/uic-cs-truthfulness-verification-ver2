@@ -51,8 +51,10 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 	private static final String POSTAG_DETERMINER = "DT";
 	private static final String POSTAG_NOUN = "NN";
 
+	private static final String PARENTHESES_LEFT = "-lrb-";
+	private static final String PARENTHESES_RIGHT = "-rrb-";
 	private static final List<String> PARENTHESES_VALUES = Arrays.asList(
-			"-lrb-", "-rrb-");
+			PARENTHESES_LEFT, PARENTHESES_RIGHT);
 
 	private static final String REGEX_TERM_LEFT_BOUND = "\\b";
 	private static final String REGEX_TERM_RIGHT_BOUND = "(\\b|\\s)";
@@ -392,12 +394,16 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 		List<List<Entry<String, String>>> posTagsByTermOfSubSentences = new ArrayList<List<Entry<String, String>>>(
 				originalPosTagsByTermOfSubSentences.size());
 
+		List<String> matchedAcronyms = new ArrayList<String>();
 		List<Entry<List<Entry<String, String>>, String>> matchedFullNames = new ArrayList<Entry<List<Entry<String, String>>, String>>();
 
 		for (List<Entry<String, String>> tagsByTermOriginalForm : originalPosTagsByTermOfSubSentences) // for each sub-sentence
 		{
 			List<Entry<String, String>> tagsByTermBasicForm = mapPosTagToBasicForm(tagsByTermOriginalForm);
 			posTagsByTermOfSubSentences.add(tagsByTermBasicForm); // basic form
+
+			String acronym = searchForAcronyms(tagsByTermBasicForm);
+			matchedAcronyms.add(acronym);
 
 			List<Span> spans = chunker.getChunkSpans(tagsByTermOriginalForm,
 					ChunkType.NP);
@@ -467,6 +473,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 								oneName, concatenateTerms(oneName)));
 			}
 		}
+		LOGGER.info(">>>>> Acronyms\t\t\t" + matchedAcronyms);
 		LOGGER.info(">>>>> NounPhrases_from_chucker\t\t\t" + allNounPhrases);
 		LOGGER.info(">>>>> MatchedPersonName_full\t\t\t" + matchedFullNames); // TODO no use now
 		// System.out.println(allNounPhrases);
@@ -559,6 +566,13 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			sentence = sentence.replace(target, entry.getValue());
 		}
 
+		for (String acronym : matchedAcronyms)
+		{
+			acronym = "(" + acronym + ")";
+			sentence = sentence
+					.replace(acronym, acronym.toUpperCase(Locale.US));
+		}
+
 		////////////////////////////////////////////////////////////////////////
 
 		//		// re-parse it /////////////////////////////////////////////////////////
@@ -588,6 +602,52 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 		return sentence;
 		//return StringUtils.capitalize(sentence);
+	}
+
+	private String searchForAcronyms(
+			List<Entry<String, String>> tagsByTermBasicForm)
+	{
+		int index = 0;
+		Entry<String, String> tagByTerm = null;
+		for (; index < tagsByTermBasicForm.size(); index++)
+		{
+			tagByTerm = tagsByTermBasicForm.get(index);
+			String term = tagByTerm.getKey();
+
+			if (PARENTHESES_LEFT.equalsIgnoreCase(term)) // find "("
+			{
+				break;
+			}
+		}
+
+		if (index > tagsByTermBasicForm.size() - 3
+				|| !PARENTHESES_RIGHT.equalsIgnoreCase(tagsByTermBasicForm.get(
+						index + 2).getKey())) // no ")"
+		{
+			return null; // no acronyms
+		}
+
+		String acronym = tagsByTermBasicForm.get(index + 1).getKey();
+
+		int acronymsLength = acronym.length();
+		if (acronymsLength > index) // no enough terms in front
+		{
+			return null;
+		}
+
+		// char ch = acronym.charAt(acronymsLength - 1);
+		// index start with "("
+		int i = 0;
+		for (int j = index - acronymsLength; j < index; j++)
+		{
+			tagByTerm = tagsByTermBasicForm.get(j);
+			if (tagByTerm.getKey().charAt(0) != acronym.charAt(i++))
+			{
+				return null;
+			}
+		}
+
+		return acronym;
 	}
 
 	private String replaceMatchedWikiPhrase(String sentence,

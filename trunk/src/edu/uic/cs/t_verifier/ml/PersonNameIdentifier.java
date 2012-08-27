@@ -14,7 +14,7 @@ public interface PersonNameIdentifier
 	 * @return the index of possible name term within the parameter "tagsByTermInNP"
 	 */
 	List<Integer> identifyNameTermsWithinNounPhrase(
-			List<Entry<String, String>> tagsByTermInNP,
+			List<Entry<String, String>> tagsByTerm,
 			Entry<String, String> tagsByTermBeforeNP,
 			Entry<String, String> tagsByTermAfterNP);
 }
