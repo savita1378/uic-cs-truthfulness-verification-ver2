@@ -25,6 +25,7 @@
 	<classpathentry kind="lib" path="lib/xom.jar"/>
 	<classpathentry kind="lib" path="StanfordNLP_models/stanford-corenlp-2012-07-06-models.jar"/>
 	<classpathentry kind="lib" path="StanfordNLP_models/stanford-corenlp-caseless-2012-07-04-models.jar"/>
+	<classpathentry kind="lib" path="lib/joda-time.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
