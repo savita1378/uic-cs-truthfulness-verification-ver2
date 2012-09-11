@@ -121,12 +121,17 @@ public class HtmlPageExtractor extends WikipediaContentExtractor
 			{
 				if (isBulletinPage) // each Bullet is considered as a paragraph
 				{
-					NodeList allBullets = content.getChildren()
-							.extractAllNodesThatMatch(new TagNameFilter("li"));
-					for (int index = 0; index < allBullets.size(); index++)
+					if (content.getChildren() != null)
 					{
-						recursiveExtractBullets("",
-								(Bullet) allBullets.elementAt(index), segments);
+						NodeList allBullets = content.getChildren()
+								.extractAllNodesThatMatch(
+										new TagNameFilter("li"));
+						for (int index = 0; index < allBullets.size(); index++)
+						{
+							recursiveExtractBullets("",
+									(Bullet) allBullets.elementAt(index),
+									segments);
+						}
 					}
 
 				}
