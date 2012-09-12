@@ -7,12 +7,14 @@ import java.util.Properties;
 import org.apache.commons.lang.StringUtils;
 
 import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
+import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TextAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TrueCaseTextAnnotation;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import edu.stanford.nlp.util.CoreMap;
 import edu.uic.cs.t_verifier.TrecTopicsReaderWrapper;
 import edu.uic.cs.t_verifier.misc.Assert;
 
@@ -32,43 +34,61 @@ public class TestStanfordTrueCaser
 		tokenizer = new StanfordCoreNLP(props);
 	}
 
-	private List<String> getTrueCaseTokens(String textStringInLowerCase)
+	private List<List<String>> getTrueCaseTokens(String textStringInLowerCase)
 	{
-		Annotation text = new Annotation(textStringInLowerCase);
-		trueCaser.annotate(text);
+		Annotation document = new Annotation(textStringInLowerCase);
+		trueCaser.annotate(document);
 
-		List<String> result = new ArrayList<String>();
-		for (CoreLabel token : text.get(TokensAnnotation.class))
+		List<CoreMap> sentences = document.get(SentencesAnnotation.class);
+
+		List<List<String>> result = new ArrayList<List<String>>(
+				sentences.size());
+		for (CoreMap sentence : sentences)
 		{
-			String pos = token.get(PartOfSpeechAnnotation.class);
-			if (!StringUtils.isAlpha(pos)) // non-word
-			{
-				continue;
-			}
+			List<String> sentenceTokens = new ArrayList<String>();
+			result.add(sentenceTokens);
 
-			String trueCase = token.get(TrueCaseTextAnnotation.class);
-			result.add(trueCase);
+			for (CoreLabel token : sentence.get(TokensAnnotation.class))
+			{
+				String pos = token.get(PartOfSpeechAnnotation.class);
+				if (!StringUtils.isAlpha(pos)) // non-word
+				{
+					continue;
+				}
+
+				String trueCase = token.get(TrueCaseTextAnnotation.class);
+				sentenceTokens.add(trueCase);
+			}
 		}
 
 		return result;
 	}
 
-	private List<String> getOriginalCasedTokens(String casedTextString)
+	private List<List<String>> getOriginalCasedTokens(String casedTextString)
 	{
-		Annotation text = new Annotation(casedTextString);
-		tokenizer.annotate(text);
+		Annotation document = new Annotation(casedTextString);
+		tokenizer.annotate(document);
 
-		List<String> result = new ArrayList<String>();
-		for (CoreLabel token : text.get(TokensAnnotation.class))
+		List<CoreMap> sentences = document.get(SentencesAnnotation.class);
+
+		List<List<String>> result = new ArrayList<List<String>>(
+				sentences.size());
+		for (CoreMap sentence : sentences)
 		{
-			String pos = token.get(PartOfSpeechAnnotation.class);
-			if (!StringUtils.isAlpha(pos)) // non-word
-			{
-				continue;
-			}
+			List<String> sentenceTokens = new ArrayList<String>();
+			result.add(sentenceTokens);
 
-			String tokenString = token.get(TextAnnotation.class);
-			result.add(tokenString);
+			for (CoreLabel token : sentence.get(TokensAnnotation.class))
+			{
+				String pos = token.get(PartOfSpeechAnnotation.class);
+				if (!StringUtils.isAlpha(pos)) // non-word
+				{
+					continue;
+				}
+
+				String tokenString = token.get(TextAnnotation.class);
+				sentenceTokens.add(tokenString);
+			}
 		}
 
 		return result;
@@ -79,14 +99,14 @@ public class TestStanfordTrueCaser
 		TestStanfordTrueCaser tester = new TestStanfordTrueCaser();
 
 		TrecTopicsReaderWrapper trecTopicsReader = new TrecTopicsReaderWrapper();
-		List<String> sentences = new ArrayList<String>();
+		List<String> testSequences = new ArrayList<String>();
 
-		//		sentences
-		//				.addAll(trecTopicsReader.readDescriptions("04.robust.testset"));
-		sentences.addAll(trecTopicsReader
-				.readDescriptions("08.qa.questions.txt"));
-		sentences.addAll(trecTopicsReader
-				.readDescriptions("09.qa.questions.txt"));
+		testSequences.addAll(trecTopicsReader
+				.readDescriptions("04.robust.testset"));
+		//		testSequences.addAll(trecTopicsReader
+		//				.readDescriptions("08.qa.questions.txt"));
+		//		testSequences.addAll(trecTopicsReader
+		//				.readDescriptions("09.qa.questions.txt"));
 
 		int totalNumOfTerms = 0;
 		int correctCasedNum = 0;
@@ -99,40 +119,17 @@ public class TestStanfordTrueCaser
 		int totalNumOfRecognizedLower = 0;
 		int correctLowerNum = 0;
 
-		for (int index = 0; index < sentences.size(); index++)
+		for (int index = 0; index < testSequences.size(); index++)
 		{
-			String sentence = sentences.get(index);
-			System.out.println((index + 1) + "\t" + sentence);
+			String testSequence = testSequences.get(index);
+			System.out.println((index + 1) + "\t" + testSequence);
 
-			List<String> originalTokens = tester
-					.getOriginalCasedTokens(sentence);
-			// System.out.println(originalTokens);
+			List<List<String>> originalSentence = tester
+					.getOriginalCasedTokens(testSequence);
+			List<List<String>> trueCasedSentence = tester
+					.getTrueCaseTokens(testSequence.toLowerCase());
 
-			List<String> trueCasedTokens = tester.getTrueCaseTokens(sentence
-					.toLowerCase());
-			// System.out.println(trueCasedTokens);
-
-			if (originalTokens.size() != trueCasedTokens.size())
-			{
-				// lower case "r&d" could be tokenized as "r & d"
-				int tokenIndex = 0;
-				while (originalTokens.get(tokenIndex).equalsIgnoreCase(
-						trueCasedTokens.get(tokenIndex)))
-				{
-					tokenIndex++;
-				} // find the unequal one
-
-				String originalToken = originalTokens.get(tokenIndex);
-				originalTokens.remove(tokenIndex);
-				for (int charIndex = originalToken.length() - 1; charIndex >= 0; charIndex--)
-				{
-					char originalChar = originalToken.charAt(charIndex);
-					originalTokens.add(tokenIndex, "" + originalChar);
-				}
-
-				Assert.isTrue(originalTokens.size() == trueCasedTokens.size(),
-						"\n" + originalTokens + "\n" + trueCasedTokens);
-			}
+			Assert.isTrue(originalSentence.size() == trueCasedSentence.size());
 
 			// consider non-lower as positive
 			List<String> truePositive = new ArrayList<String>(); // correct
@@ -140,61 +137,95 @@ public class TestStanfordTrueCaser
 			List<String> falseNegative = new ArrayList<String>();
 			List<String> falsePositive = new ArrayList<String>();
 
-			for (int termIndex = 0; termIndex < originalTokens.size(); termIndex++)
+			for (int i = 0; i < originalSentence.size(); i++)
 			{
-				if (termIndex == 0) // ignore the first term which is always capitalized
+				List<String> originalTokens = originalSentence.get(i);
+				// System.out.println(originalTokens);
+
+				List<String> trueCasedTokens = trueCasedSentence.get(i);
+				// System.out.println(trueCasedTokens);
+
+				if (originalTokens.size() != trueCasedTokens.size())
 				{
-					continue;
+					// lower case "r&d" could be tokenized as "r & d"
+					int tokenIndex = 0;
+					while (originalTokens.get(tokenIndex).equalsIgnoreCase(
+							trueCasedTokens.get(tokenIndex)))
+					{
+						tokenIndex++;
+					} // find the unequal one
+
+					String originalToken = originalTokens.get(tokenIndex);
+					originalTokens.remove(tokenIndex);
+					for (int charIndex = originalToken.length() - 1; charIndex >= 0; charIndex--)
+					{
+						char originalChar = originalToken.charAt(charIndex);
+						originalTokens.add(tokenIndex, "" + originalChar);
+					}
+
+					Assert.isTrue(
+							originalTokens.size() == trueCasedTokens.size(),
+							"\n" + originalTokens + "\n" + trueCasedTokens);
 				}
 
-				totalNumOfTerms++;
-
-				String original = originalTokens.get(termIndex);
-				String trueCased = trueCasedTokens.get(termIndex);
-
-				boolean isOriginalInLowerCase = original.equals(original
-						.toLowerCase());
-
-				boolean isSameCase = original.equals(trueCased);
-				Assert.isTrue(original.equalsIgnoreCase(trueCased), "Original["
-						+ original
-						+ "] should equals ignore case to True-cased["
-						+ trueCased + "]");
-
-				if (!isOriginalInLowerCase) // term should be non-lower case; i.e. POSITIVE
+				for (int termIndex = 0; termIndex < originalTokens.size(); termIndex++)
 				{
-					totalNumOfTrueNonLower++;
-
-					if (isSameCase) // identified as non-lower
+					if (termIndex == 0) // ignore the first term which is always capitalized
 					{
-						totalNumOfRecognizedNonLower++;
-						truePositive.add(original);
+						continue;
+					}
+
+					totalNumOfTerms++;
+
+					String original = originalTokens.get(termIndex);
+					String trueCased = trueCasedTokens.get(termIndex);
+
+					boolean isOriginalInLowerCase = original.equals(original
+							.toLowerCase());
+
+					boolean isSameCase = original.equals(trueCased);
+					Assert.isTrue(
+							original.equalsIgnoreCase(trueCased),
+							"Original["
+									+ original
+									+ "] should equals ignore case to True-cased["
+									+ trueCased + "]");
+
+					if (!isOriginalInLowerCase) // term should be non-lower case; i.e. POSITIVE
+					{
+						totalNumOfTrueNonLower++;
+
+						if (isSameCase) // identified as non-lower
+						{
+							totalNumOfRecognizedNonLower++;
+							truePositive.add(original);
+						}
+						else
+						// identified as lower case
+						{
+							totalNumOfRecognizedLower++;
+							falseNegative.add(trueCased);
+						}
 					}
 					else
-					// identified as lower case
+					// term should be lower case; i.e. NEGATIVE
 					{
-						totalNumOfRecognizedLower++;
-						falseNegative.add(trueCased);
-					}
-				}
-				else
-				// term should be lower case; i.e. NEGATIVE
-				{
-					totalNumOfTrueLower++;
+						totalNumOfTrueLower++;
 
-					if (isSameCase) // identified as lower case
-					{
-						totalNumOfRecognizedLower++;
-						trueNegative.add(original);
+						if (isSameCase) // identified as lower case
+						{
+							totalNumOfRecognizedLower++;
+							trueNegative.add(original);
+						}
+						else
+						// but be identified as non-lower
+						{
+							totalNumOfRecognizedNonLower++;
+							falsePositive.add(trueCased);
+						}
 					}
-					else
-					// but be identified as non-lower
-					{
-						totalNumOfRecognizedNonLower++;
-						falsePositive.add(trueCased);
-					}
-				}
-			}
+				} // for one sentence
+			} // for all sentences
 
 			correctCasedNum += (truePositive.size() + trueNegative.size());
 			correctNonLowerNum += truePositive.size();

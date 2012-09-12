@@ -17,7 +17,7 @@ import edu.uic.cs.t_verifier.misc.Assert;
 import edu.uic.cs.t_verifier.misc.GeneralException;
 import edu.uic.cs.t_verifier.nlp.PersonNameMatcher;
 import edu.uic.cs.t_verifier.nlp.WordNetReader;
-import edu.uic.cs.t_verifier.nlp.impl.NLPAnalyzerImpl4.RecursiveMatcher;
+import edu.uic.cs.t_verifier.nlp.impl.AbstractNLPOperations.RecursiveMatcher;
 
 public class PersonNameMatcherImpl implements PersonNameMatcher,
 		RecursiveMatcher<String>

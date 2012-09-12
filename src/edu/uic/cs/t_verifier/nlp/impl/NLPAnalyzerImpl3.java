@@ -26,15 +26,13 @@ import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.trees.TreeGraphNode;
 import edu.stanford.nlp.trees.TreebankLanguagePack;
 import edu.stanford.nlp.trees.TypedDependency;
-import edu.uic.cs.t_verifier.common.AbstractWordOperations;
 import edu.uic.cs.t_verifier.input.AlternativeUnitsReader;
 import edu.uic.cs.t_verifier.input.data.Statement;
 import edu.uic.cs.t_verifier.misc.Assert;
 import edu.uic.cs.t_verifier.misc.GeneralException;
 import edu.uic.cs.t_verifier.nlp.NLPAnalyzer;
-import edu.uic.cs.t_verifier.nlp.WordNetReader;
 
-public class NLPAnalyzerImpl3 extends AbstractWordOperations implements
+public class NLPAnalyzerImpl3 extends AbstractNLPOperations implements
 		NLPAnalyzer
 {
 	// private static final String GRAMMAR = "/edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz";
@@ -52,8 +50,6 @@ public class NLPAnalyzerImpl3 extends AbstractWordOperations implements
 		TreebankLanguagePack tlp = new PennTreebankLanguagePack();
 		grammaticalStructureFactory = tlp.grammaticalStructureFactory();
 	}
-
-	protected WordNetReader wordNetReader = new WordNetReaderImpl();
 
 	/* (non-Javadoc)
 	 * @see edu.uic.cs.t_verifier.nlp.NLPAnalyzer#retrieveSubjectIfSameTypeAsAU(edu.uic.cs.t_verifier.input.data.Statement)
@@ -325,44 +321,6 @@ public class NLPAnalyzerImpl3 extends AbstractWordOperations implements
 				return true;
 		}
 		return false;
-	}
-
-	public String mapPosTagToBasicForm(String posTag)
-	{
-		if ("JJR".equals(posTag) || "JJS".equals(posTag))
-		{
-			return "JJ";
-		}
-
-		if ("NNS".equals(posTag) || "NNP".equals(posTag)
-				|| "NNPS".equals(posTag))
-		{
-			return "NN";
-		}
-
-		if ("PRP$".equals(posTag))
-		{
-			return "PRP";
-		}
-
-		if ("RBR".equals(posTag) || "RBS".equals(posTag))
-		{
-			return "RB";
-		}
-
-		if ("VBD".equals(posTag) || "VBG".equals(posTag)
-				|| "VBN".equals(posTag) || "VBP".equals(posTag)
-				|| "VBZ".equals(posTag))
-		{
-			return "VB";
-		}
-
-		if ("WP$".equals(posTag))
-		{
-			return "WP";
-		}
-
-		return posTag;
 	}
 
 	@Override
