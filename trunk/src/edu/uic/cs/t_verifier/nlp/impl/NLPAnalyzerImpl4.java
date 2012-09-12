@@ -35,7 +35,6 @@ import edu.uic.cs.t_verifier.misc.ClassFactory;
 import edu.uic.cs.t_verifier.misc.Config;
 import edu.uic.cs.t_verifier.misc.LogHelper;
 import edu.uic.cs.t_verifier.ml.PersonNameIdentifier;
-import edu.uic.cs.t_verifier.ml.impl.PersonNameIdentifierStanfordNERImpl;
 import edu.uic.cs.t_verifier.nlp.impl.OpenNLPChunker.ChunkType;
 
 public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
@@ -49,6 +48,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 	private static final String POSTAG_POSSESSIVE = "POS";
 	private static final String POSTAG_DETERMINER = "DT";
+	private static final String POSTAG_DOLLAR = "$";
 	private static final String POSTAG_NOUN = "NN";
 
 	private static final String PARENTHESES_LEFT = "-lrb-";
@@ -189,7 +189,18 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 	private OpenNLPChunker chunker = new OpenNLPChunker();
 
 	//	private PersonNameIdentifier personNameIdentifier = new PersonNameIdentifierImpl();
-	private PersonNameIdentifier personNameIdentifier = new PersonNameIdentifierStanfordNERImpl();
+	//  private PersonNameIdentifier personNameIdentifier = new PersonNameIdentifierStanfordNERImpl();
+	private PersonNameIdentifier personNameIdentifier = new PersonNameIdentifier()
+	{
+		@Override
+		public List<Integer> identifyNameTermsWithinNounPhrase(
+				List<Entry<String, String>> tagsByTerm,
+				Entry<String, String> tagsByTermBeforeNP,
+				Entry<String, String> tagsByTermAfterNP)
+		{
+			return Collections.emptyList();
+		}
+	};
 
 	//	private WikipediaContentExtractor wikipediaContentExtractor = new WikipediaContentExtractor() // for test
 	//	{
@@ -332,7 +343,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 	}
 
-	protected void commitCache()
+	public void commitCache()
 	{
 		sentenceCache.writeCache();
 	}
@@ -375,7 +386,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 	}
 
 	@Override
-	protected String capitalizeProperNounTerms(String sentence,
+	public String capitalizeProperNounTerms(String sentence,
 			List<List<String>> possibleNounPhrases)
 	{
 		LOGGER.info(sentence);
@@ -438,41 +449,10 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 				// System.out.println(name);
 			}
 
-			List<Integer> personNameIndices = personNameIdentifier
-					.identifyNameTermsWithinNounPhrase(tagsByTermOriginalForm,
-							null, null);
-			List<Entry<String, String>> oneName = null;
-			Integer lastTermindex = null;
-			for (Integer nameTermIndex : personNameIndices)
-			{
-				if (oneName == null) // new name
-				{
-					oneName = new ArrayList<Entry<String, String>>();
-					oneName.add(tagsByTermBasicForm.get(nameTermIndex));
-				}
-				else if (lastTermindex != nameTermIndex - 1) // finish name
-				{
-					matchedFullNames
-							.add(new SimpleEntry<List<Entry<String, String>>, String>(
-									oneName, concatenateTerms(oneName)));
-					oneName = null;
-				}
-				else
-				// continue name
-				{
-					oneName.add(tagsByTermBasicForm.get(nameTermIndex));
-				}
-
-				lastTermindex = nameTermIndex;
-			}
-
-			if (oneName != null)
-			{
-				matchedFullNames
-						.add(new SimpleEntry<List<Entry<String, String>>, String>(
-								oneName, concatenateTerms(oneName)));
-			}
+			matchFullNames(tagsByTermOriginalForm, tagsByTermBasicForm,
+					matchedFullNames);
 		}
+
 		LOGGER.info(">>>>> Acronyms\t\t\t" + matchedAcronyms);
 		LOGGER.info(">>>>> NounPhrases_from_chucker\t\t\t" + allNounPhrases);
 		LOGGER.info(">>>>> MatchedPersonName_full\t\t\t" + matchedFullNames); // TODO no use now
@@ -602,6 +582,47 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 		return sentence;
 		//return StringUtils.capitalize(sentence);
+	}
+
+	private void matchFullNames(
+			List<Entry<String, String>> tagsByTermOriginalForm,
+			List<Entry<String, String>> tagsByTermBasicForm,
+			List<Entry<List<Entry<String, String>>, String>> matchedFullNames)
+	{
+		List<Integer> personNameIndices = personNameIdentifier
+				.identifyNameTermsWithinNounPhrase(tagsByTermOriginalForm,
+						null, null);
+		List<Entry<String, String>> oneName = null;
+		Integer lastTermindex = null;
+		for (Integer nameTermIndex : personNameIndices)
+		{
+			if (oneName == null) // new name
+			{
+				oneName = new ArrayList<Entry<String, String>>();
+				oneName.add(tagsByTermBasicForm.get(nameTermIndex));
+			}
+			else if (lastTermindex != nameTermIndex - 1) // finish name
+			{
+				matchedFullNames
+						.add(new SimpleEntry<List<Entry<String, String>>, String>(
+								oneName, concatenateTerms(oneName)));
+				oneName = null;
+			}
+			else
+			// continue name
+			{
+				oneName.add(tagsByTermBasicForm.get(nameTermIndex));
+			}
+
+			lastTermindex = nameTermIndex;
+		}
+
+		if (oneName != null)
+		{
+			matchedFullNames
+					.add(new SimpleEntry<List<Entry<String, String>>, String>(
+							oneName, concatenateTerms(oneName)));
+		}
 	}
 
 	private String searchForAcronyms(
@@ -1391,7 +1412,8 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 				nounPhrase.append(" ");
 			}
 
-			if (POSTAG_DETERMINER.equals(pos) || POSTAG_POSSESSIVE.equals(pos))
+			if (POSTAG_DETERMINER.equals(pos) || POSTAG_POSSESSIVE.equals(pos)
+					|| POSTAG_DOLLAR.equals(pos))
 			{
 				nounPhrase.append(termInLowerCase);
 				continue;

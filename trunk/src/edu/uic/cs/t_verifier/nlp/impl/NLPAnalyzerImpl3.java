@@ -37,7 +37,7 @@ import edu.uic.cs.t_verifier.nlp.WordNetReader;
 public class NLPAnalyzerImpl3 extends AbstractWordOperations implements
 		NLPAnalyzer
 {
-	private static final String GRAMMAR = "englishPCFG.ser.gz";
+	// private static final String GRAMMAR = "/edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz";
 
 	private static final String AU_SUBSTITUTE = "AU";
 
@@ -45,7 +45,7 @@ public class NLPAnalyzerImpl3 extends AbstractWordOperations implements
 			.asList(new String[] { ".", ",", ":" });
 
 	protected static final LexicalizedParser lexicalizedParser = LexicalizedParser
-			.loadModel(GRAMMAR);
+			.loadModel(/*GRAMMAR*/);
 	private static final GrammaticalStructureFactory grammaticalStructureFactory;
 	static
 	{
