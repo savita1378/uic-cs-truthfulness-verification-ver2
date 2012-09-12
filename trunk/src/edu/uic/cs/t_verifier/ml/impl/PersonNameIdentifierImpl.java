@@ -33,12 +33,13 @@ import edu.uic.cs.t_verifier.misc.GeneralException;
 import edu.uic.cs.t_verifier.ml.PersonNameIdentifier;
 import edu.uic.cs.t_verifier.nlp.PersonNameMatcher;
 import edu.uic.cs.t_verifier.nlp.PersonNameMatcher.NameType;
-import edu.uic.cs.t_verifier.nlp.impl.NLPAnalyzerImpl4;
+import edu.uic.cs.t_verifier.nlp.impl.AbstractNLPOperations;
 import edu.uic.cs.t_verifier.nlp.impl.OpenNLPChunker;
 import edu.uic.cs.t_verifier.nlp.impl.OpenNLPChunker.ChunkType;
 import edu.uic.cs.t_verifier.nlp.impl.PersonNameMatcherImpl;
 
-public class PersonNameIdentifierImpl implements PersonNameIdentifier
+public class PersonNameIdentifierImpl extends AbstractNLPOperations implements
+		PersonNameIdentifier
 {
 	private static final String TRAINED_MODEL_NAME = "person.name.model";
 
@@ -109,7 +110,6 @@ public class PersonNameIdentifierImpl implements PersonNameIdentifier
 		}
 	}
 
-	private NLPAnalyzerImpl4 nlpAnalyzer = null;
 	private OpenNLPChunker openNLPChunker = new OpenNLPChunker();
 	private PersonNameMatcher nameMatcher = new PersonNameMatcherImpl();
 
@@ -163,8 +163,7 @@ public class PersonNameIdentifierImpl implements PersonNameIdentifier
 			String term = tagByTerm.getKey();
 			NameType nameType = nameMatcher.typeOf(term);
 			Double frequency = nameMatcher.getMaxFrequency(term);
-			String pos = getNLPAnalyzer().mapPosTagToBasicForm(
-					tagByTerm.getValue());
+			String pos = mapPosTagToBasicForm(tagByTerm.getValue());
 
 			Entry<String, String> previous = (index == 0) ? tagsByTermBeforeNP
 					: tagsByTermInNP.get(index - 1);
@@ -172,16 +171,16 @@ public class PersonNameIdentifierImpl implements PersonNameIdentifier
 			NameType previousNameType = nameMatcher.typeOf(previousTerm);
 			Double previousFrequency = nameMatcher
 					.getMaxFrequency(previousTerm);
-			String previousPos = previous != null ? getNLPAnalyzer()
-					.mapPosTagToBasicForm(previous.getValue()) : NA;
+			String previousPos = previous != null ? mapPosTagToBasicForm(previous
+					.getValue()) : NA;
 
 			Entry<String, String> next = (index == tagsByTermInNP.size() - 1) ? tagsByTermAfterNP
 					: tagsByTermInNP.get(index + 1);
 			String nextTerm = next != null ? next.getKey() : null;
 			NameType nextNameType = nameMatcher.typeOf(nextTerm);
 			Double nextFrequency = nameMatcher.getMaxFrequency(nextTerm);
-			String nextPos = next != null ? getNLPAnalyzer()
-					.mapPosTagToBasicForm(next.getValue()) : NA;
+			String nextPos = next != null ? mapPosTagToBasicForm(next
+					.getValue()) : NA;
 
 			Instance instance = new Instance(ATTRIBUTES_TOTAL_NUMBER);
 			instance.setDataset(unlabeled);
@@ -226,15 +225,15 @@ public class PersonNameIdentifierImpl implements PersonNameIdentifier
 		return result;
 	}
 
-	private synchronized NLPAnalyzerImpl4 getNLPAnalyzer()
-	{
-		if (nlpAnalyzer == null)
-		{
-			nlpAnalyzer = new NLPAnalyzerImpl4();
-		}
-
-		return nlpAnalyzer;
-	}
+	//	private synchronized NLPAnalyzerImpl4 getNLPAnalyzer()
+	//	{
+	//		if (nlpAnalyzer == null)
+	//		{
+	//			nlpAnalyzer = new NLPAnalyzerImpl4();
+	//		}
+	//
+	//		return nlpAnalyzer;
+	//	}
 
 	private void addSentenceIntoTrainingData(String sentence, Instances dataset)
 	{
@@ -257,12 +256,11 @@ public class PersonNameIdentifierImpl implements PersonNameIdentifier
 		sentence = sentence.replace(PERSON_TAG_BEGIN, "")
 				.replace(PERSON_TAG_END, "").replaceAll("\\s{2,}", " ");
 
-		List<Entry<String, String>> posTagsByTerm = getNLPAnalyzer()
-				.parseIntoPosTagByTerms(sentence, false); // this one is not in basic form!!
+		List<Entry<String, String>> posTagsByTerm = parseIntoPosTagByTerms(
+				sentence, false); // this one is not in basic form!!
 		System.out.print(posTagsByTerm + "\t|\t");
 		// split by the punctuation
-		List<List<Entry<String, String>>> originalPosTagsByTermOfSubSentences = getNLPAnalyzer()
-				.splitByPunctuations(posTagsByTerm); // for chunking
+		List<List<Entry<String, String>>> originalPosTagsByTermOfSubSentences = splitByPunctuations(posTagsByTerm); // for chunking
 
 		for (List<Entry<String, String>> tagsByTerm : originalPosTagsByTermOfSubSentences)
 		{
@@ -300,8 +298,7 @@ public class PersonNameIdentifierImpl implements PersonNameIdentifier
 			String term = entry.getKey();
 			NameType nameType = nameMatcher.typeOf(term);
 			Double frequency = nameMatcher.getMaxFrequency(term);
-			String pos = getNLPAnalyzer()
-					.mapPosTagToBasicForm(entry.getValue());
+			String pos = mapPosTagToBasicForm(entry.getValue());
 
 			Entry<String, String> previous = (index == 0) ? null : tagsByTerm
 					.get(index - 1);
@@ -309,16 +306,16 @@ public class PersonNameIdentifierImpl implements PersonNameIdentifier
 			NameType previousNameType = nameMatcher.typeOf(previousTerm);
 			Double previousFrequency = nameMatcher
 					.getMaxFrequency(previousTerm);
-			String previousPos = previous != null ? getNLPAnalyzer()
-					.mapPosTagToBasicForm(previous.getValue()) : NA;
+			String previousPos = previous != null ? mapPosTagToBasicForm(previous
+					.getValue()) : NA;
 
 			Entry<String, String> next = (index == tagsByTerm.size() - 1) ? null
 					: tagsByTerm.get(index + 1);
 			String nextTerm = next != null ? next.getKey() : null;
 			NameType nextNameType = nameMatcher.typeOf(nextTerm);
 			Double nextFrequency = nameMatcher.getMaxFrequency(nextTerm);
-			String nextPos = next != null ? getNLPAnalyzer()
-					.mapPosTagToBasicForm(next.getValue()) : NA;
+			String nextPos = next != null ? mapPosTagToBasicForm(next
+					.getValue()) : NA;
 
 			Instance instance = new Instance(ATTRIBUTES_TOTAL_NUMBER);
 			instance.setDataset(dataset);
