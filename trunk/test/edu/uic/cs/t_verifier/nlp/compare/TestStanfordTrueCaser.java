@@ -67,8 +67,8 @@ public class TestStanfordTrueCaser
 				continue;
 			}
 
-			String trueCase = token.get(TextAnnotation.class);
-			result.add(trueCase);
+			String tokenString = token.get(TextAnnotation.class);
+			result.add(tokenString);
 		}
 
 		return result;
@@ -79,8 +79,12 @@ public class TestStanfordTrueCaser
 		TestStanfordTrueCaser tester = new TestStanfordTrueCaser();
 
 		TrecTopicsReaderWrapper trecTopicsReader = new TrecTopicsReaderWrapper();
-		List<String> sentences = trecTopicsReader
-				.readDescriptions("08.qa.questions.txt");
+		List<String> sentences = new ArrayList<String>();
+
+		//		sentences
+		//				.addAll(trecTopicsReader.readDescriptions("04.robust.testset"));
+		sentences.addAll(trecTopicsReader
+				.readDescriptions("08.qa.questions.txt"));
 		sentences.addAll(trecTopicsReader
 				.readDescriptions("09.qa.questions.txt"));
 
@@ -108,7 +112,27 @@ public class TestStanfordTrueCaser
 					.toLowerCase());
 			// System.out.println(trueCasedTokens);
 
-			Assert.isTrue(originalTokens.size() == trueCasedTokens.size());
+			if (originalTokens.size() != trueCasedTokens.size())
+			{
+				// lower case "r&d" could be tokenized as "r & d"
+				int tokenIndex = 0;
+				while (originalTokens.get(tokenIndex).equalsIgnoreCase(
+						trueCasedTokens.get(tokenIndex)))
+				{
+					tokenIndex++;
+				} // find the unequal one
+
+				String originalToken = originalTokens.get(tokenIndex);
+				originalTokens.remove(tokenIndex);
+				for (int charIndex = originalToken.length() - 1; charIndex >= 0; charIndex--)
+				{
+					char originalChar = originalToken.charAt(charIndex);
+					originalTokens.add(tokenIndex, "" + originalChar);
+				}
+
+				Assert.isTrue(originalTokens.size() == trueCasedTokens.size(),
+						"\n" + originalTokens + "\n" + trueCasedTokens);
+			}
 
 			// consider non-lower as positive
 			List<String> truePositive = new ArrayList<String>(); // correct
@@ -130,7 +154,12 @@ public class TestStanfordTrueCaser
 
 				boolean isOriginalInLowerCase = original.equals(original
 						.toLowerCase());
+
 				boolean isSameCase = original.equals(trueCased);
+				Assert.isTrue(original.equalsIgnoreCase(trueCased), "Original["
+						+ original
+						+ "] should equals ignore case to True-cased["
+						+ trueCased + "]");
 
 				if (!isOriginalInLowerCase) // term should be non-lower case; i.e. POSITIVE
 				{
