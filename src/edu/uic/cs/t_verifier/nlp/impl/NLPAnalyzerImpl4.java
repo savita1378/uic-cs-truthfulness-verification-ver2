@@ -190,6 +190,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 	//	private PersonNameIdentifier personNameIdentifier = new PersonNameIdentifierImpl();
 	//  private PersonNameIdentifier personNameIdentifier = new PersonNameIdentifierStanfordNERImpl();
+	// TODO right now we don't use any person name identifier
 	private PersonNameIdentifier personNameIdentifier = new PersonNameIdentifier()
 	{
 		@Override
