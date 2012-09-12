@@ -4972,7 +4972,7 @@ Who wrote the book, "Huckleberry Finn"?
 
 <title>
 <desc> Description:
-What day is known as the "national day of prayer"?
+What day is known as the "National Day of Prayer"?
 
 <narr>
 </top>
@@ -5152,7 +5152,7 @@ What President became Chief Justice after his presidency?
 
 <title>
 <desc> Description:
-How tall is kilamanjaro?
+How tall is Kilamanjaro?
 
 <narr>
 </top>
@@ -5164,7 +5164,7 @@ How tall is kilamanjaro?
 
 <title>
 <desc> Description:
-Who won the nobel prize in literature in 1988?
+Who won the Nobel Prize in Literature in 1988?
 
 <narr>
 </top>
@@ -7324,7 +7324,7 @@ What is the longest English word?
 
 <title>
 <desc> Description:
-What is the name of the inventor of silly putty?
+What is the name of the inventor of Silly Putty?
 
 <narr>
 </top>

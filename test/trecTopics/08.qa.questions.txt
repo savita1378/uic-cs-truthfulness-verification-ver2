@@ -808,7 +808,7 @@ What is the longest river in the United States?
 
 <title>
 <desc> Description:
-What does El Nino mean in spanish?
+What does El Nino mean in Spanish?
 
 <narr>
 </top>
@@ -2092,7 +2092,7 @@ When did Jaco Pastorius die?
 
 <title>
 <desc> Description:
-When did beethoven die?
+When did Beethoven die?
 
 <narr>
 </top>
