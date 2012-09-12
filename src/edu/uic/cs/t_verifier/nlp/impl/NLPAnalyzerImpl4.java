@@ -181,8 +181,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 	}
 
 	private WikipediaKeyWordsMatcher wikipediaKeyWordsMatcher = new WikipediaKeyWordsMatcher();
-
-	//	private PersonNameMatcherImpl trigramPersonNameMatcher = new PersonNameMatcherImpl();
+	// private PersonNameMatcherImpl trigramPersonNameMatcher = new PersonNameMatcherImpl();
 
 	private SentenceCache sentenceCache = SentenceCache.getInstance();
 
@@ -242,45 +241,45 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 	//		impl.capitalizeProperNounTerms(sentence, null);
 	//	}
 
-	public static void main2(String[] args)
-	{
-		List<Statement> statements = AlternativeUnitsReader
-				.parseAllStatementsFromInputFiles();
-		NLPAnalyzerImpl4 nlpAnalyzer = new NLPAnalyzerImpl4();
-
-		for (Statement statement : statements)
-		{
-			List<String> allAlternativeUnits = statement.getAlternativeUnits();
-			List<String> allAlternativeStatements = statement
-					.getAllAlternativeStatements();
-
-			for (int index = 0; index < allAlternativeStatements.size(); index++)
-			{
-				String alternativeUnit = allAlternativeUnits.get(index);
-				String sentence = allAlternativeStatements.get(index);
-				String counterPartOfAU = nlpAnalyzer
-						.retrieveTopicTermIfSameTypeAsAU(sentence,
-								alternativeUnit); // this method will restore cases
-
-				if (counterPartOfAU != null)
-				{
-					System.out.println(sentence);
-					System.out.println(counterPartOfAU + "\t-\t"
-							+ alternativeUnit);
-				}
-			}
-		}
-	}
-
-	public static void main1(String[] args)
-	{
-		NLPAnalyzerImpl4 impl = new NLPAnalyzerImpl4();
-
-		String sentence = "microsoft's corporate headquarters locates in united states";
-
-		System.out.println(impl.capitalizeProperNounTerms(sentence, null));
-
-	}
+	//	public static void main2(String[] args)
+	//	{
+	//		List<Statement> statements = AlternativeUnitsReader
+	//				.parseAllStatementsFromInputFiles();
+	//		NLPAnalyzerImpl4 nlpAnalyzer = new NLPAnalyzerImpl4();
+	//
+	//		for (Statement statement : statements)
+	//		{
+	//			List<String> allAlternativeUnits = statement.getAlternativeUnits();
+	//			List<String> allAlternativeStatements = statement
+	//					.getAllAlternativeStatements();
+	//
+	//			for (int index = 0; index < allAlternativeStatements.size(); index++)
+	//			{
+	//				String alternativeUnit = allAlternativeUnits.get(index);
+	//				String sentence = allAlternativeStatements.get(index);
+	//				String counterPartOfAU = nlpAnalyzer
+	//						.retrieveTopicTermIfSameTypeAsAU(sentence,
+	//								alternativeUnit); // this method will restore cases
+	//
+	//				if (counterPartOfAU != null)
+	//				{
+	//					System.out.println(sentence);
+	//					System.out.println(counterPartOfAU + "\t-\t"
+	//							+ alternativeUnit);
+	//				}
+	//			}
+	//		}
+	//	}
+	//
+	//	public static void main1(String[] args)
+	//	{
+	//		NLPAnalyzerImpl4 impl = new NLPAnalyzerImpl4();
+	//
+	//		String sentence = "microsoft's corporate headquarters locates in united states";
+	//
+	//		System.out.println(impl.capitalizeProperNounTerms(sentence, null));
+	//
+	//	}
 
 	public static void main(String[] args)
 	{
@@ -456,6 +455,19 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 
 		LOGGER.info(">>>>> Acronyms\t\t\t" + matchedAcronyms);
 		LOGGER.info(">>>>> NounPhrases_from_chucker\t\t\t" + allNounPhrases);
+
+		////////////////////////////////////////////////////////////////////////
+		// IF USING THIS, COMMENT matchFullNames(...), OR USE DUMMY PersonNameIdentifier
+		// match names within name-list
+		//		List<Entry<Entry<String, String>, String>> matchedSingleNames = new ArrayList<Map.Entry<Entry<String, String>, String>>();
+		//		for (List<Entry<String, String>> posTagByTerm : posTagsByTermOfSubSentences)
+		//		{
+		//			recursiveMatchTerms(trigramPersonNameMatcher,
+		//					Collections.singletonList(posTagByTerm), matchedFullNames,
+		//					matchedSingleNames);
+		//		}
+		////////////////////////////////////////////////////////////////////////
+
 		LOGGER.info(">>>>> MatchedPersonName_full\t\t\t" + matchedFullNames); // TODO no use now
 		// System.out.println(allNounPhrases);
 
@@ -496,16 +508,6 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 				+ capitalizationsByOriginalCaseFromWordNet);
 
 		/*
-		// match names within name-list
-		List<Entry<List<Entry<String, String>>, String>> matchedFullNames = new ArrayList<Entry<List<Entry<String, String>>, String>>();
-		List<Entry<Entry<String, String>, String>> matchedSingleNames = new ArrayList<Map.Entry<Entry<String, String>, String>>();
-		for (List<Entry<String, String>> posTagByTerm : posTagsByTermOfSubSentences)
-		{
-			recursiveMatchTerms(trigramPersonNameMatcher,
-					Collections.singletonList(posTagByTerm), matchedFullNames,
-					matchedSingleNames);
-		}
-		LOGGER.info(">>>>> MatchedPersonName_full\t\t\t" + matchedFullNames);
 		// TODO this matched single name is not used now, 
 		// since it may match terms like “long”, “longest”, “kings”, “big”, “from”, “games”, “late”, “states”
 		// maybe introducing the frequency of each name term may do some help, but we haven't decided it yet.
@@ -706,6 +708,11 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 			List<Entry<Entry<String, String>, String>> capitalizationsBySingleNounTermFromWiki,
 			List<Entry<List<Entry<String, String>>, String>> capitalizationsByOriginalCaseFromWordNet)
 	{
+		if (matchedNames.isEmpty())
+		{
+			return Collections.emptyList();
+		}
+
 		// names
 		List<List<Entry<String, String>>> squencesFromNameList = new ArrayList<List<Entry<String, String>>>(
 				matchedNames.size());
@@ -731,7 +738,7 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 				.addAll(capitalizationsByOriginalCaseFromWordNet);
 
 		return filterOutOverlappings(squencesFromNameList,
-				capitalizationsByOriginalCaseFromWiki, true);
+				capitalizationsByOriginalCaseFromWiki, /*true*/false); // I don't remember why use true now
 
 	}
 
@@ -877,6 +884,8 @@ public class NLPAnalyzerImpl4 extends NLPAnalyzerImpl3
 					nounSequenceClone.removeAll(squenceFromWiki);
 					if (nounSequenceClone.isEmpty()) // two are identical
 					{
+						LOGGER.info("Keeping the identical sequences "
+								+ squenceFromWiki);
 						break;
 					}
 				}
