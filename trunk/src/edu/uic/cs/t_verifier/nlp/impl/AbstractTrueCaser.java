@@ -422,7 +422,7 @@ abstract class AbstractTrueCaser extends AbstractNLPOperations implements
 		return !hasAdj && !hasAdv && !hasVerb && hasNoun;
 	}*/
 
-	private boolean inDifferentCases(String one, String other)
+	protected boolean inDifferentCases(String one, String other)
 	{
 		return one.toLowerCase().equals(other.toLowerCase())
 				&& !one.equals(other);
@@ -931,30 +931,46 @@ abstract class AbstractTrueCaser extends AbstractNLPOperations implements
 
 	protected String concatenateTerms(List<Entry<String, String>> posTagsByTerm)
 	{
-		return concatenateTerms(posTagsByTerm, false);
+		return concatenateTerms(posTagsByTerm, false, true);
 	}
 
-	private String concatenateTerms(List<Entry<String, String>> posTagsByTerm,
-			boolean ignorePossessiveCase)
+	protected String concatenateTerms(
+			List<Entry<String, String>> posTagsByTerm,
+			boolean ignorePossessiveCase, boolean lowerCase)
 	{
-		return concatenateTerms(posTagsByTerm, ignorePossessiveCase, " ");
+		return concatenateTerms(posTagsByTerm, ignorePossessiveCase, lowerCase,
+				" ");
 	}
 
 	private String concatenateTerms(List<Entry<String, String>> posTagsByTerm,
 			boolean ignorePossessiveCase, String delimiter)
+	{
+		return concatenateTerms(posTagsByTerm, ignorePossessiveCase, true,
+				delimiter);
+	}
+
+	private String concatenateTerms(List<Entry<String, String>> posTagsByTerm,
+			boolean ignorePossessiveCase, boolean lowerCase, String delimiter)
 	{
 		if (posTagsByTerm.isEmpty())
 		{
 			return "";
 		}
 
-		StringBuilder stringBuilder = new StringBuilder(posTagsByTerm.get(0)
-				.getKey().toLowerCase(Locale.US)); // in case that month-term be capitalized by Stanford parser
+		String term = posTagsByTerm.get(0).getKey();
+		if (lowerCase) // in case that month-term be capitalized by Stanford parser
+		{
+			term = term.toLowerCase(Locale.US);
+		}
+		StringBuilder stringBuilder = new StringBuilder(term);
 		for (int index = 1; index < posTagsByTerm.size(); index++)
 		{
 			String posTag = posTagsByTerm.get(index).getValue();
-			String term = posTagsByTerm.get(index).getKey()
-					.toLowerCase(Locale.US); // in case that month-term be capitalized by Stanford parser
+			term = posTagsByTerm.get(index).getKey();
+			if (lowerCase) // in case that month-term be capitalized by Stanford parser
+			{
+				term = term.toLowerCase(Locale.US);
+			}
 
 			if (POSTAG_POSSESSIVE.equals(posTag))
 			{
