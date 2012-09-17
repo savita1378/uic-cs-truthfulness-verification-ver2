@@ -84,112 +84,111 @@ public abstract class AbstractTrueCaseTester extends AbstractNLPOperations
 			String testSequence = testSequences.get(index);
 			logger.info((index + 1) + "\t" + testSequence);
 
-			try
+			//			try
+			//			{
+			List<List<String>> originalSentence = getOriginalCasedTokens(testSequence);
+			List<List<String>> trueCasedSentence = getTrueCaseTokens(testSequence
+					.toLowerCase());
+
+			Assert.isTrue(originalSentence.size() == trueCasedSentence.size());
+
+			// consider non-lower as positive
+			List<String> truePositive = new ArrayList<String>(); // correct
+			List<String> trueNegative = new ArrayList<String>(); // correct
+			List<String> falseNegative = new ArrayList<String>();
+			List<String> falsePositive = new ArrayList<String>();
+
+			for (int i = 0; i < originalSentence.size(); i++)
 			{
-				List<List<String>> originalSentence = getOriginalCasedTokens(testSequence);
-				List<List<String>> trueCasedSentence = getTrueCaseTokens(testSequence
-						.toLowerCase());
+				List<String> originalTokens = originalSentence.get(i);
+				// println(originalTokens);
 
-				Assert.isTrue(originalSentence.size() == trueCasedSentence
-						.size());
+				List<String> trueCasedTokens = trueCasedSentence.get(i);
+				// println(trueCasedTokens);
 
-				// consider non-lower as positive
-				List<String> truePositive = new ArrayList<String>(); // correct
-				List<String> trueNegative = new ArrayList<String>(); // correct
-				List<String> falseNegative = new ArrayList<String>();
-				List<String> falsePositive = new ArrayList<String>();
-
-				for (int i = 0; i < originalSentence.size(); i++)
+				if (originalTokens.size() != trueCasedTokens.size())
 				{
-					List<String> originalTokens = originalSentence.get(i);
-					// println(originalTokens);
-
-					List<String> trueCasedTokens = trueCasedSentence.get(i);
-					// println(trueCasedTokens);
-
-					if (originalTokens.size() != trueCasedTokens.size())
-					{
-						alignment(originalTokens, trueCasedTokens);
-					}
-
-					for (int termIndex = 0; termIndex < originalTokens.size(); termIndex++)
-					{
-						if (termIndex == 0) // ignore the first term which is always capitalized
-						{
-							continue;
-						}
-
-						String original = originalTokens.get(termIndex);
-						String trueCased = trueCasedTokens.get(termIndex);
-
-						boolean isOriginalInLowerCase = original
-								.equals(original.toLowerCase());
-
-						boolean isSameCase = original.equals(trueCased);
-						Assert.isTrue(
-								original.equalsIgnoreCase(trueCased),
-								"Original["
-										+ original
-										+ "] should equals ignore case to True-cased["
-										+ trueCased + "]");
-
-						if (isPunctuation(original))
-						{
-							continue;
-						}
-
-						totalNumOfTerms++;
-
-						if (!isOriginalInLowerCase) // term should be non-lower case; i.e. POSITIVE
-						{
-							totalNumOfTrueNonLower++;
-
-							if (isSameCase) // identified as non-lower
-							{
-								totalNumOfRecognizedNonLower++;
-								truePositive.add(original);
-							}
-							else
-							// identified as lower case
-							{
-								totalNumOfRecognizedLower++;
-								falseNegative.add(trueCased);
-							}
-						}
-						else
-						// term should be lower case; i.e. NEGATIVE
-						{
-							totalNumOfTrueLower++;
-
-							if (isSameCase) // identified as lower case
-							{
-								totalNumOfRecognizedLower++;
-								trueNegative.add(original);
-							}
-							else
-							// but be identified as non-lower
-							{
-								totalNumOfRecognizedNonLower++;
-								falsePositive.add(trueCased);
-							}
-						}
-					} // for one sentence
-				} // for all sentences
-
-				correctCasedNum += (truePositive.size() + trueNegative.size());
-				correctNonLowerNum += truePositive.size();
-				correctLowerNum += trueNegative.size();
-				if (!falseNegative.isEmpty() || !falsePositive.isEmpty())
-				{
-					logger.info(">>>\t" + falseNegative + " | " + falsePositive);
+					alignment(originalTokens, trueCasedTokens);
 				}
 
-			}
-			catch (Throwable th)
+				for (int termIndex = 0; termIndex < originalTokens.size(); termIndex++)
+				{
+					if (termIndex == 0) // ignore the first term which is always capitalized
+					{
+						continue;
+					}
+
+					String original = originalTokens.get(termIndex);
+					String trueCased = trueCasedTokens.get(termIndex);
+
+					boolean isOriginalInLowerCase = original.equals(original
+							.toLowerCase());
+
+					boolean isSameCase = original.equals(trueCased);
+					Assert.isTrue(
+							original.equalsIgnoreCase(trueCased),
+							"Original["
+									+ original
+									+ "] should equals ignore case to True-cased["
+									+ trueCased + "]");
+
+					if (isPunctuation(original))
+					{
+						continue;
+					}
+
+					totalNumOfTerms++;
+
+					if (!isOriginalInLowerCase) // term should be non-lower case; i.e. POSITIVE
+					{
+						totalNumOfTrueNonLower++;
+
+						if (isSameCase) // identified as non-lower
+						{
+							totalNumOfRecognizedNonLower++;
+							truePositive.add(original);
+						}
+						else
+						// identified as lower case
+						{
+							totalNumOfRecognizedLower++;
+							falseNegative.add(trueCased);
+						}
+					}
+					else
+					// term should be lower case; i.e. NEGATIVE
+					{
+						totalNumOfTrueLower++;
+
+						if (isSameCase) // identified as lower case
+						{
+							totalNumOfRecognizedLower++;
+							trueNegative.add(original);
+						}
+						else
+						// but be identified as non-lower
+						{
+							totalNumOfRecognizedNonLower++;
+							falsePositive.add(trueCased);
+						}
+					}
+				} // for one sentence
+			} // for all sentences
+
+			correctCasedNum += (truePositive.size() + trueNegative.size());
+			correctNonLowerNum += truePositive.size();
+			correctLowerNum += trueNegative.size();
+			if (!falseNegative.isEmpty() || !falsePositive.isEmpty())
 			{
-				logger.error(index + 1, th);
-				commit();
+				logger.info(">>>\t" + falseNegative + " | " + falsePositive);
 			}
+
+			//			}
+			//			catch (Throwable th)
+			//			{
+			//				logger.error(index + 1, th);
+			//				commit();
+			//			}
 
 			logger.info("");
 		}
