@@ -179,7 +179,8 @@ public class HybridTrueCaserImpl extends AbstractTrueCaser
 		{
 			String target = concatenateTerms(entry);
 			String replacement = WordUtils.capitalize(target);
-			sentence = sentence.replace(target, replacement);
+			sentence = sentence.replaceAll(createReplaceTarget(target),
+					replacement);
 		}
 
 		for (Entry<List<Entry<String, String>>, String> entry : capitalizationsByOriginalCaseFromWiki)
@@ -191,13 +192,15 @@ public class HybridTrueCaserImpl extends AbstractTrueCaser
 		for (Entry<Entry<String, String>, String> entry : capitalizationsBySingleNounTermFromWiki)
 		{
 			String target = entry.getKey().getKey();
-			sentence = sentence.replace(target, entry.getValue());
+			sentence = sentence.replaceAll(createReplaceTarget(target),
+					entry.getValue());
 		}
 
 		for (Entry<List<Entry<String, String>>, String> entry : capitalizationsByOriginalCaseFromWordNetOrTrueCaser)
 		{
 			String target = concatenateTerms(entry.getKey());
-			sentence = sentence.replace(target, entry.getValue());
+			sentence = sentence.replaceAll(createReplaceTarget(target),
+					entry.getValue());
 		}
 
 		for (String acronym : matchedAcronyms)

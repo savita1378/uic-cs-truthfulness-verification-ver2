@@ -36,6 +36,21 @@
 			<param name="conversionPattern" value="%m%n" />
 		</layout>
 	</appender>
+	<appender name="truecaser_evaluation_file" class="org.apache.log4j.RollingFileAppender">
+		<param name="file" value="output/truecaser_evaluation.log" />
+		<param name="immediateFlush" value="true" />
+		<param name="append" value="true" />
+		<param name="maxFileSize" value="50MB" />
+		<param name="maxBackupIndex" value="5" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="conversionPattern" value="%m%n" />
+		</layout>
+	</appender>
+	<appender name="truecaser_evaluation_console" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="conversionPattern" value="%m%n" />
+		</layout>
+	</appender>
 	<logger name="edu.uic.cs.t_verifier" additivity="false">
 		<level value="debug" />
 		<appender-ref ref="projectLogger_file" />
@@ -47,6 +62,11 @@
 	<logger name="MATCHING_DETAIL" additivity="false">
 		<level value="debug" />
 		<appender-ref ref="matching_detail_file" />
+	</logger>
+	<logger name="TRUECASER_EVALUATION" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="truecaser_evaluation_console" />
+		<appender-ref ref="truecaser_evaluation_file" />
 	</logger>
 	<root>
 		<priority value="debug" />

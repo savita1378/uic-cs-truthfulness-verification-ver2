@@ -221,6 +221,12 @@ public class HtmlPageExtractor extends WikipediaContentExtractor
 		{
 			textInUpperLevels = textInUpperLevels + " ";
 		}
+
+		if (currentBullet.getChildren() == null)
+		{
+			return;
+		}
+
 		NodeList subBulletList = currentBullet.getChildren()
 				.extractAllNodesThatMatch(new TagNameFilter("ul"));
 		if (subBulletList.size() == 0) // lowest level Bullet
@@ -279,9 +285,10 @@ public class HtmlPageExtractor extends WikipediaContentExtractor
 	{
 		StringBuilder sb = new StringBuilder();
 
-		NodeList nl = table.getChildren().extractAllNodesThatMatch(
-				new TagNameFilter("caption"), true);
-		if (nl.size() != 0)
+		NodeList nl = null;
+		if (table.getChildren() != null
+				&& (nl = table.getChildren().extractAllNodesThatMatch(
+						new TagNameFilter("caption"), true)).size() != 0)
 		{
 			String captionString = null;
 			Node captionTagNode = nl.elementAt(0);

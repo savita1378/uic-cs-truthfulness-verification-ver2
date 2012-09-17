@@ -110,7 +110,7 @@ public abstract class WikipediaContentExtractor extends CategoriesExtractor
 			{
 				return null;
 			}
-		}.matchQueryKey("under construction");
+		}.matchQueryKey("1800 gmt");
 		System.out.println(key.getKeyWord());
 		System.out.println(key.getDisambiguationEntries());
 	}
@@ -119,7 +119,7 @@ public abstract class WikipediaContentExtractor extends CategoriesExtractor
 			boolean printResult)
 	{
 		String url = WIKI_SEARCH_URL_PREFIX
-				+ queryWords.trim().replace(' ', '_');
+				+ queryWords.trim().replace(' ', '_').replace(' ', '_'); // the second ' ' is NOT whitespace!!
 
 		try
 		{

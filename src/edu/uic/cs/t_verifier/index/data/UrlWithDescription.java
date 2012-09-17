@@ -14,7 +14,7 @@ public class UrlWithDescription
 	public UrlWithDescription(String url, String description,
 			List<String> categoriesBelongsTo)
 	{
-		url = url.replace("&amp;", "%26");
+		url = url.replace("&amp;", "%26").replace("+", "%2B");
 		this.url = url;
 		this.description = description;
 		Assert.notNull(categoriesBelongsTo);
