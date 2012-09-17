@@ -85,4 +85,7 @@ public class Config
 			.parseDouble(CONFIG
 					.getProperty("wordnet_synset_frequency_ratio_to_max_lower_bound"));
 
+	public static final int MAX_WIKI_MATCHING_LENGTH = Integer.parseInt(CONFIG
+			.getProperty("max_wiki_matching_length"));
+
 }

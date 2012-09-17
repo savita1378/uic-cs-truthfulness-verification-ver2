@@ -139,7 +139,7 @@ public class SentenceCache
 
 	public static void main(String[] args)
 	{
-		String sentence = "there has long been a call for standards in u.s. education, these calls frequently citing the superiority of foreign  school systems.  are there many countries outside the u.s. which have standards for pre-teen students?  if so, which are those countries and what standards have been set?";
+		String sentence = "in other news, the toronto bond traders' association said it is recommending that dealings in the canadian bond market end early at 1400 edt/ 1800 gmt on friday.";
 		Entry<List<Entry<List<Entry<String, String>>, MatchedQueryKey>>, List<Entry<Entry<String, String>, MatchedQueryKey>>> cachedInfo = SentenceCache
 				.getInstance().retrieveWikipeidaSentenceCache(sentence);
 		System.out.println(cachedInfo);

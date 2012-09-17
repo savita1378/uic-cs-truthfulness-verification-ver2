@@ -60,9 +60,20 @@ abstract class AbstractTrueCaser extends AbstractNLPOperations implements
 		public boolean isMatched(
 				List<Entry<String, String>> currentLevelPosTagsByTermSequence)
 		{
+			int matchingSequenceLength = currentLevelPosTagsByTermSequence
+					.size();
+			if (matchingSequenceLength > Config.MAX_WIKI_MATCHING_LENGTH)
+			{
+				return false;
+			}
+
 			matchedQueryKey = null;
 
 			String term = concatenateTerms(currentLevelPosTagsByTermSequence);
+			if (StringUtils.isNumericSpace(term)) // not necessary to check the numbers
+			{
+				return false;
+			}
 
 			matchedQueryKey = wikipediaContentExtractor.matchQueryKey(term);
 			if (matchedQueryKey == null)
@@ -271,6 +282,12 @@ abstract class AbstractTrueCaser extends AbstractNLPOperations implements
 		return acronym;
 	}
 
+	protected String createReplaceTarget(String target)
+	{
+		return REGEX_TERM_LEFT_BOUND + target.replace(".", "\\.")
+				+ "((?=\\W)|$)";
+	}
+
 	protected String replaceMatchedWikiPhrase(String sentence,
 			List<Entry<String, String>> posTagsByTerm, String replacement)
 	{
@@ -278,7 +295,8 @@ abstract class AbstractTrueCaser extends AbstractNLPOperations implements
 
 		if (sentence.contains(target))
 		{
-			sentence = sentence.replace(target, replacement);
+			sentence = sentence.replaceAll(createReplaceTarget(target),
+					replacement);
 		}
 		else
 		// "R & D" ==> "R&D"
@@ -292,7 +310,8 @@ abstract class AbstractTrueCaser extends AbstractNLPOperations implements
 				LOGGER.warn("[" + sentence + "] should contains [" + target
 						+ "], but not. ");
 			}
-			sentence = sentence.replace(target, replacement);
+			sentence = sentence.replaceAll(createReplaceTarget(target),
+					replacement);
 		}
 
 		return sentence;
@@ -350,6 +369,10 @@ abstract class AbstractTrueCaser extends AbstractNLPOperations implements
 					term.toLowerCase(), POS.NOUN); // use lowercase to search if capitalized return
 			// if the term doesn't exist in wordnet, we can NOT trust wiki (Become)
 			if (termInWordNet != null && term.equals(termInWordNet)) // same case, 
+			{
+				result.add(entry);
+			}
+			else if (MONTHS_IN_LOWER_CASE.contains(term.toLowerCase())) // the month abbreviation, like "Oct."
 			{
 				result.add(entry);
 			}

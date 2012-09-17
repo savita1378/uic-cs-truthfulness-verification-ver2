@@ -91,7 +91,7 @@ public abstract class AbstractNLPOperations extends AbstractWordOperations
 		boolean newSubSentence = true;
 		for (Entry<String, String> pair : posTagsByTerm)
 		{
-			if (!isPunctuation(pair.getValue()))
+			if (!isSplitSentencePunctuation(pair.getValue()))
 			{
 				if (newSubSentence)
 				{
@@ -111,7 +111,7 @@ public abstract class AbstractNLPOperations extends AbstractWordOperations
 		return result;
 	}
 
-	protected boolean isPunctuation(String posTag)
+	private boolean isSplitSentencePunctuation(String posTag)
 	{
 		return PUNCTUATIONS.contains(posTag);
 	}
@@ -134,6 +134,7 @@ public abstract class AbstractNLPOperations extends AbstractWordOperations
 					.get(PartOfSpeechAnnotation.class)) : token
 					.get(PartOfSpeechAnnotation.class);
 			String tokenString = token.get(TextAnnotation.class);
+			tokenString = tokenString.replace("\\/", "/");
 
 			result.add(new SimpleEntry<String, String>(tokenString, pos));
 		}
@@ -188,7 +189,7 @@ public abstract class AbstractNLPOperations extends AbstractWordOperations
 				String term = posTagByTerm.getKey();
 
 				String posTag = posTagByTerm.getValue();
-				if (!isPunctuation(posTag)
+				if (!isSplitSentencePunctuation(posTag)
 						&& !POSTAG_POSSESSIVE.equals(posTag)
 						&& !StopAnalyzer.ENGLISH_STOP_WORDS_SET.contains(term
 								.toLowerCase())
