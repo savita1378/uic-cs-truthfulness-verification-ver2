@@ -19,7 +19,7 @@ public class LogHelper
 	public static Logger getLogger(Class<?> clazz)
 	{
 		Assert.notNull(clazz);
-		return Logger.getLogger(clazz.getClass().getPackage().getName());
+		return Logger.getLogger(clazz);
 	}
 
 	public static Logger getScoreDetailLogger()
