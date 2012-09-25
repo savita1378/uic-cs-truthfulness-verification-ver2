@@ -3,13 +3,13 @@
 <log4j:configuration>
 	<appender name="projectLogger_console" class="org.apache.log4j.ConsoleAppender">
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="conversionPattern" value="%d | %p | %C | %m%n" />
+			<param name="conversionPattern" value="%p | %C{1} | %m%n" />
 		</layout>
 	</appender>
 	<appender name="projectLogger_file" class="org.apache.log4j.RollingFileAppender">
 		<param name="file" value="output/debug.log" />
 		<param name="immediateFlush" value="true" />
-		<param name="append" value="true" />
+		<param name="append" value="false" />
 		<param name="maxFileSize" value="50MB" />
 		<param name="maxBackupIndex" value="5" />
 		<layout class="org.apache.log4j.PatternLayout">
@@ -67,6 +67,11 @@
 		<level value="debug" />
 		<appender-ref ref="truecaser_evaluation_console" />
 		<appender-ref ref="truecaser_evaluation_file" />
+	</logger>
+	<logger name="edu.uic.cs.wiki_verifier.wiki.local" additivity="false">
+		<level value="error" />
+		<appender-ref ref="projectLogger_file" />
+		<appender-ref ref="projectLogger_console" />
 	</logger>
 	<root>
 		<priority value="debug" />

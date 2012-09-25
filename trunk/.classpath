@@ -7,11 +7,9 @@
 	<classpathentry kind="lib" path="lib/log4j-1.2.16.jar"/>
 	<classpathentry kind="lib" path="lib/commons-io-1.4.jar" sourcepath="lib/source/commons-io-1.4-sources.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang-2.5.jar" sourcepath="lib/source/commons-lang-2.5-sources.jar"/>
-	<classpathentry kind="lib" path="lib/lucene-core-3.2.0.jar" sourcepath="lib/source/lucene-3.2.0-src.zip"/>
 	<classpathentry kind="lib" path="lib/htmllexer.jar" sourcepath="lib/source/HTMLParser-2.0-SNAPSHOT-src.zip"/>
 	<classpathentry kind="lib" path="lib/htmlparser.jar" sourcepath="lib/source/HTMLParser-2.0-SNAPSHOT-src.zip"/>
 	<classpathentry kind="lib" path="lib/java-wikipedia-parser.jar"/>
-	<classpathentry kind="lib" path="lib/lucene-analyzers-3.2.0.jar" sourcepath="lib/source/lucene-3.2.0-src.zip"/>
 	<classpathentry kind="lib" path="lib/weka.jar" sourcepath="lib/source/weka-src.jar"/>
 	<classpathentry kind="lib" path="lib/libsvm.jar"/>
 	<classpathentry kind="lib" path="lib/opennlp-maxent-3.0.2-incubating.jar" sourcepath="lib/source/apache-opennlp-1.5.2-incubating-src.zip"/>
@@ -26,6 +24,9 @@
 	<classpathentry kind="lib" path="StanfordNLP_models/stanford-corenlp-2012-07-06-models.jar"/>
 	<classpathentry kind="lib" path="StanfordNLP_models/stanford-corenlp-caseless-2012-07-04-models.jar"/>
 	<classpathentry kind="lib" path="lib/joda-time.jar"/>
+	<classpathentry kind="lib" path="lib/bliki-core-3.0.19.jar" sourcepath="lib/source/bliki-core-3.0.19-sources.jar"/>
+	<classpathentry kind="lib" path="lib/lucene-core-3.6.0.jar"/>
+	<classpathentry kind="lib" path="lib/lucene-analyzers-3.2.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

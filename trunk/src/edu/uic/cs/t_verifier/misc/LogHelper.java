@@ -18,7 +18,6 @@ public class LogHelper
 
 	public static Logger getLogger(Class<?> clazz)
 	{
-		Assert.notNull(clazz);
 		return Logger.getLogger(clazz);
 	}
 
