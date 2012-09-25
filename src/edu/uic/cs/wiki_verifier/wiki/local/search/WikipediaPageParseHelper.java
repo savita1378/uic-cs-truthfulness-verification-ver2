@@ -138,9 +138,9 @@ public class WikipediaPageParseHelper
 		return matcher.find();
 	}
 
-	public static void main(String[] args)
-	{
-		String rawText = "{{disambiguation}}";
-		System.out.println(isDisambiguation(rawText));
-	}
+	//	public static void main(String[] args)
+	//	{
+	//		String rawText = "{{disambiguation}}";
+	//		System.out.println(isDisambiguation(rawText));
+	//	}
 }
